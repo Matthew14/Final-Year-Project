@@ -1,2 +1,0 @@
-D:\Google Drive\DT228\FYP\FYPCode\UploadApp\UploadApp\bin\Debug\UploadApp.exe.config
-D:\Google Drive\DT228\FYP\FYPCode\UploadApp\UploadApp\bin\Debug\UploadApp.UI.exe.config
