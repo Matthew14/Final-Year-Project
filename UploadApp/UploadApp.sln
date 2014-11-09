@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UploadApp", "UploadApp\UploadApp.csproj", "{FA9443C5-E16E-4FE5-AB7C-77069B2F588C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UploadApp.UI", "UploadApp.UI\UploadApp.UI.csproj", "{FA9443C5-E16E-4FE5-AB7C-77069B2F588C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UploadApp.Uploader", "UploadApp.Uploader\UploadApp.Uploader.csproj", "{1AA61E65-0596-479C-94BB-87019562514A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{FA9443C5-E16E-4FE5-AB7C-77069B2F588C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA9443C5-E16E-4FE5-AB7C-77069B2F588C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA9443C5-E16E-4FE5-AB7C-77069B2F588C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AA61E65-0596-479C-94BB-87019562514A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AA61E65-0596-479C-94BB-87019562514A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AA61E65-0596-479C-94BB-87019562514A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AA61E65-0596-479C-94BB-87019562514A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

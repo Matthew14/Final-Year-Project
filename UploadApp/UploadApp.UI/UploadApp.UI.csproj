@@ -7,8 +7,8 @@
     <ProjectGuid>{FA9443C5-E16E-4FE5-AB7C-77069B2F588C}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UploadApp</RootNamespace>
-    <AssemblyName>UploadApp</AssemblyName>
+    <RootNamespace>UploadApp.UI</RootNamespace>
+    <AssemblyName>UploadApp.UI</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -92,6 +92,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UploadApp.Uploader\UploadApp.Uploader.csproj">
+      <Project>{1AA61E65-0596-479C-94BB-87019562514A}</Project>
+      <Name>UploadApp.Uploader</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
