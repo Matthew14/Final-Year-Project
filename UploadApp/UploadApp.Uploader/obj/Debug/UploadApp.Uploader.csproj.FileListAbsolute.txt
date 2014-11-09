@@ -2,3 +2,4 @@ D:\Google Drive\DT228\FYP\FYPCode\UploadApp\UploadApp.Uploader\bin\Debug\UploadA
 D:\Google Drive\DT228\FYP\FYPCode\UploadApp\UploadApp.Uploader\bin\Debug\UploadApp.Uploader.pdb
 D:\Google Drive\DT228\FYP\FYPCode\UploadApp\UploadApp.Uploader\obj\Debug\UploadApp.Uploader.dll
 D:\Google Drive\DT228\FYP\FYPCode\UploadApp\UploadApp.Uploader\obj\Debug\UploadApp.Uploader.pdb
+D:\Google Drive\DT228\FYP\FYPCode\UploadApp\UploadApp.Uploader\obj\Debug\UploadApp.Uploader.csprojResolveAssemblyReference.cache
