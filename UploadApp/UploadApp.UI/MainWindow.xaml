@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Music Uploader" Height="350" Width="525">
     <Grid>
-        
+        <Button Click="BrowseButtonClick"></Button>
+        <ListBox ItemsSource="{Binding Folders}" Height="210" VerticalAlignment="Bottom"></ListBox>
     </Grid>
 </Window>
