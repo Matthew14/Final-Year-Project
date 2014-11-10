@@ -1,8 +1,13 @@
+import socket
 from app import app
 from flask import request
 
-uploadDirectory = 'uploads'
+uploadDirectory = '/var/www/fyp/uploads' if socket.gethostname() == 'FYP' else 'uploads'
 
+
+@app.route('/')
+def index():
+    return 'hello there'
 
 @app.route('/upload', methods=['POST'])
 def upload():
