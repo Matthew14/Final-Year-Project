@@ -79,6 +79,7 @@ namespace UploadApp.Uploader
             var cmd = _conn.CreateCommand();
             cmd.CommandText = sql;
             cmd.ExecuteNonQuery();
+            
             _conn.Close();   
         }
     }

@@ -12,7 +12,6 @@ namespace UploadApp.Uploader
     public class FolderWatcher
     {
         public List<string> Folders { get; private set; }
-        private UploadClient _uploader;
         readonly Database _db = new Database();
 
         private readonly object _lock = new object();
@@ -23,7 +22,6 @@ namespace UploadApp.Uploader
         {
             Console.WriteLine(ConfigurationManager.AppSettings.Get("serviceUrl"));
             Folders = new List<string>(LoadFoldersFromDb());
-            _uploader = new UploadClient();
 
             _watcherThread = new Thread(WatchFolders)
             {
@@ -95,7 +93,7 @@ namespace UploadApp.Uploader
                             if (!tracksUploaded.TryGetValue(hash, out track))
                             {
                                 client.UploadFile(f);
-                                track = new Track()
+                                track = new Track
                                 {
                                     Title = "test",
                                     Artist = "test",
@@ -114,7 +112,7 @@ namespace UploadApp.Uploader
 
         private string GetHashOfFile(string path)
         {
-            SHA256 sha256 = SHA256Managed.Create();
+            SHA256 sha256 = SHA256.Create();
 
             using (var fs = new FileStream(path, FileMode.Open))
             {

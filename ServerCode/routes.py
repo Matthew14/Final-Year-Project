@@ -4,7 +4,7 @@ from flask import request
 uploadDirectory = 'uploads'
 
 
-@app.route('/upload', methods=['GET', 'POST'])
+@app.route('/upload', methods=['POST'])
 def upload():
     if request.method == 'POST':
         f = request.files['file']
