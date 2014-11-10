@@ -63,6 +63,7 @@
     <Compile Include="Database.cs" />
     <Compile Include="FolderWatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Track.cs" />
     <Compile Include="UploadClient.cs" />
   </ItemGroup>
   <ItemGroup>
