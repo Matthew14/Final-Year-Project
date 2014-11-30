@@ -185,6 +185,9 @@ UpgradeLog*.htm
 FakesAssemblies/
 
 
+#We don't want the xamarin libs here:
+libs/
+
 
 
 #ANDROID
