@@ -185,8 +185,9 @@ UpgradeLog*.htm
 FakesAssemblies/
 
 
-#We don't want the xamarin libs here:
+#XAMARIN STUDIO
 libs/
+*.userprefs
 
 
 
