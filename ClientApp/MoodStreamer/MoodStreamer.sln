@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodStreamer.Android", "MoodStreamer\MoodStreamer.Android.csproj", "{AD41D55A-52C3-4F66-AC27-8F4C60D61C75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodStreamer.Shared", "MoodStreamer.Shared\MoodStreamer.Shared.csproj", "{F781F373-70AD-4E1E-923E-FEEC2367D733}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AD41D55A-52C3-4F66-AC27-8F4C60D61C75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD41D55A-52C3-4F66-AC27-8F4C60D61C75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD41D55A-52C3-4F66-AC27-8F4C60D61C75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD41D55A-52C3-4F66-AC27-8F4C60D61C75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F781F373-70AD-4E1E-923E-FEEC2367D733}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F781F373-70AD-4E1E-923E-FEEC2367D733}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F781F373-70AD-4E1E-923E-FEEC2367D733}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F781F373-70AD-4E1E-923E-FEEC2367D733}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = MoodStreamer\MoodStreamer.Android.csproj
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

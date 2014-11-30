@@ -8,7 +8,7 @@ namespace UploadApp.Uploader.Tests
     public class UploadTests
     {
         private const string TestMusicFolder = @"..\..\..\Music";
-        private const string ServiceUrl = "http://127.0.0.1:5000";
+        private  string ServiceUrl = "http://127.0.0.1:5000";
         [TestCase]
         public void TestFileUpload()
         {
@@ -19,6 +19,16 @@ namespace UploadApp.Uploader.Tests
 
             var uploader = new UploadClient(ServiceUrl);
             uploader.UploadFile(fileToUpload);
+        }
+
+        [TestCase(@"D:\Music\Low\Low- I Could Live In Hope\06 Lullaby.mp3")]
+        [TestCase(@"D:\Music\Radiohead\Ok Computer\Radiohead - No Surprises.mp3")]
+        [TestCase(@"D:\Music\Katrina & The Waves - Walking on sunshine (Greatest hits)\01. Walking on sunshine.mp3")]
+        public void UploadAFile(string filePath)
+        {
+            ServiceUrl = "http://fyp.matthewoneill.com";
+            var uploader = new UploadClient(ServiceUrl);
+            uploader.UploadFile(filePath);
         }
 
     }
