@@ -1,13 +1,13 @@
 ﻿using Android.App;
 using Android.Media;
 using Android.Widget;
+using Android.Content;
 using Android.OS;
-using Java.IO;
-using MoodStreamer.Shared;
+
 using Console = System.Console;
 
 namespace MoodStreamer
-{
+{	
 
 	enum TrackType
 	{
@@ -15,42 +15,32 @@ namespace MoodStreamer
 	}
 
 
-	[Activity (Label = "Mood Streamer", MainLauncher = true, Icon = "@drawable/icon")]
+	[Activity (Label = "Mood Streamer", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/AppTheme")]
 	public class MainActivity : Activity
 	{
-		Streamer _streamer = new Streamer();
-
-	    private MediaPlayer _player;
-
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
 
 			SetContentView (Resource.Layout.Main);
 
+			FindViewById<Button> (Resource.Id.happyButton).Click += (o, e) => StartMoodRadio(TrackType.Happy);
+			FindViewById<Button>(Resource.Id.sadButton).Click += (o, e) => StartMoodRadio(TrackType.Sad);
 
-		    _player = new MediaPlayer();
-		    var mc = FindViewById<MediaController>(Resource.Id.mediaController);
-            
-
-			FindViewById<Button> (Resource.Id.happyButton).Click += (o, e) => StreamTrack(TrackType.Happy);
-			FindViewById<Button>(Resource.Id.sadButton).Click += (o, e) => StreamTrack(TrackType.Sad);
 		}
 
-
-		private void StreamTrack(TrackType trackType)
+		private void StartMoodRadio(TrackType trackType)
 		{
-			Console.WriteLine(trackType.ToString());
+			var instance = PlayerActivity.Instance;
+			if(instance != null) instance.Finish();
 
-		    string fp = string.Format("http://fyp.matthewoneill.com/{0}", trackType.ToString().ToLower());
+			var intent = new Intent (this, typeof(PlayerActivity));
+			
+			intent.PutExtra ("mood", trackType.ToString ());
 
-            _player.SetAudioStreamType(Stream.Music);
-            _player.Reset();
-            _player.SetDataSource(fp);
-            _player.Prepare();
-            _player.Start();
-            
+			StartActivity (intent);
 		}
+
 	}
 }
 

@@ -1,6 +1,7 @@
 import json
 import urllib2
 import dbAccess
+import time
 from xml.dom import minidom
 from mutagen.id3 import ID3
 
@@ -39,7 +40,7 @@ def getArtistAndTrackNames(filePath):
 def readURL(url):
     url = url.replace(' ', '%20')
 
-    print "getting " + url
+    # print "getting " + url
     return urllib2.urlopen(url).read()
 
 
@@ -73,7 +74,7 @@ def getEchonestData(artist, track):
 
 
 def rankTrackByInfo(artist, track):
-    print getEchonestData(artist, track)
+    return getEchonestData(artist, track)
 
 
 def rankTrack(filePath):
@@ -81,9 +82,43 @@ def rankTrack(filePath):
     dbAccess.storeRanking(filePath, getEchonestData(artist, track))
 
 
+def readTracksFromFile(path):
+
+    artistAndTracks = []
+    with open(path, 'r') as f:
+        for line in f.readlines():
+            s = line.split('-')
+            artistAndTracks.append((s[0].strip(), s[1].strip()))
+
+    return artistAndTracks
+
 if __name__ == '__main__':
     # f = r'D:\Music\Radiohead\Ok Computer\Radiohead - No Surprises.mp3'
     # f = r'D:\Music\Low\Low- I Could Live In Hope\06 Lullaby.mp3'
-    f = r'D:\Music\Katrina & The Waves - Walking on sunshine (Greatest hits)\01. Walking on sunshine.mp3'
-    # rankTrackByInfo('Katrina and The Waves', 'walking on sunshine')
-    rankTrack(f)
+    # f = r'D:\Music\Katrina & The Waves - Walking on sunshine (Greatest hits)\01. Walking on sunshine.mp3'
+    # rankTrack(f)
+
+    happyRankings = []
+    for a, t in readTracksFromFile("happyTracksGenius.txt"):
+
+        try:
+            happyRankings.append(rankTrackByInfo(a, t))
+        except:
+            print "couldn't do {} by {}".format(t, a)
+        time.sleep(.5)
+
+    sadRankings = []
+    for a, t in readTracksFromFile("sadTracksGenius.txt"):
+
+        try:
+            sadRankings.append(rankTrackByInfo(a, t))
+        except:
+            print "couldn't do {} by {}".format(t, a)
+        time.sleep(.5)
+
+    print "happy: "
+    print "I'm walking on sunshine: " + str(rankTrackByInfo('Katrina and The Waves', 'walking on sunshine'))
+    print happyRankings
+    print "\n\nsad: "
+    print "Lullaby: " + str(rankTrackByInfo('low', 'Lullaby'))
+    print sadRankings
