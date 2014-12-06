@@ -5,12 +5,16 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
+using log4net;
 
 namespace UploadApp.Uploader
 {
 
     public class FolderWatcher
     {
+
+        private static ILog Logger = LogManager.GetLogger(typeof (FolderWatcher));
+
         public List<string> Folders { get; private set; }
         readonly Database _db = new Database();
 
@@ -20,7 +24,9 @@ namespace UploadApp.Uploader
 
         public FolderWatcher()
         {
-            Console.WriteLine(ConfigurationManager.AppSettings.Get("serviceUrl"));
+            log4net.Config.XmlConfigurator.Configure();
+            Logger.DebugFormat("Url: {0}", ConfigurationManager.AppSettings.Get("serviceUrl"));
+            
             Folders = new List<string>(LoadFoldersFromDb());
 
             _watcherThread = new Thread(WatchFolders)
@@ -84,6 +90,12 @@ namespace UploadApp.Uploader
 
                     foreach (var folder in Folders)
                     {
+                        if (!Directory.Exists(folder))
+                        {
+                            Logger.ErrorFormat("Directory {0} does not exist", folder);
+                            continue;
+                        }
+                        
                         var files = Directory.GetFiles(folder, "*.mp3", SearchOption.AllDirectories);
 
                         foreach (var f in files)

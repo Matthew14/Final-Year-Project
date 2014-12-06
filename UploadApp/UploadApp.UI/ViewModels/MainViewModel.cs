@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using log4net;
 using UploadApp.UI.Annotations;
 using UploadApp.Uploader;
 
@@ -12,6 +12,9 @@ namespace UploadApp.UI.ViewModels
 {
     class MainViewModel : INotifyPropertyChanged
     {
+        private static readonly ILog Logger = LogManager.GetLogger(typeof (MainViewModel));
+
+
         public event PropertyChangedEventHandler PropertyChanged;
         private FolderWatcher _folderWatcher;
 

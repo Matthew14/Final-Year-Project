@@ -5,7 +5,7 @@ namespace UploadApp.UI.ViewModels
 {
     internal class RelayCommand: ICommand
     {
-        private Action<object> _action;
+        private readonly Action<object> _action;
 
         public RelayCommand(Action<object> action)
         {

@@ -1,14 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SQLite;
+using System.IO;
+using log4net;
 
 namespace UploadApp.Uploader
 {
     class Database
     {
-        private SQLiteConnection _conn;
+        private static readonly ILog Logger = LogManager.GetLogger(typeof (Database));
+        private readonly SQLiteConnection _conn;
+        
         public Database()
         {
-            _conn = new SQLiteConnection(@"Data Source=..\..\..\tracks.db;Version=3;");
+            string db = GetDatabaseLocation();
+            var connectionString = String.Format("Data Source={0};Version=3", db);
+            
+            Logger.InfoFormat("Using Connection String: {0}", connectionString);
+
+            _conn = new SQLiteConnection(connectionString);
         }
 
         public IEnumerable<string> LoadFolders()
@@ -81,6 +91,12 @@ namespace UploadApp.Uploader
             cmd.ExecuteNonQuery();
             
             _conn.Close();   
+        }
+
+        private string GetDatabaseLocation()
+        {
+            var appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            return  Path.Combine(appDataFolder, "UploadApp", "tracks.db");
         }
     }
 }
