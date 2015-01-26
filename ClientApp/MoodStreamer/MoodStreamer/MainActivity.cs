@@ -1,10 +1,9 @@
 ﻿using Android.App;
-using Android.Media;
-using Android.Widget;
 using Android.Content;
 using Android.OS;
 
 using Console = System.Console;
+using Android.Widget;
 
 namespace MoodStreamer
 {	
@@ -13,7 +12,6 @@ namespace MoodStreamer
 	{
 		Happy, Sad
 	}
-
 
 	[Activity (Label = "Mood Streamer", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/AppTheme")]
 	public class MainActivity : Activity
@@ -24,8 +22,13 @@ namespace MoodStreamer
 
 			SetContentView (Resource.Layout.Main);
 
-			FindViewById<Button> (Resource.Id.happyButton).Click += (o, e) => StartMoodRadio(TrackType.Happy);
-			FindViewById<Button>(Resource.Id.sadButton).Click += (o, e) => StartMoodRadio(TrackType.Sad);
+			((Button)Resource.Id.startPlaying).Click += (o, e) => {
+				int positivity = ((SeekBar) Resource.Id.positiveNegative).Progress;
+				int excitedness = ((SeekBar) Resource.Id.calmExcited).Progress;
+
+				Console.WriteLine (positivity);
+				Console.WriteLine (excitedness);
+			};
 
 		}
 

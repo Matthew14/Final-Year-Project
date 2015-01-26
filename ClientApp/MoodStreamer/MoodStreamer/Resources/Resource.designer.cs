@@ -63,16 +63,19 @@ namespace MoodStreamer
 		{
 			
 			// aapt resource value: 0x7f060000
-			public const int happyButton = 2131099648;
+			public const int calmExcited = 2131099648;
 			
-			// aapt resource value: 0x7f060003
-			public const int imageView1 = 2131099651;
+			// aapt resource value: 0x7f060004
+			public const int imageView1 = 2131099652;
 			
 			// aapt resource value: 0x7f060001
-			public const int sadButton = 2131099649;
+			public const int positiveNegative = 2131099649;
 			
 			// aapt resource value: 0x7f060002
-			public const int theView = 2131099650;
+			public const int startPlaying = 2131099650;
+			
+			// aapt resource value: 0x7f060003
+			public const int theView = 2131099651;
 			
 			static Id()
 			{
@@ -116,10 +119,7 @@ namespace MoodStreamer
 			public const int app_name = 2130968578;
 			
 			// aapt resource value: 0x7f040003
-			public const int happyButtonText = 2130968579;
-			
-			// aapt resource value: 0x7f040004
-			public const int sadButtonText = 2130968580;
+			public const int startPlayingText = 2130968579;
 			
 			static String()
 			{
