@@ -9,10 +9,8 @@ using log4net;
 
 namespace UploadApp.Uploader
 {
-
     public class FolderWatcher
     {
-
         private static ILog Logger = LogManager.GetLogger(typeof (FolderWatcher));
 
         public List<string> Folders { get; private set; }

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace UploadApp.UI
+namespace UploadApp.UI.Views
 {
     /// <summary>
     /// Interaction logic for App.xaml

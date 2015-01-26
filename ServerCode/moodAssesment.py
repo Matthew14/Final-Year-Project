@@ -57,7 +57,9 @@ def getLyrics(artist, track):
 
 def getEchonestData(artist, track):
     urlToGet = echonestURL.format(artist, track)
-    trackJson = json.loads(readURL(urlToGet))
+    jsonString = readURL(urlToGet)
+    trackJson = json.loads(jsonString)
+    print jsonString
     trackSummary = trackJson['response']['songs'][0]['audio_summary']
 
     enTrack = EchoNestTrack(
@@ -98,27 +100,27 @@ if __name__ == '__main__':
     # f = r'D:\Music\Katrina & The Waves - Walking on sunshine (Greatest hits)\01. Walking on sunshine.mp3'
     # rankTrack(f)
 
-    happyRankings = []
-    for a, t in readTracksFromFile("happyTracksGenius.txt"):
+    # happyRankings = []
+    # for a, t in readTracksFromFile("happyTracksGenius.txt"):
 
-        try:
-            happyRankings.append(rankTrackByInfo(a, t))
-        except:
-            print "couldn't do {} by {}".format(t, a)
-        time.sleep(.5)
+    #     try:
+    #         happyRankings.append(rankTrackByInfo(a, t))
+    #     except:
+    #         print "couldn't do {} by {}".format(t, a)
+    #     time.sleep(.5)
 
-    sadRankings = []
-    for a, t in readTracksFromFile("sadTracksGenius.txt"):
+    # sadRankings = []
+    # for a, t in readTracksFromFile("sadTracksGenius.txt"):
 
-        try:
-            sadRankings.append(rankTrackByInfo(a, t))
-        except:
-            print "couldn't do {} by {}".format(t, a)
-        time.sleep(.5)
+    #     try:
+    #         sadRankings.append(rankTrackByInfo(a, t))
+    #     except:
+    #         print "couldn't do {} by {}".format(t, a)
+    #     time.sleep(.5)
 
-    print "happy: "
-    print "I'm walking on sunshine: " + str(rankTrackByInfo('Katrina and The Waves', 'walking on sunshine'))
-    print happyRankings
-    print "\n\nsad: "
+    # print "happy: "
+    # print "I'm walking on sunshine: " + str(rankTrackByInfo('Katrina and The Waves', 'walking on sunshine'))
+    # print happyRankings
+    # print "\n\nsad: "
     print "Lullaby: " + str(rankTrackByInfo('low', 'Lullaby'))
-    print sadRankings
+    # print sadRankings

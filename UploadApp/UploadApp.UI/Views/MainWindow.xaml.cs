@@ -1,11 +1,10 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Forms;
 using log4net;
 using log4net.Config;
 using UploadApp.UI.ViewModels;
 
-namespace UploadApp.UI
+namespace UploadApp.UI.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

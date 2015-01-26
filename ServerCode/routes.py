@@ -5,7 +5,7 @@ from app import app
 from flask import request, send_file
 from moodAssesment import rankTrack
 
-
+#TODO filthy hack, plz change
 uploadDirectory = '/var/www/fyp/uploads' if socket.gethostname() == 'FYP' else 'uploads'
 
 
