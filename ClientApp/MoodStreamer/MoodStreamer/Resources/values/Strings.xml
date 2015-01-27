@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">MoodStreamer</string>
+	<string name="app_name">Mood Streamer</string>
 	<string name="startPlayingText">Start Radio</string>
+	<string name="positivityLabel">Positivity:</string>
+	<string name="calmExcitedLabel">Excitedness:</string>
+	
 </resources>

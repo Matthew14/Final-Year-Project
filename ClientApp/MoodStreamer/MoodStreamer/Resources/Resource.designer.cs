@@ -62,20 +62,26 @@ namespace MoodStreamer
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f060000
-			public const int calmExcited = 2131099648;
+			// aapt resource value: 0x7f060003
+			public const int calmExcited = 2131099651;
 			
-			// aapt resource value: 0x7f060004
-			public const int imageView1 = 2131099652;
+			// aapt resource value: 0x7f060006
+			public const int imageView1 = 2131099654;
 			
 			// aapt resource value: 0x7f060001
 			public const int positiveNegative = 2131099649;
 			
-			// aapt resource value: 0x7f060002
-			public const int startPlaying = 2131099650;
+			// aapt resource value: 0x7f060004
+			public const int startPlaying = 2131099652;
 			
-			// aapt resource value: 0x7f060003
-			public const int theView = 2131099651;
+			// aapt resource value: 0x7f060002
+			public const int textView1 = 2131099650;
+			
+			// aapt resource value: 0x7f060000
+			public const int textView2 = 2131099648;
+			
+			// aapt resource value: 0x7f060005
+			public const int theView = 2131099653;
 			
 			static Id()
 			{
@@ -117,6 +123,12 @@ namespace MoodStreamer
 			
 			// aapt resource value: 0x7f040002
 			public const int app_name = 2130968578;
+			
+			// aapt resource value: 0x7f040005
+			public const int calmExcitedLabel = 2130968581;
+			
+			// aapt resource value: 0x7f040004
+			public const int positivityLabel = 2130968580;
 			
 			// aapt resource value: 0x7f040003
 			public const int startPlayingText = 2130968579;
