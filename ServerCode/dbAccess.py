@@ -14,6 +14,11 @@ def storeRanking(filePath, ranking):
     conn.close()
 
 
+def getTracksByCalmnessAndPositivity(c, p):
+    return ['ksfkj']
+
+
+
 def getHappyTracks():
     sql = "select path, happinessRating from tracks where happinessRating >= ?"
 
