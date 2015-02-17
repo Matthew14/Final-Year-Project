@@ -1,6 +1,6 @@
 import sqlite3
 
-db = 'trackratings.db'
+db = 'data/trackratings.db'
 happinessThreashold = 1.8
 
 

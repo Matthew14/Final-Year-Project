@@ -3,7 +3,7 @@ import random
 import dbAccess
 from app import app
 from flask import request, send_file, abort
-from moodAssesment import rankTrack
+from analysis.moodAssesment import rankTrack
 
 #TODO filthy hack, plz change
 uploadDirectory = '/var/www/fyp/uploads' if socket.gethostname() == 'FYP' else 'uploads'
