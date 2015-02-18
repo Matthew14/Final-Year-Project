@@ -1,9 +1,12 @@
 import json
 import urllib2
+import sys
+sys.path.append('..')
 import dbAccess
 import time
-from xml.dom import minidom
+from lyric_analysis import LyricAnalyser
 from mutagen.id3 import ID3
+from utils import read_url
 
 
 echonestURL = '\
@@ -14,17 +17,43 @@ title={}&\
 bucket=audio_summary'
 
 
-class EchoNestTrack(object):
-    def __init__(self, energy, key, loudness, mode, tempo, danceability, lyrics):
+class Track(object):
+    def __init__(self, artist, title, energy, key, loudness, mode, tempo, danceability, lyric_analyser):
+        self.lyric_analyser = lyric_analyser
+        
+        self.artist = artist
+        self.title = title
+        
         self.energy = energy
         self.key = key
         self.loudness = loudness
         self.mode = mode
         self.tempo = tempo
-        self.lyrics = lyrics
         self.danceability = danceability
+        self.lyrics_positivity = self.get_lyric_positivity()
 
-    def getHappinessScore(self):
+    
+    def get_lyric_positivity(self):
+        return self.lyric_analyser.get_lyric_positivity(self.artist, self.title)    
+   
+    
+    def get_positivity(self):
+        score = 0
+        score += self.mode  # 0=minor, 1=major
+        score += self.lyrics_positivity
+        return score
+    
+
+    def get_excitedness(self):
+        score = 0
+        score += (self.tempo-120)*.1
+        score += self.energy * 10
+        score += self.danceability*10
+        score += self.loudness*.1
+        return score
+
+    
+    def get_happiness_score(self):
         score = 0
         score += self.mode  # 0=minor, 1=major
         score += self.energy
@@ -37,44 +66,29 @@ def getArtistAndTrackNames(filePath):
     return track['TPE1'].text[0], track['TIT2'].text[0]
 
 
-def readURL(url):
-    url = url.replace(' ', '%20')
-    return urllib2.urlopen(url).read()
-
-
-def getLyrics(artist, track):
-    searchUrl = "http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect?artist={}&song={}"
-    searchUrl = searchUrl.format(artist, track)
-
-    xml = minidom.parseString(readURL(searchUrl))
-    res = xml.getElementsByTagName("GetLyricResult")[0]
-    lyrics = res.getElementsByTagName("Lyric")[0].childNodes[0].data
-
-    return lyrics
-
-
-def getEchonestData(artist, track):
+def getEchonestTrack(artist, track):
     urlToGet = echonestURL.format(artist, track)
-    jsonString = readURL(urlToGet)
+    jsonString = read_url(urlToGet)
     trackJson = json.loads(jsonString)
-    print jsonString
     trackSummary = trackJson['response']['songs'][0]['audio_summary']
 
-    enTrack = EchoNestTrack(
+    enTrack = Track(
+        artist, 
+        track,
         trackSummary['energy'],
         trackSummary['key'],
         trackSummary['loudness'],
         trackSummary['mode'],
         trackSummary['tempo'],
         trackSummary['danceability'],
-        '')
-        # getLyrics(artist, track))
+        lyric_analyser)
 
-    return enTrack.getHappinessScore()
+    return enTrack
 
 
 def rankTrackByInfo(artist, track):
-    return getEchonestData(artist, track)
+    track = getEchonestTrack(artist, track)
+    return track.get_positivity(), track.get_excitedness()
 
 
 def rankTrack(filePath):
@@ -83,7 +97,6 @@ def rankTrack(filePath):
 
 
 def readTracksFromFile(path):
-
     artistAndTracks = []
     with open(path, 'r') as f:
         for line in f.readlines():
@@ -93,22 +106,24 @@ def readTracksFromFile(path):
     return artistAndTracks
 
 if __name__ == '__main__':
-    # f = r'D:\Music\Radiohead\Ok Computer\Radiohead - No Surprises.mp3'
-    # f = r'D:\Music\Low\Low- I Could Live In Hope\06 Lullaby.mp3'
-    # f = r'D:\Music\Katrina & The Waves - Walking on sunshine (Greatest hits)\01. Walking on sunshine.mp3'
-    # rankTrack(f)
 
-    # happyRankings = []
-    # for a, t in readTracksFromFile("happyTracksGenius.txt"):
+    global lyric_analyser 
+    lyric_analyser = LyricAnalyser()
+    
 
-    #     try:
-    #         happyRankings.append(rankTrackByInfo(a, t))
-    #     except:
-    #         print "couldn't do {} by {}".format(t, a)
-    #     time.sleep(.5)
+    happyRankings = []
+    for a, t in readTracksFromFile("spotify-low-lullaby.txt"):
+        try:
+            happyRankings.append(rankTrackByInfo(a, t))
+        except:
+            print "couldn't do {} by {}".format(t, a)
+        time.sleep(.5)
 
-    # sadRankings = []
-    # for a, t in readTracksFromFile("sadTracksGenius.txt"):
+    
+    print happyRankings
+    
+    #sadRankings = []
+    #for a, t in readTracksFromFile("sadTracksGenius.txt"):
 
     #     try:
     #         sadRankings.append(rankTrackByInfo(a, t))
@@ -117,8 +132,7 @@ if __name__ == '__main__':
     #     time.sleep(.5)
 
     # print "happy: "
-    # print "I'm walking on sunshine: " + str(rankTrackByInfo('Katrina and The Waves', 'walking on sunshine'))
-    # print happyRankings
+    #print "I'm walking on sunshine: " + str(rankTrackByInfo('Katrina and The Waves', 'walking on sunshine'))
     # print "\n\nsad: "
-    print "Lullaby: " + str(rankTrackByInfo('low', 'Lullaby'))
+    #print "Lullaby: " + str(rankTrackByInfo('low', 'Lullaby'))
     # print sadRankings

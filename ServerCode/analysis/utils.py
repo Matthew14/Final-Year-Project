@@ -1,5 +1,5 @@
 import urllib2
 
-def readURL(url):
+def read_url(url):
     url = url.replace(' ', '%20')
     return urllib2.urlopen(url).read()
