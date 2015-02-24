@@ -3,8 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Music Uploader" Height="350" Width="525">
     <Grid>
-        <Button Click="BrowseButtonClick" Margin="328,68,37,209" Content="Add Folder"/>
-        <Button Margin="328,178,37,99" Content="Remove Selected" Command="{Binding RemoveSelectedFolder}"/>
+        <Button Click="BrowseButtonClick" Margin="328,131,37,146" Content="Add Folder"/>
+        <Button Margin="328,178,37,99" Content="Remove Selected" Command="{Binding RemoveSelectedFolder}" />
         <ListBox SelectedItem="{Binding SelectedFolder}" ItemsSource="{Binding Folders}" Margin="0,0,216,0"/>
+
+        <Button  Content="Log in" Foreground="Red" Margin="328,89,37,193"/>
     </Grid>
 </Window>
