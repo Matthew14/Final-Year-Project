@@ -1,3 +1,4 @@
 *.pyc
 env/
 uploads/
+database_credentials.txt

@@ -1,5 +1,6 @@
 import psycopg2
 import psycopg2.extras
+import config
 
 class Postgres:
     def __init__(self):
@@ -7,10 +8,10 @@ class Postgres:
 
 
     def connect(self):
-        db = 'fyp'
-        user = 'dev'
-        host = '127.0.0.1'
-        password = 'devPass'
+        db = config.db_name
+        user = config.db_user
+        host = config.db_host
+        password = config.db_password
 
         conn_string = "dbname='{}' user='{}' host='{}' password='{}'".format(db, user, host, password)
         conn = psycopg2.connect(conn_string)
