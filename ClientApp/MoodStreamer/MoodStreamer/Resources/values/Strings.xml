@@ -3,4 +3,8 @@
 	<string name="app_name">MoodStreamer</string>
 	<string name="happyButtonText">Play a Happy Song</string>
 	<string name="sadButtonText">Play a Sad Song</string>
+	<string name="positivityLabel">Positivity</string>
+	<string name="calmExcitedLabel">Excitedness</string>
+	<string name="startPlayingText">Start Radio</string>
+	
 </resources>

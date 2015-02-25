@@ -5,6 +5,7 @@ using Android.Content;
 using Android.OS;
 
 using Console = System.Console;
+using Android.Views;
 
 namespace MoodStreamer
 {	
@@ -24,8 +25,26 @@ namespace MoodStreamer
 
 			SetContentView (Resource.Layout.Main);
 
-			FindViewById<Button> (Resource.Id.happyButton).Click += (o, e) => StartMoodRadio(TrackType.Happy);
-			FindViewById<Button>(Resource.Id.sadButton).Click += (o, e) => StartMoodRadio(TrackType.Sad);
+
+			var pn = FindViewById<SeekBar> (Resource.Id.positiveNegative);
+			var ce = FindViewById<SeekBar> (Resource.Id.calmExcited);
+			
+			pn.Progress = 50;
+			ce.Progress = 50;
+			
+			
+			FindViewById<Button> (Resource.Id.startPlaying).Click += (o, e) => {
+				
+				int positivity = pn.Progress;
+				int excitedness =  ce.Progress;
+				
+
+				Console.WriteLine (positivity);
+				Console.WriteLine (excitedness);
+				
+				StartMoodRadio (positivity <= 49? TrackType.Sad : TrackType.Happy);
+				
+			};
 
 		}
 

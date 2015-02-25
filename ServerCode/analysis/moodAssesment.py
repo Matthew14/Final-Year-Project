@@ -20,10 +20,10 @@ bucket=audio_summary'
 class Track(object):
     def __init__(self, artist, title, energy, key, loudness, mode, tempo, danceability, lyric_analyser):
         self.lyric_analyser = lyric_analyser
-        
+
         self.artist = artist
         self.title = title
-        
+
         self.energy = energy
         self.key = key
         self.loudness = loudness
@@ -32,17 +32,17 @@ class Track(object):
         self.danceability = danceability
         self.lyrics_positivity = self.get_lyric_positivity()
 
-    
+
     def get_lyric_positivity(self):
-        return self.lyric_analyser.get_lyric_positivity(self.artist, self.title)    
-   
-    
+        return self.lyric_analyser.get_lyric_positivity(self.artist, self.title)
+
+
     def get_positivity(self):
         score = 0
         score += self.mode  # 0=minor, 1=major
         score += self.lyrics_positivity
         return score
-    
+
 
     def get_excitedness(self):
         score = 0
@@ -52,7 +52,7 @@ class Track(object):
         score += self.loudness*.1
         return score
 
-    
+
     def get_happiness_score(self):
         score = 0
         score += self.mode  # 0=minor, 1=major
@@ -73,7 +73,7 @@ def getEchonestTrack(artist, track):
     trackSummary = trackJson['response']['songs'][0]['audio_summary']
 
     enTrack = Track(
-        artist, 
+        artist,
         track,
         trackSummary['energy'],
         trackSummary['key'],
@@ -105,11 +105,16 @@ def readTracksFromFile(path):
 
     return artistAndTracks
 
+
+def rank_tracks_in_directory(directory):
+    for root, dirs, files in os.walk(directory, topdown=False):
+        print root
+
 if __name__ == '__main__':
 
-    global lyric_analyser 
+    global lyric_analyser
     lyric_analyser = LyricAnalyser()
-    
+
 
     happyRankings = []
     for a, t in readTracksFromFile("spotify-low-lullaby.txt"):
@@ -119,9 +124,9 @@ if __name__ == '__main__':
             print "couldn't do {} by {}".format(t, a)
         time.sleep(.5)
 
-    
+
     print happyRankings
-    
+
     #sadRankings = []
     #for a, t in readTracksFromFile("sadTracksGenius.txt"):
 

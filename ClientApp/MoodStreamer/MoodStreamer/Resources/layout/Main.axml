@@ -3,14 +3,31 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <Button
-        android:id="@+id/happyButton"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/happyButtonText" />
-    <Button
-        android:text="@string/sadButtonText"
+    <TextView
+        android:text="@string/positivityLabel"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/sadButton" />
+        android:id="@+id/textView2" />
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/positiveNegative"
+        android:progressDrawable="@android:color/transparent" />
+    <TextView
+        android:text="@string/calmExcitedLabel"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView1" />
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/calmExcited"
+        android:progressDrawable="@android:color/transparent" />
+    <Button
+        android:text="@string/startPlayingText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/startPlaying" />
 </LinearLayout>

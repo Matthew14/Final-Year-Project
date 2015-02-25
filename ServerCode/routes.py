@@ -42,6 +42,11 @@ def track(calmness=None, positivity=None):
     return 'hello'
 
 
+@app.route('/music/<string:filepath>')
+def get_music_file():
+    pass
+
+
 @app.route('/happy')
 def happy():
     tracks = dbAccess.getHappyTracks()
@@ -58,7 +63,10 @@ def hash_password(password):
     return hashlib.sha256(password).hexdigest()
 
 
-@app.route('/users/<string:username>')
+
+
+# API:
+@app.route('/api/users/<string:username>')
 def get_user(username):
     p = Postgres()
     user = p.get_user_as_dict(username)
@@ -70,7 +78,7 @@ def get_user(username):
     return jsonify(user)
 
 
-@app.route('/users/new', methods=['POST'])
+@app.route('/api/users/new', methods=['POST'])
 def create_user():
     json = request.get_json()
 
