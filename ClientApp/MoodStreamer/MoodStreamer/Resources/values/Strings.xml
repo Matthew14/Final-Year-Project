@@ -6,5 +6,5 @@
 	<string name="positivityLabel">Positivity</string>
 	<string name="calmExcitedLabel">Excitedness</string>
 	<string name="startPlayingText">Start Radio</string>
-	
+	<string name="loginRegisterText">Login</string>
 </resources>
