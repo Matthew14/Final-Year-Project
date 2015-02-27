@@ -2,7 +2,7 @@ import socket
 import random
 import dbAccess
 from app import app
-from flask import request, send_file, abort, make_response, jsonify
+from flask import request, send_file, abort, make_response, jsonify, session
 from analysis.moodAssesment import rankTrack
 from pg_db import Postgres
 import hashlib
@@ -66,6 +66,26 @@ def hash_password(password):
 
 
 # API:
+
+@app.route('/login', methods=['POST'])
+def login():
+    json = request.get_json()
+    if 'username' not in json:
+        return make_response('no username specified', 400)
+
+    if 'password' not in json:
+        return make_response('no password specified', 400)
+
+    p = Postgres()
+
+    username = json['username']
+    password_hash = hash_password(json['password'])
+
+    if p.authenticate(username, password):
+        session['logged_in'] = True
+        session['username'] = username
+
+
 @app.route('/api/users/<string:username>')
 def get_user(username):
     p = Postgres()
