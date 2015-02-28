@@ -2,8 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Music Uploader" Height="350" Width="525"
-        Icon="..\images\music.ico">
-    <Grid>
+        Icon="../images/music.ico">
+        <Grid>
         <Button Click="BrowseButtonClick" Margin="0,45,10,0" Content="Add Folder" Height="42" VerticalAlignment="Top" HorizontalAlignment="Right" Width="152"/>
         <Button Margin="0,0,10,124" Content="Remove Selected" Command="{Binding RemoveSelectedFolder}" HorizontalAlignment="Right" Width="152" Height="42" VerticalAlignment="Bottom" />
         

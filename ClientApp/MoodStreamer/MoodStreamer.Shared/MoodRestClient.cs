@@ -31,6 +31,8 @@ namespace MoodStreamer.Shared
 			});
 
 			_restClient.Execute (request);
+
+			return false;
 		}
 	}
 }
