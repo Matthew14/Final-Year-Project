@@ -19,6 +19,7 @@ def login_required(f):
     def decorated_function(*args, **kwargs):
         if "logged_in" not in session:
             return make_response('not logged in', 401)
+            make_response('not logged in', 401)
         return f(*args, **kwargs)
     return decorated_function
 
@@ -28,6 +29,7 @@ def index():
     return 'hello there'
 
 
+@login_required
 @app.route('/upload', methods=['POST'])
 @login_required
 def upload():
@@ -41,6 +43,7 @@ def upload():
     return ''
 
 
+@login_required
 @app.route('/track/<string:calmness>/<string:positivity>')
 @login_required
 def track(calmness=None, positivity=None):
