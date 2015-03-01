@@ -26,7 +26,7 @@ def login_required(f):
 
 @app.route('/')
 def index():
-    return 'hello there'
+    return 'hello there, it works'
 
 
 @login_required

@@ -11,7 +11,7 @@ db_password = None
 def load_db_creds():
     #a file with one line as follows:
     #host|db name|user|password
-    db_creds_file = 'database_credentials.txt'
+    db_creds_file = basedir + '/' + 'database_credentials.txt'
 
     global db_name
     global db_user
