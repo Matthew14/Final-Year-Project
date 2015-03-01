@@ -1,4 +1,6 @@
 import os
+
+
 CSRF_ENABLED = True
 SECRET_KEY = 'reallysecrettoughkey'
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -8,10 +10,31 @@ db_user = None
 db_host = None
 db_password = None
 
+
+lastfm_api_key = None
+lastfm_api_secret = None
+
+
+def load_lastfm_creds():
+    #a file with one line as follows:
+    #api_key|api_secret
+    lfm_creds_file = os.path.join(basedir, 'lastfm_credentials.txt')
+
+    global lastfm_api_key
+    global lastfm_api_secret
+
+    with open(lfm_creds_file, 'r') as f:
+        line = f.read().strip().split('|')
+        lastfm_api_key = line[0]
+        lastfm_api_secret = line[1]
+
+    load_stuff_from_text_file(4, 5, 6, 7)
+
+
 def load_db_creds():
     #a file with one line as follows:
     #host|db name|user|password
-    db_creds_file = basedir + '/' + 'database_credentials.txt'
+    db_creds_file = os.path.join(basedir, 'database_credentials.txt')
 
     global db_name
     global db_user
@@ -26,3 +49,4 @@ def load_db_creds():
         db_password = line[3]
 
 load_db_creds()
+load_lastfm_creds()
