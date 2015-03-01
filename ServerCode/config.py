@@ -28,8 +28,6 @@ def load_lastfm_creds():
         lastfm_api_key = line[0]
         lastfm_api_secret = line[1]
 
-    load_stuff_from_text_file(4, 5, 6, 7)
-
 
 def load_db_creds():
     #a file with one line as follows:
