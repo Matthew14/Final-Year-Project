@@ -1,6 +1,8 @@
 import socket
 import random
 import dbAccess
+
+from functools import wraps
 from app import app
 from flask import request, send_file, abort, make_response, jsonify, session
 from analysis.moodAssesment import rankTrack
@@ -12,11 +14,21 @@ import hashlib
 uploadDirectory = '/var/www/fyp/uploads' if socket.gethostname() == 'FYP' else 'uploads'
 
 
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "logged_in" not in session:
+            make_response('not logged in', 401)
+        return f(*args, **kwargs)
+    return decorated_function
+
+
 @app.route('/')
 def index():
     return 'hello there'
 
 
+@login_required
 @app.route('/upload', methods=['POST'])
 def upload():
     if request.method == 'POST':
@@ -29,6 +41,7 @@ def upload():
     return ''
 
 
+@login_required
 @app.route('/track/<string:calmness>/<string:positivity>')
 def track(calmness=None, positivity=None):
     try:
@@ -95,6 +108,7 @@ def get_user(username):
         abort(404)
 
     del user['passwordhash']
+
     return jsonify(user)
 
 
