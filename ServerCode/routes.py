@@ -11,7 +11,7 @@ import hashlib
 
 
 #TODO filthy hack, plz change
-uploadDirectory = '/var/www/fyp/uploads' if socket.gethostname() == 'FYP' else 'uploads'
+uploadDirectory = '/var/www/fyp/uploads' if socket.gethostname() == 'FYP' else 'C:\\users\matthew\\desktop\\uploads'
 
 
 def login_required(f):
@@ -80,8 +80,6 @@ def hash_password(password):
 
 
 # API:
-
-
 
 
 @app.route('/login', methods=['POST'])
