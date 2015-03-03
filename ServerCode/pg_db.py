@@ -36,7 +36,7 @@ class Postgres:
 
         conn = self.connect()
         cursor = conn.cursor()
-        sql = """INSERT INTO users (username, passwordHash, firstname, surname) VALUES (%s, %s, %s, %s);"""
+        sql = """INSERT INTO users (username, password_hash, first_name, surname) VALUES (%s, %s, %s, %s);"""
         cursor.execute(sql, (username, password_hash, f_name, surname))
         conn.commit()
         cursor.close()
@@ -63,7 +63,8 @@ class Postgres:
 
         user = self.get_user_as_dict(username)
 
-        return user['passwordhash'] == password
+        return user['password_hash'] == password
+
 
 ##Track Stuff#############
 

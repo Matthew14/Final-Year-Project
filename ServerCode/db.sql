@@ -9,14 +9,14 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner:
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner:
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
@@ -29,7 +29,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: tracks; Type: TABLE; Schema: public; Owner: dev; Tablespace: 
+-- Name: tracks; Type: TABLE; Schema: public; Owner: dev; Tablespace:
 --
 
 CREATE TABLE tracks (
@@ -38,14 +38,15 @@ CREATE TABLE tracks (
     title character varying(200),
     file_path character varying(100),
     positivity numeric,
-    excitedness numeric
+    excitedness numeric,
+    album_art_url varying(100)
 );
 
 
 ALTER TABLE public.tracks OWNER TO dev;
 
 --
--- Name: userhastrack; Type: TABLE; Schema: public; Owner: dev; Tablespace: 
+-- Name: userhastrack; Type: TABLE; Schema: public; Owner: dev; Tablespace:
 --
 
 CREATE TABLE userhastrack (
@@ -57,13 +58,14 @@ CREATE TABLE userhastrack (
 ALTER TABLE public.userhastrack OWNER TO dev;
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: dev; Tablespace: 
+-- Name: users; Type: TABLE; Schema: public; Owner: dev; Tablespace:
 --
 
 CREATE TABLE users (
     username character varying(50) NOT NULL,
     passwordhash character varying(64) NOT NULL,
     firstname character varying(100),
+    email character varying(100),
     surname character varying(100)
 );
 
@@ -97,7 +99,7 @@ matt2	92b59f95a982ccd960e21748e35fbbe0b93c2a4ca9302536eeb47bc7be35f06c	\N	\N
 
 
 --
--- Name: tracks_pkey; Type: CONSTRAINT; Schema: public; Owner: dev; Tablespace: 
+-- Name: tracks_pkey; Type: CONSTRAINT; Schema: public; Owner: dev; Tablespace:
 --
 
 ALTER TABLE ONLY tracks
@@ -105,7 +107,7 @@ ALTER TABLE ONLY tracks
 
 
 --
--- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: dev; Tablespace: 
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: dev; Tablespace:
 --
 
 ALTER TABLE ONLY users

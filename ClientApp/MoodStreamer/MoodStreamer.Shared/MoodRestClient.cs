@@ -1,6 +1,9 @@
 ﻿using System;
 using RestSharp;
 using System.Configuration;
+using RestSharp.Deserializers;
+using System.Collections.Generic;
+
 
 namespace MoodStreamer.Shared
 {
@@ -30,9 +33,10 @@ namespace MoodStreamer.Shared
                 Resource = "loggedin"
             };
             var response = _restClient.Execute(request);
+            var deserializer = new JsonDeserializer();
+            var d = deserializer.Deserialize<Dictionary<string, bool>>(response);
 
-
-            return false;
+            return d["logged_in"];
         }
 
 		internal bool Login(string username, string password)
