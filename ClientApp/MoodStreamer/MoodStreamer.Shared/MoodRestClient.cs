@@ -7,19 +7,33 @@ namespace MoodStreamer.Shared
 	/// <summary>
 	/// Mood rest client.
 	/// </summary>
-	internal class MoodRestClient
+	public class MoodRestClient
 	{
 		readonly RestClient _restClient;
 
-		internal MoodRestClient()
+		public MoodRestClient()
 		{
 
 			_restClient = new RestClient () 
 			{
-				BaseUrl = ""
+                BaseUrl = "http://fyp.matthewoneill.com/api"
+                    
+                //BaseUrl = "http://localhost:5050/api"
 			};
 
 		}
+
+        public bool CheckLoggedIn()
+        {
+            var request = new RestRequest(Method.GET)
+            {
+                Resource = "loggedin"
+            };
+            var response = _restClient.Execute(request);
+
+
+            return false;
+        }
 
 		internal bool Login(string username, string password)
 		{

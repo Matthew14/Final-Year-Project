@@ -1,16 +1,10 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
+using MoodStreamer.Shared;
 
 using Android.App;
-using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
-using MoodStreamer.Shared;
+
 
 namespace MoodStreamer
 {
@@ -27,7 +21,19 @@ namespace MoodStreamer
 
 		void LoginButtonOnClick (object sender, EventArgs e)
 		{
-			
+			string username = FindViewById<EditText> (Resource.Id.usernameBox).Text;
+			string password = FindViewById<EditText> (Resource.Id.passwordBox).Text;
+
+			Login login = new Login();
+
+			if (login.PerformLogin(username, password))
+			{
+				
+			}
+			else
+			{
+
+			}
 		}
 	}
 }

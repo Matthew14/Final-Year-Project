@@ -82,7 +82,7 @@ def hash_password(password):
 
 # API:
 
-@app.route('/loggedin')
+@app.route('/api/loggedin')
 def logged_in():
     return jsonify(logged_in=str('logged_in' in session and session['logged_in']))
 

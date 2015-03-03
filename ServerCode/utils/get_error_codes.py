@@ -9,7 +9,7 @@ table = soup.table
 
 rows = table.find_all('tr')
 
-with open('..\out.py', 'w') as f:
+with open('out.py', 'w') as f:
     for row in rows:
         cols = row.find_all('td')
         if len(cols) > 2:
