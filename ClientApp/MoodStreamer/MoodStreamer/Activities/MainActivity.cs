@@ -1,11 +1,14 @@
-﻿using Android.App;
+﻿using System;
+
+using Android.App;
 using Android.Media;
 using Android.Widget;
 using Android.Content;
 using Android.OS;
-
-using Console = System.Console;
 using Android.Views;
+
+using MoodStreamer.Shared;
+
 
 namespace MoodStreamer
 {	
@@ -16,22 +19,42 @@ namespace MoodStreamer
 	}
 
 
-	[Activity (Label = "Mood Streamer", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/AppTheme")]
+	[Activity (Label = "Mood Streamer", MainLauncher = false, Icon = "@drawable/icon", Theme = "@style/AppTheme")]
 	public class MainActivity : Activity
 	{
 
 		float _positivity = 50;
 		float _excitedness = 50;
 
+        string _loggedInUser;
+
+        LoginManager _loginManager;
+
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
-
-
 			SetContentView (Resource.Layout.Main);
 
-			SetupEvents();			
+            _loginManager = new LoginManager();
+            _loggedInUser = Intent.GetStringExtra("username");
+
+            if (_loggedInUser == null)
+                GoToLogin();
+
+            SetupEvents();
 		}
+
+        void GoToLogin()
+        {
+            _loginManager.Logout();
+            var intent = new Intent(Application.Context, typeof(LoginActivity));
+
+            if (_loggedInUser != null)
+                intent.PutExtra("lastUsername", _loggedInUser);
+
+            StartActivity(intent);
+            Finish();
+        }
 
 		void SetupEvents ()
 		{
@@ -54,6 +77,7 @@ namespace MoodStreamer
 
 		private void ShowTracksSummary()
 		{
+            //TODO
 			new PopupWindow(480,500);
 		}
 
@@ -88,6 +112,9 @@ namespace MoodStreamer
 					break;
 				case Resource.Id.action_viewstats:
 					break;
+                case Resource.Id.action_logout_button:
+                    GoToLogin();
+                    break;
 				default:
 					break;
 			}

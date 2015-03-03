@@ -77,11 +77,14 @@ namespace MoodStreamer
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f07000d
+			public const int action_logout_button = 2131165197;
+			
 			// aapt resource value: 0x7f07000c
 			public const int action_settings = 2131165196;
 			
-			// aapt resource value: 0x7f07000d
-			public const int action_viewstats = 2131165197;
+			// aapt resource value: 0x7f07000e
+			public const int action_viewstats = 2131165198;
 			
 			// aapt resource value: 0x7f070008
 			public const int artWorkImageView = 2131165192;

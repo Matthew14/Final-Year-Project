@@ -49,9 +49,10 @@
     <Compile Include="Streamer.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Login.cs" />
     <Compile Include="MoodRestClient.cs" />
     <Compile Include="Track.cs" />
+    <Compile Include="LoginManager.cs" />
+    <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

@@ -7,33 +7,35 @@ namespace MoodStreamer.Tests
     [TestFixture]
     public class RestClientTests
     {
-        private MoodRestClient _restClient;
+        private LoginManager _loginManager;
 
         [SetUp]
         public void Setup()
         {
-            _restClient = new MoodRestClient();
+            _loginManager = new LoginManager();
         }
 
         [TearDown]
         public void TearDown()
         {
-            _restClient.Logout();
+            _loginManager.Logout();
+        }
+
+        [Test]
+        public void TestLoginWithIncorrectCredentials()
+        {
+            _loginManager.Logout();
+            _loginManager.PerformLogin("fakeUsername", "fakePassword");
+            Assert.IsFalse(_loginManager.LoggedIn);
         }
 
         [Test]
         public void TestLoginWithCorrectCredentials()
         {
-            _restClient.Login("matt", "mattPass");
-            Assert.IsTrue(_restClient.CheckLoggedIn());
+            _loginManager.Logout();
+            _loginManager.PerformLogin("matt", "mattPass");
+            Assert.IsTrue(_loginManager.LoggedIn);
         }
-
-        [Test]
-        public void TestLoggedInMethod()
-        {
-            _restClient.CheckLoggedIn();
-        }
-
     }
 }
 

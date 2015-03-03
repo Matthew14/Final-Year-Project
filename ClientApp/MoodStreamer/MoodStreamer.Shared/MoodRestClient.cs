@@ -3,6 +3,7 @@ using RestSharp;
 using System.Configuration;
 using RestSharp.Deserializers;
 using System.Collections.Generic;
+using System.Net;
 
 
 namespace MoodStreamer.Shared
@@ -10,23 +11,33 @@ namespace MoodStreamer.Shared
 	/// <summary>
 	/// Mood rest client.
 	/// </summary>
-	public class MoodRestClient
+	internal class MoodRestClient
 	{
 		readonly RestClient _restClient;
+        CookieContainer _cookieContainer;
 
-		public MoodRestClient()
+        private static MoodRestClient _instance;
+        internal static MoodRestClient Instance 
+        {
+            get
+            {
+                return _instance ?? (_instance = new MoodRestClient());
+            }
+        }
+
+
+		private MoodRestClient()
 		{
-
+             _cookieContainer = new CookieContainer();
 			_restClient = new RestClient () 
 			{
-                BaseUrl = "http://fyp.matthewoneill.com/api"
-                    
-                //BaseUrl = "http://localhost:5050/api"
+                //BaseUrl = "http://localhost:5050/api",
+                BaseUrl = "http://fyp.matthewoneill.com/api",        
+                CookieContainer = _cookieContainer
 			};
-
 		}
 
-        public bool CheckLoggedIn()
+        internal bool CheckLoggedIn()
         {
             var request = new RestRequest(Method.GET)
             {
@@ -35,31 +46,30 @@ namespace MoodStreamer.Shared
 
             var response = _restClient.Execute(request);
             var deserializer = new JsonDeserializer();
-            var d = deserializer.Deserialize<Dictionary<string, bool>>(response);
-
-            return d["logged_in"];
+            var responseDict = deserializer.Deserialize<Dictionary<string, bool>>(response);
+            return responseDict["logged_in"];
         }
 
-		public bool Login(string username, string password)
+		internal bool Login(string username, string password)
 		{
             var request = new RestRequest(Method.POST)
             {
-                RequestFormat = DataFormat.Json
+                RequestFormat = DataFormat.Json,
+                Resource = "login"
             };
 
             request.AddBody(new {username = username, password = password});
 
-			_restClient.Execute (request);
-
-			return false;
+			var response = _restClient.Execute (request);
+			return response.StatusCode == HttpStatusCode.OK;
 		}
 
-        public bool Logout()
+        internal bool Logout()
         {
             var request = new RestRequest(Method.GET){ Resource = "logout" };
             var response = _restClient.Execute(request);
 
-            return response.StatusCode == System.Net.HttpStatusCode.OK;
+            return response.StatusCode == HttpStatusCode.OK;
         }
 	}
 }
