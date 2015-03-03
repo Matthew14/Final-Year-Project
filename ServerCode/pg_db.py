@@ -30,14 +30,14 @@ class Postgres:
         return len(res) > 0
 
 
-    def add_user(self, username, password_hash, f_name=None, surname=None):
+    def add_user(self, username, password_hash, f_name=None, surname=None, email=None):
         if self.user_exists(username):
             raise Exception('User {} already exists.'.format(username) )
 
         conn = self.connect()
         cursor = conn.cursor()
-        sql = """INSERT INTO users (username, password_hash, first_name, surname) VALUES (%s, %s, %s, %s);"""
-        cursor.execute(sql, (username, password_hash, f_name, surname))
+        sql = """INSERT INTO users (username, password_hash, first_name, surname, email) VALUES (%s, %s, %s, %s, %s);"""
+        cursor.execute(sql, (username, password_hash, f_name, surname, email))
         conn.commit()
         cursor.close()
         conn.close()

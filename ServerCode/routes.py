@@ -140,12 +140,13 @@ def create_user():
     password_hash = hash_password(json['password'])
     first_name = json['first_name'] if 'first_name' in json else None
     surname = json['surname'] if 'surname' in json else None
+    email = json['email'] if 'email' in json else None
 
     p = Postgres()
 
     if p.user_exists(username):
         return make_response('user {} already user already exists'.format(username), http_codes.BAD_REQUEST)
 
-    p.add_user(username, password_hash, first_name, surname)
+    p.add_user(username, password_hash, first_name, surname, email)
 
     return username
