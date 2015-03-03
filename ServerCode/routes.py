@@ -149,4 +149,5 @@ def create_user():
 
     p.add_user(username, password_hash, first_name, surname, email)
 
+
     return username
