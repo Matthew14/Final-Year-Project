@@ -11,7 +11,7 @@ class Postgres:
         db = config.db_name
         user = config.db_user
         host = config.db_host
-        password = config.db_password
+        password = config.db_password  
 
         conn_string = "dbname='{}' user='{}' host='{}' password='{}'".format(db, user, host, password)
         conn = psycopg2.connect(conn_string)
@@ -37,6 +37,7 @@ class Postgres:
         conn = self.connect()
         cursor = conn.cursor()
         sql = """INSERT INTO users (username, password_hash, first_name, surname, email) VALUES (%s, %s, %s, %s, %s);"""
+
         cursor.execute(sql, (username, password_hash, f_name, surname, email))
         conn.commit()
         cursor.close()
