@@ -12,7 +12,9 @@ from pg_db import Postgres
 
 
 #TODO filthy hack, plz change
-uploadDirectory = '/var/www/fyp/uploads' if socket.gethostname() == 'FYP' else 'C:\\users\matthew\\desktop\\uploads'
+prodUpload = '/home/fypuser/Final-Year-Project/ServerCode/uploads'
+devUpload = 'C:\\users\matthew\\desktop\\uploads'
+uploadDirectory = prodUpload if socket.gethostname() == 'FYP' else devUpload
 
 
 def login_required(f):
@@ -30,7 +32,6 @@ def index():
     return 'hello there, it works'
 
 
-@login_required
 @app.route('/upload', methods=['POST'])
 @login_required
 def upload():
@@ -44,7 +45,6 @@ def upload():
     return ''
 
 
-@login_required
 @app.route('/track/<string:calmness>/<string:positivity>')
 @login_required
 def track(calmness=None, positivity=None):
@@ -87,7 +87,7 @@ def logged_in():
     return jsonify(logged_in=str('logged_in' in session and session['logged_in']))
 
 
-@app.route('/login', methods=['POST'])
+@app.route('/api/login', methods=['POST'])
 def login():
     json = request.get_json()
     if 'username' not in json:
@@ -106,8 +106,7 @@ def login():
         session['username'] = username
 
 
-
-@app.route('/logout')
+@app.route('/api/logout')
 def logout():
     session.clear()
     return ''
