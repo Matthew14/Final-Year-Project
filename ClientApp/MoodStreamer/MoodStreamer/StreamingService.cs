@@ -17,7 +17,7 @@ namespace MoodStreamer
     [Service]
     public class StreamingBackgroundService : Service
     {
-        private MediaPlayer _player;
+        //private MediaPlayer _player;
         public override IBinder OnBind(Intent intent)
         {
             throw new NotImplementedException();

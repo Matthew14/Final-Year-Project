@@ -9,49 +9,90 @@ using Android.Views;
 namespace MoodStreamer
 {
 	[Activity (Label = "PlayerActivity", Theme = "@style/AppTheme")]			
-	public class PlayerActivity : Activity, MediaController.IMediaPlayerControl, MediaPlayer.IOnPreparedListener
+	public class PlayerActivity : Activity, MediaController.IMediaPlayerControl
 	{
-		public void OnPrepared (MediaPlayer mp)
-		{
-			_mediaController.SetMediaPlayer(this);
-			_mediaController.SetAnchorView (FindViewById(Resource.Id.theView));
-			_mediaController.Show (0);
-
-		}
-
 		static MediaPlayer _player;
-		MyMediaController _mediaController;
-
 
 		string _currentMood;
-
+		System.Collections.Stack _playedStack = new System.Collections.Stack();
 		public static PlayerActivity Instance{ get ; private set;}
 
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
+
 			SetContentView (Resource.Layout.Player);
 
 			Instance = this;
 
 			if (_player == null) {
 				_player = new MediaPlayer ();
-				_player.SetOnPreparedListener (this);
 			}
-			_mediaController = new MyMediaController (this);
-			_mediaController.NextClick += (o, e) => PlayTrack (_currentMood);
+
 			string text = Intent.GetStringExtra ("mood") ?? "no mood";
-			this.Title = text;
+			this.Title = "TRACKNAME";
 			_currentMood = text;
 
 			PlayTrack (text);
+
+			ActionBar.SetHomeButtonEnabled(true);
+			ActionBar.SetDisplayHomeAsUpEnabled(true);
+
+			SetupButtons ();
+		}
+
+		void SetupButtons ()
+		{
+			FindViewById<ImageButton> (Resource.Id.playPauseButton).Click += PlayPausedPressed;
+			FindViewById<ImageButton> (Resource.Id.nextButton).Click += NextPressed;
+			FindViewById<ImageButton> (Resource.Id.backButton).Click += BackPressed;
+		}
+
+		void BackPressed (object sender, EventArgs e)
+		{
+			//TODO
+			_playedStack.Pop ();
+		}
+
+		void NextPressed (object sender, EventArgs e)
+		{
+			PlayTrack (_currentMood);
+		}
+
+		void PlayPausedPressed (object sender, EventArgs args)
+		{
+			var button = (ImageButton)sender;
+
+			if (_player.IsPlaying)
+				_player.Pause ();
+			else
+				_player.Start ();
+
+
+			var newPic = _player.IsPlaying ? Resource.Drawable.pause : Resource.Drawable.play;
+
+			button.SetImageResource (newPic);
+
+			Console.WriteLine ("playPause");
+		}
+
+		public override bool OnOptionsItemSelected(IMenuItem item)
+		{
+			switch (item.ItemId)
+			{
+				case Android.Resource.Id.Home:
+					Finish();
+					return true;
+
+				default:
+					return base.OnOptionsItemSelected(item);
+			}
 		}
 
 		public override bool OnKeyDown (Keycode keyCode, KeyEvent e)
 		{
 			if (e.KeyCode == Keycode.Back)
 			{
-				_mediaController.WorkingHide ();
 				base.OnBackPressed ();
 			}
 
@@ -60,8 +101,7 @@ namespace MoodStreamer
 
 		private void PlayTrack(string mood)
 		{
-			Console.WriteLine(mood);
-			Toast.MakeText (this, string.Format("Now playing {0} tracks", mood), ToastLength.Long).Show ();
+			//Toast.MakeText (this, string.Format("Now playing {0} tracks", mood), ToastLength.Long).Show ();
 
 			string fp = string.Format("http://fyp.matthewoneill.com/{0}", mood.ToLower());
 
@@ -94,7 +134,7 @@ namespace MoodStreamer
 
 		public void SeekTo (int pos)
 		{
-		_player.SeekTo (pos);
+			_player.SeekTo (pos);
 		}
 
 		public void Start ()

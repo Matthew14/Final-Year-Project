@@ -3,14 +3,22 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <Button
-        android:id="@+id/happyButton"
+    <TextView
+        android:text="@string/howareyoufeeling"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:paddingTop="10dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/happyButtonText" />
+        android:gravity="center"
+        android:id="@+id/textView2" />
     <Button
-        android:text="@string/sadButtonText"
+        android:id="@+id/startPlaying"
+        android:text="@string/startPlayingText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/sadButton" />
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:src="@drawable/testsquare"
+        android:id="@+id/square"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </LinearLayout>
