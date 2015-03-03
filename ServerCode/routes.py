@@ -105,7 +105,8 @@ def login():
         if p.authenticate(username, password_hash):
             session['logged_in'] = True
             session['username'] = username
-        else abort(http_codes.UNAUTHORIZED)
+        else:
+             abort(http_codes.UNAUTHORIZED)
 
     except Exception as e:
         print e.message
