@@ -15,6 +15,19 @@ namespace MoodStreamer.Tests
             _restClient = new MoodRestClient();
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            _restClient.Logout();
+        }
+
+        [Test]
+        public void TestLoginWithCorrectCredentials()
+        {
+            _restClient.Login("matt", "mattPass");
+            Assert.IsTrue(_restClient.CheckLoggedIn());
+        }
+
         [Test]
         public void TestLoggedInMethod()
         {

@@ -32,6 +32,7 @@ namespace MoodStreamer.Shared
             {
                 Resource = "loggedin"
             };
+
             var response = _restClient.Execute(request);
             var deserializer = new JsonDeserializer();
             var d = deserializer.Deserialize<Dictionary<string, bool>>(response);
@@ -39,18 +40,26 @@ namespace MoodStreamer.Shared
             return d["logged_in"];
         }
 
-		internal bool Login(string username, string password)
+		public bool Login(string username, string password)
 		{
-			var request = new RestRequest (Method.POST);
+            var request = new RestRequest(Method.POST)
+            {
+                RequestFormat = DataFormat.Json
+            };
 
-			request.AddBody (new {
-				username = username,
-				password = password
-			});
+            request.AddBody(new {username = username, password = password});
 
 			_restClient.Execute (request);
 
 			return false;
 		}
+
+        public bool Logout()
+        {
+            var request = new RestRequest(Method.GET){ Resource = "logout" };
+            var response = _restClient.Execute(request);
+
+            return response.StatusCode == System.Net.HttpStatusCode.OK;
+        }
 	}
 }

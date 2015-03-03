@@ -100,13 +100,17 @@ def login():
 
     username = json['username']
     password_hash = hash_password(json['password'])
+    print password_hash
     try:
         if p.authenticate(username, password_hash):
             session['logged_in'] = True
             session['username'] = username
+        else abort(http_codes.UNAUTHORIZED)
+
     except Exception as e:
         print e.message
         raise e
+
     return username
 
 @app.route('/api/logout')
