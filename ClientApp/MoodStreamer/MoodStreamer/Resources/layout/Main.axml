@@ -4,30 +4,21 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
     <TextView
-        android:text="@string/positivityLabel"
+        android:text="@string/howareyoufeeling"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_width="match_parent"
+        android:paddingTop="10dp"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:id="@+id/textView2" />
-    <SeekBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/positiveNegative"
-        android:progressDrawable="@android:color/transparent" />
-    <TextView
-        android:text="@string/calmExcitedLabel"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView1" />
-    <SeekBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/calmExcited"
-        android:progressDrawable="@android:color/transparent" />
     <Button
+        android:id="@+id/startPlaying"
         android:text="@string/startPlayingText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/startPlaying" />
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:src="@drawable/testsquare"
+        android:id="@+id/square"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </LinearLayout>

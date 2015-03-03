@@ -69,6 +69,7 @@
     <AndroidResource Include="Resources\drawable\play.png" />
     <AndroidResource Include="Resources\drawable\Icon.png" />
     <AndroidResource Include="Resources\layout\Login.axml" />
+    <AndroidResource Include="Resources\drawable-hdpi\testsquare.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MoodStreamer.Shared\MoodStreamer.Shared.csproj">
@@ -81,5 +82,6 @@
     <Folder Include="Resources\values-v21\" />
     <Folder Include="Resources\menu\" />
     <Folder Include="Activities\" />
+    <Folder Include="Resources\drawable-hdpi\" />
   </ItemGroup>
 </Project>

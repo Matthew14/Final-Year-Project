@@ -1,13 +1,14 @@
 import socket
 import random
+import hashlib
 import dbAccess
+import http_codes
 
 from functools import wraps
 from app import app
 from flask import request, send_file, abort, make_response, jsonify, session
 from analysis.moodAssesment import rankTrack
 from pg_db import Postgres
-import hashlib
 
 
 #TODO filthy hack, plz change
@@ -18,8 +19,8 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if "logged_in" not in session:
-            return make_response('not logged in', 401)
-            make_response('not logged in', 401)
+            return make_response('not logged in', http_codes.UNAUTHORIZED)
+            make_response('not logged in', http_codes.UNAUTHORIZED)
         return f(*args, **kwargs)
     return decorated_function
 
@@ -81,15 +82,19 @@ def hash_password(password):
 
 # API:
 
+@app.route('/loggedin')
+def logged_in():
+    return jsonify(logged_in=str('logged_in' in session and session['logged_in']))
+
 
 @app.route('/login', methods=['POST'])
 def login():
     json = request.get_json()
     if 'username' not in json:
-        return make_response('no username specified', 400)
+        return make_response('no username specified', http_codes.BAD_REQUEST)
 
     if 'password' not in json:
-        return make_response('no password specified', 400)
+        return make_response('no password specified', http_codes.BAD_REQUEST)
 
     p = Postgres()
 
@@ -101,13 +106,20 @@ def login():
         session['username'] = username
 
 
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return ''
+
+
 @app.route('/api/users/<string:username>')
 def get_user(username):
     p = Postgres()
     user = p.get_user_as_dict(username)
 
     if user is None:
-        abort(404)
+        abort(http_codes.NOT_FOUND)
 
     del user['passwordhash']
 
@@ -119,10 +131,10 @@ def create_user():
     json = request.get_json()
 
     if 'username' not in json:
-        return make_response('no username specified', 400)
+        return make_response('no username specified', http_codes.BAD_REQUEST)
 
     if 'password' not in json:
-        return make_response('no password specified', 400)
+        return make_response('no password specified', http_codes.BAD_REQUEST)
 
     username = json['username']
     password_hash = hash_password(json['password'])
@@ -132,7 +144,7 @@ def create_user():
     p = Postgres()
 
     if p.user_exists(username):
-        return make_response('user {} already user already exists'.format(username), 400)
+        return make_response('user {} already user already exists'.format(username), http_codes.BAD_REQUEST)
 
     p.add_user(username, password_hash, first_name, surname)
 

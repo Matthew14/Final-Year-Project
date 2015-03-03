@@ -5,6 +5,7 @@
 	<string name="sadButtonText">Play a Sad Song</string>
 	<string name="positivityLabel">Positivity</string>
 	<string name="calmExcitedLabel">Excitedness</string>
-	<string name="startPlayingText">Start Radio</string>
+	<string name="startPlayingText">Let\'s Go</string>
+	<string name="howareyoufeeling">How Are You Feeling?</string>
 	<string name="loginRegisterText">Login</string>
 </resources>
