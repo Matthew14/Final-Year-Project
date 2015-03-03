@@ -114,8 +114,11 @@ def login():
 
     return username
 
+
 @app.route('/api/logout')
 def logout():
+    session['logged_in'] = false
+    session['username'] = None
     session.clear()
     return ''
 

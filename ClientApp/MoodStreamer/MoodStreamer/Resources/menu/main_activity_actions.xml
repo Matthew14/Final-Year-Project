@@ -5,7 +5,11 @@
     	android:id="@+id/action_settings"
         android:title="Settings"
         android:showAsAction="never" />
+     <item android:id="@+id/action_logout_button"
+          android:title="Logout"
+          android:showAsAction="never" />
      <item android:id="@+id/action_viewstats"
           android:title="View Song Info"
           android:showAsAction="always" />
+
 </menu>
