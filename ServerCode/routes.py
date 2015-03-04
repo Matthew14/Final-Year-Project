@@ -6,7 +6,7 @@ import http_codes
 
 from functools import wraps
 from app import app
-from flask import request, send_file, abort, make_response, jsonify, session
+from flask import request, send_file, abort, make_response, jsonify, session, send_from_directory
 from analysis.moodAssesment import rankTrack
 from pg_db import Postgres
 
@@ -14,7 +14,12 @@ from pg_db import Postgres
 #TODO filthy hack, plz change
 prodUpload = '/home/fypuser/Final-Year-Project/ServerCode/uploads'
 devUpload = 'C:\\users\matthew\\desktop\\uploads'
-uploadDirectory = prodUpload if socket.gethostname() == 'FYP' else devUpload
+prodImages = '/home/fypuser/Final-Year-Project/ServerCode/images'
+
+
+isProd = socket.gethostname() == 'FYP'
+uploadDirectory = prodUpload if isProd else devUpload
+imagesDirectory = prodImages if isProd else 'images'
 
 
 def login_required(f):
@@ -30,6 +35,11 @@ def login_required(f):
 @app.route('/')
 def index():
     return 'hello there, it works'
+
+
+@app.route('/images/<string:imagepath>')
+def get_image(imagepath):
+    return send_from_directory(imagesDirectory, imagepath)
 
 
 @app.route('/upload', methods=['POST'])

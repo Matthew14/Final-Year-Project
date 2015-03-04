@@ -11,12 +11,14 @@
     <EditText
         android:id="@+id/usernameBox"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:hint="Username" />
     <EditText
         android:id="@+id/passwordBox"
         android:inputType="textPassword"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:hint="Password" />
     <Button
         android:text="@string/loginRegisterText"
         android:layout_width="match_parent"
