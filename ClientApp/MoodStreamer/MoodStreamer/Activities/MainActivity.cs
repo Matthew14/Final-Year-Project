@@ -28,6 +28,7 @@ namespace MoodStreamer
 
         string _loggedInUser;
 
+        Database _database;
         LoginManager _loginManager;
 
 		protected override void OnCreate (Bundle bundle)
@@ -36,6 +37,7 @@ namespace MoodStreamer
 			SetContentView (Resource.Layout.Main);
 
             _loginManager = new LoginManager();
+            _database = new Database();
             _loggedInUser = Intent.GetStringExtra("username");
 
             if (_loggedInUser == null)
@@ -47,6 +49,7 @@ namespace MoodStreamer
         void GoToLogin()
         {
             _loginManager.Logout();
+            _database.ClearLastUser();
             var intent = new Intent(Application.Context, typeof(LoginActivity));
 
             if (_loggedInUser != null)

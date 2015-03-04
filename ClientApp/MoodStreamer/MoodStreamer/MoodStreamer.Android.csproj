@@ -84,4 +84,7 @@
     <Folder Include="Activities\" />
     <Folder Include="Resources\drawable-hdpi\" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\MoodStreamer.db" />
+  </ItemGroup>
 </Project>

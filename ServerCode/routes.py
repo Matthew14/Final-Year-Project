@@ -100,7 +100,7 @@ def login():
 
     username = json['username']
     password_hash = hash_password(json['password'])
-    print password_hash
+
     try:
         if p.authenticate(username, password_hash):
             session['logged_in'] = True
@@ -120,7 +120,6 @@ def logout():
     session['logged_in'] = False
     session['username'] = None
     session.clear()
-    return ''
 
 
 @app.route('/api/users/<string:username>')

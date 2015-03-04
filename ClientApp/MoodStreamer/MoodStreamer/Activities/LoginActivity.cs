@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
 
 using MoodStreamer.Shared;
@@ -14,28 +15,25 @@ namespace MoodStreamer
     [Activity (Label = "Mood Streamer", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/AppTheme")]
     public class LoginActivity : Activity
 	{
-
         private LoginManager _loginManager;
+       
 
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
 			SetContentView (Resource.Layout.Login);
 
+            string db = LoadDatabaseIntoStorage();
+            Database.Path = db;
             CheckAlreadyLoggedIn();
 
 			FindViewById<Button> (Resource.Id.loginRegisterButton).Click += LoginButtonOnClick;
 
 		}
 
-
         private void CheckAlreadyLoggedIn()
         {
             _loginManager = new LoginManager();
-            if (_loginManager.LoggedIn)
-            {
-                ProceedToMainActivity(_loginManager.LoadLastLoginCredentials().Username);
-            }
 
             var lastUser = _loginManager.LoadLastLoginCredentials();
             if (lastUser != null)
@@ -54,7 +52,7 @@ namespace MoodStreamer
 
         void Login(User user)
         {
-            Login(user.Username, user.Password);
+            Login(user.username, user.password);
         }
 
         void Login(string username, string password)
@@ -63,6 +61,7 @@ namespace MoodStreamer
             {
                 if (_loginManager.PerformLogin(username, password))
                 {
+                    _loginManager.SaveLastLogin(username, password);
                     ProceedToMainActivity(username);
                 }
                 else
@@ -82,6 +81,29 @@ namespace MoodStreamer
 
             Login(username, password);
 		}
+
+
+        string LoadDatabaseIntoStorage()
+        {
+            var dbName = "MoodStreamer.db";
+            string dbPath = Path.Combine (Android.OS.Environment.ExternalStorageDirectory.ToString(), dbName);
+
+            if (!File.Exists(dbPath))
+            {
+                using (var br = new BinaryReader(Assets.Open(dbName)))
+                {
+                    using (var bw = new BinaryWriter(new FileStream(dbPath, FileMode.Create)))
+                    {
+                        var buffer = new byte[2048];
+                        int len = 0;
+                        while ((len = br.Read(buffer, 0, buffer.Length)) > 0)
+                            bw.Write (buffer, 0, len);
+                    }
+                }
+            }
+
+            return dbPath;
+        }
 	}
 }
 
