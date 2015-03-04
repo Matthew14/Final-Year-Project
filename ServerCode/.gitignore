@@ -3,3 +3,4 @@ env/
 uploads/
 database_credentials.txt
 lastfm_credentials.txt
+*.mp3
