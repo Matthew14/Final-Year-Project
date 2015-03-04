@@ -32,15 +32,7 @@ SET default_with_oids = false;
 -- Name: tracks; Type: TABLE; Schema: public; Owner: dev; Tablespace:
 --
 
-CREATE TABLE tracks (
-    id integer NOT NULL,
-    artist character varying(200),
-    title character varying(200),
-    file_path character varying(100),
-    positivity numeric,
-    excitedness numeric,
-    album_art_url varying(100)
-);
+CREATE TABLE tracks (id serial PRIMARY KEY,artist varchar(200),title varchar(200),file_path varchar(100),positivity numeric,excitedness numeric,album_art_url varchar(100));
 
 
 ALTER TABLE public.tracks OWNER TO dev;

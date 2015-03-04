@@ -6,6 +6,8 @@ using Android.Widget;
 using Android.Media;
 using Android.Views;
 
+using MoodStreamer.Shared;
+
 namespace MoodStreamer
 {
 	[Activity (Label = "PlayerActivity", Theme = "@style/AppTheme")]			
@@ -13,7 +15,11 @@ namespace MoodStreamer
 	{
 		static MediaPlayer _player;
 
-		string _currentMood;
+        float _excitedness;
+        float _positivity;
+
+        TrackManager _trackManager;
+
 		System.Collections.Stack _playedStack = new System.Collections.Stack();
 		public static PlayerActivity Instance{ get ; private set;}
 
@@ -29,12 +35,13 @@ namespace MoodStreamer
 				_player = new MediaPlayer ();
 			}
 
-			string text = Intent.GetStringExtra ("mood") ?? "no mood";
-			this.Title = "TRACKNAME";
-			_currentMood = text;
+            _excitedness = Intent.GetFloatExtra("excitedness", 0);
+            _positivity = Intent.GetFloatExtra("positivity", 0);
 
-			PlayTrack (text);
+            PlayTrack();
 
+            this.Title = String.Format("({0} {1})", _excitedness, _positivity);
+			
 			ActionBar.SetHomeButtonEnabled(true);
 			ActionBar.SetDisplayHomeAsUpEnabled(true);
 
@@ -56,7 +63,7 @@ namespace MoodStreamer
 
 		void NextPressed (object sender, EventArgs e)
 		{
-			PlayTrack (_currentMood);
+			PlayTrack ();
 		}
 
 		void PlayPausedPressed (object sender, EventArgs args)
@@ -99,11 +106,14 @@ namespace MoodStreamer
 			return base.OnKeyDown (keyCode, e);
 		}
 
-		private void PlayTrack(string mood)
+		private void PlayTrack()
 		{
-			//Toast.MakeText (this, string.Format("Now playing {0} tracks", mood), ToastLength.Long).Show ();
+            if (_trackManager == null)
+                _trackManager = new TrackManager();
 
-			string fp = string.Format("http://fyp.matthewoneill.com/{0}", mood.ToLower());
+            var track = _trackManager.GetTrackByExcitednessAndPositivity(_excitedness, _positivity);
+
+            string fp = "http://192.168.1.19:5050/" +track.FilePath.Replace(" ", "%20");
 
 			_player.SetAudioStreamType(Stream.Music);
 			_player.Reset();

@@ -7,9 +7,9 @@ namespace MoodStreamer.Shared
 	/// </summary>
 	public class Track
 	{
-		public string URL { get; set; }
+		public string FilePath { get; set; }
 
-		public string ImageURL { get; set; }
+		public string AlbumArt { get; set; }
 
 		public string Artist { get; set; }
 

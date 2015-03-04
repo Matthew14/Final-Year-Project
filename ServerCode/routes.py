@@ -1,25 +1,27 @@
 import socket
 import random
 import hashlib
-import dbAccess
+import os
 import http_codes
+import track_details
 
 from functools import wraps
 from app import app
 from flask import request, send_file, abort, make_response, jsonify, session, send_from_directory
-from analysis.moodAssesment import rankTrack
+from analysis.moodAssesment import rank_track
 from pg_db import Postgres
 
 
 #TODO filthy hack, plz change
-prodUpload = '/home/fypuser/Final-Year-Project/ServerCode/uploads'
-devUpload = 'C:\\users\matthew\\desktop\\uploads'
-prodImages = '/home/fypuser/Final-Year-Project/ServerCode/images'
-
+prod_upload_directory = '/home/fypuser/Final-Year-Project/ServerCode/uploads'
+dev_upload_directory = 'C:\\users\matthew\\desktop\\uploads'
+prod_images_directory = '/home/fypuser/Final-Year-Project/ServerCode/images'
+prod_temp_directory = '/home/fypuser/Final-Year-Project/ServerCode/tmp'
 
 isProd = socket.gethostname() == 'FYP'
-uploadDirectory = prodUpload if isProd else devUpload
-imagesDirectory = prodImages if isProd else 'images'
+upload_directory = prod_upload_directory if isProd else dev_upload_directory
+images_directory = prod_images_directory if isProd else 'images'
+temp_directory = prod_temp_directory if isProd else 'tmp'
 
 
 def login_required(f):
@@ -39,51 +41,70 @@ def index():
 
 @app.route('/images/<string:imagepath>')
 def get_image(imagepath):
-    return send_from_directory(imagesDirectory, imagepath)
+    return send_from_directory(images_directory, imagepath)
+
+
+def save_track_in_right_place(track, tmp_file_path):
+    artist_dir = os.path.join(upload_directory, track.artist)
+    album_dir = os.path.join(artist_dir, track.album)
+
+    if not os.path.isdir(artist_dir):
+        os.mkdir(os.path.join(artist_dir))
+
+    if not os.path.isdir(album_dir):
+        os.mkdir(album_dir)
+
+    final_path = os.path.join(upload_directory, track.filepath)
+    os.rename(tmp_file_path, final_path)
 
 
 @app.route('/upload', methods=['POST'])
-@login_required
 def upload():
+
+    #TODO: this is temporary
+    username='matt'
+
     if request.method == 'POST':
         f = request.files['file']
-        destination = uploadDirectory + '/' + f.filename
-        f.save(destination)
 
-        rankTrack(destination)
+        temp_save_path = os.path.join(temp_directory, f.filename)
+        f.save(temp_save_path)
+
+        track = track_details.load_from_file(temp_save_path)
+
+        save_track_in_right_place(track, temp_save_path)
+
+        p = Postgres()
+        rank_track(track)
+        p.associate_track_with_user(track, username)
+
 
     return ''
 
 
-@app.route('/track/<string:calmness>/<string:positivity>')
-@login_required
-def track(calmness=None, positivity=None):
+@app.route('/api/track/<string:excitedness>/<string:positivity>')
+def track(excitedness=None, positivity=None):
+
+    #TODO
+    username = 'matt'
+
     try:
-        calmness = float(calmness)
+        excitedness = float(excitedness)
         positivity = float(positivity)
     except:
         abort(500, 'Only numbers please, friend.')
 
-    tracks = dbAccess.getTracksByCalmnessAndPositivity(calmness, positivity)
+    p = Postgres()
+    tracks = p.get_tracks_by_excitedness_and_positivity(username, excitedness, positivity)
 
-    return 'hello'
+    print tracks
 
-
-@app.route('/music/<string:filepath>')
-def get_music_file():
-    pass
+    return jsonify(tracks[0].__dict__)if len(tracks) > 0 else None
 
 
-@app.route('/happy')
-def happy():
-    tracks = dbAccess.getHappyTracks()
-    return send_file(random.choice(tracks)[0], mimetype='audio/mpeg')
-
-
-@app.route('/sad')
-def sad():
-    tracks = dbAccess.getSadTracks()
-    return send_file(random.choice(tracks)[0], mimetype='audio/mpeg')
+@app.route('/music/<string:artist>/<string:album>/<string:filepath>')
+def get_music_file(artist=None, album=None, filepath=None):
+    return send_from_directory(os.path.join(upload_directory, artist, album), filepath)
 
 
 def hash_password(password):

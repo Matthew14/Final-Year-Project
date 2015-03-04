@@ -1,6 +1,8 @@
 import psycopg2
 import psycopg2.extras
 import config
+from track_details import TrackDetails
+
 
 class Postgres:
     def __init__(self):
@@ -11,7 +13,7 @@ class Postgres:
         db = config.db_name
         user = config.db_user
         host = config.db_host
-        password = config.db_password  
+        password = config.db_password
 
         conn_string = "dbname='{}' user='{}' host='{}' password='{}'".format(db, user, host, password)
         conn = psycopg2.connect(conn_string)
@@ -69,55 +71,60 @@ class Postgres:
 
 ##Track Stuff#############
 
-    def store_ranking(self, file_path, ranking):
-        sql = "INSERT INTO tracks(happinessRating, path) VALUES (?, ?)"
+    def store_ranking(self, track, excitedness, positivity):
+        sql = "INSERT INTO tracks(artist, title, file_path, positivity, excitedness, album_art_url) VALUES (%s, %s, %s, %s, %s, %s)"
         conn = self.connect()
         cursor = conn.cursor()
-        cursor.execute(sql, (ranking, filePath))
+
+        cursor.execute(sql, (track.artist, track.title, track.filepath, positivity, excitedness, track.album_art))
 
         conn.commit()
         cursor.close()
         conn.close()
 
 
-    #TODO: REMOVE
-    def get_happy_tracks(self):
-        sql = "SELECT path, happinessRating FROM tracks WHERE happinessRating >= ?"
+    #TODO edge case where artist has multiple tracks same name
+    def get_track_id(self, artist, title):
+        sql = "SELECT id FROM tracks WHERE artist=%s AND title=%s"
         conn = self.connect()
         cursor = conn.cursor()
-        cursor.execute(sql, (happinessThreashold, ))
-        re = cursor.fetchall()
+        cursor.execute(sql, (artist, title))
+        result = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        return result
+
+
+    def associate_track_with_user(self, track, username):
+        t_id = self.get_track_id(track.artist, track.title)[0]
+
+        sql = "INSERT INTO user_has_track(username, track_id) VALUES (%s, %s)"
+
+        conn = self.connect()
+        cursor = conn.cursor()
+        cursor.execute(sql, (username, t_id))
+        conn.commit()
         cursor.close()
         conn.close()
 
-        return re
 
-
-    #TODO:  Remove me
-    def get_sad_tracks(self):
-        sql = "SELECT path, happinessRating FROM tracks WHERE happinessRating < ?"
-        conn = self.connect()
-        cursor = conn.cursor()
-        cursor.execute(sql, (happinessThreashold, ))
-
-        re = cursor.fetchall()
-        cursor.close()
-        conn.close()
-
-        return re
-
-
-    def get_tracks_by_calmness_and_positivity(c, p, threashold=5):
-        sql = "SELECT track, artist, path FROM tracks WHERE c <= ? and "
-
+    def get_tracks_by_excitedness_and_positivity(self, username, e, p, threashold=15):
+        sql = "SELECT id, title, artist, file_path FROM tracks t JOIN user_has_track uht on uht.track_id = t.id WHERE uht.username = %s AND t.excitedness <= %s AND t.excitedness >= %s AND t.positivity <= %s AND t.positivity >= %s "
 
         conn = self.connect()
         cursor = conn.cursor()
 
+        cursor.execute(sql, (username, e + threashold, e - threashold, p + threashold, p - threashold))
+        results = cursor.fetchall()
+
         cursor.close()
         conn.close()
 
-        return ['ksfkj']
+        tracks = []
+        for r in results:
+            tracks.append(TrackDetails(r[1], r[2], '', "music/" + r[3].replace('\\', '/')))
+
+        return tracks
 
 
 if __name__ == '__main__':

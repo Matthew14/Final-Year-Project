@@ -7,8 +7,9 @@ namespace UploadApp.Uploader.Tests
     [TestFixture]  
     public class UploadTests
     {
-        private const string TestMusicFolder = @"..\..\..\Music";
-        private  string ServiceUrl = "http://127.0.0.1:5000";
+        private const string TestMusicFolder = @"C:\users\matthew\desktop\Music";
+        private  string ServiceUrl = "http://127.0.0.1:5050";
+        
         [TestCase]
         public void TestFileUpload()
         {

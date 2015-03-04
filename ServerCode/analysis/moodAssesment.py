@@ -2,10 +2,10 @@ import json
 import urllib2
 import sys
 sys.path.append('..')
-import dbAccess
 import time
+import track_details
 from lyric_analysis import LyricAnalyser
-from mutagen.id3 import ID3
+from pg_db import Postgres
 from utils import read_url
 
 
@@ -62,15 +62,16 @@ class Track(object):
 
 
 def getArtistAndTrackNames(filePath):
-    track = ID3(filePath)
-    return track['TPE1'].text[0], track['TIT2'].text[0]
+    return track_details.get_artist_and_track_names(filePath)
 
 
-def getEchonestTrack(artist, track):
+def get_echonest_track(artist, track):
     urlToGet = echonestURL.format(artist, track)
     jsonString = read_url(urlToGet)
     trackJson = json.loads(jsonString)
     trackSummary = trackJson['response']['songs'][0]['audio_summary']
+
+    lyric_analyser = LyricAnalyser()
 
     enTrack = Track(
         artist,
@@ -91,9 +92,10 @@ def rankTrackByInfo(artist, track):
     return track.get_positivity(), track.get_excitedness()
 
 
-def rankTrack(filePath):
-    artist, track = getArtistAndTrackNames(filePath)
-    dbAccess.storeRanking(filePath, getEchonestData(artist, track))
+def rank_track(track):
+    p = Postgres()
+    en_track = get_echonest_track(track.artist, track.title)
+    p.store_ranking(track, en_track.get_excitedness(), en_track.get_positivity())
 
 
 def readTracksFromFile(path):

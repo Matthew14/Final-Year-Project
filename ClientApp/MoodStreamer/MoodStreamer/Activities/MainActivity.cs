@@ -65,7 +65,7 @@ namespace MoodStreamer
 			FindViewById<ImageView> (Resource.Id.square).Touch += SquareTouched;
 		}
 
-		private void StartMoodRadio(TrackType trackType)
+		private void StartMoodRadio()
 		{
 			var instance = PlayerActivity.Instance;
 			if(instance != null) 
@@ -73,7 +73,8 @@ namespace MoodStreamer
 
 			var intent = new Intent (this, typeof(PlayerActivity));
 
-			intent.PutExtra ("mood", trackType.ToString ());
+			intent.PutExtra ("excitedness", _excitedness/100);
+            intent.PutExtra ("positivity", _positivity/100);
 
 			StartActivity (intent);
 		}
@@ -88,7 +89,7 @@ namespace MoodStreamer
 
 		void StartPlayingPressed (object sender, View.TouchEventArgs e)
 		{
-			throw new System.NotImplementedException ();
+            StartMoodRadio();
 		}
 
 		private void SquareTouched (object sender, View.TouchEventArgs e)

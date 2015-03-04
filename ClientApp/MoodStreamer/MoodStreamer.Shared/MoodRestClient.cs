@@ -31,8 +31,8 @@ namespace MoodStreamer.Shared
              _cookieContainer = new CookieContainer();
 			_restClient = new RestClient () 
 			{
-                //BaseUrl = "http://localhost:5050/api",
-                BaseUrl = "http://fyp.matthewoneill.com/api",        
+                BaseUrl = "http://192.168.1.19:5050/api",
+                //BaseUrl = "http://fyp.matthewoneill.com/api",        
                 CookieContainer = _cookieContainer
 			};
 		}
@@ -70,6 +70,18 @@ namespace MoodStreamer.Shared
             var response = _restClient.Execute(request);
 
             return response.StatusCode == HttpStatusCode.OK;
+        }
+
+        internal Track GetTrackByExcitednessAndPositivity(float ex, float pos)
+        {
+            var request = new RestRequest(Method.GET)
+            {
+                Resource = String.Format("track/{0}/{1}", ex, pos)
+            };
+
+            var response = _restClient.Execute<Track>(request);
+
+            return response.Data;
         }
 	}
 }
