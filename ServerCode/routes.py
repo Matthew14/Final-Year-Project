@@ -39,7 +39,7 @@ def index():
     return 'hello there, it works'
 
 
-@app.route('whoami')
+@app.route('/whoami')
 def who_am_i():
     return None if 'username' not in session else session['username']
 
