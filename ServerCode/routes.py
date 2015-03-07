@@ -41,7 +41,7 @@ def index():
 
 @app.route('/whoami')
 def who_am_i():
-    return None if 'username' not in session else session['username']
+    return make_response(http_codes.UNAUTHORIZED) if 'username' not in session else session['username']
 
 
 @app.route('/images/<string:imagepath>')
