@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Net;
+using System.Threading;
 
 using Android.App;
 using Android.OS;
 using Android.Widget;
 using Android.Media;
 using Android.Views;
+using Android.Graphics;
+
 
 using MoodStreamer.Shared;
 
@@ -19,6 +23,8 @@ namespace MoodStreamer
         float _positivity;
 
         TrackManager _trackManager;
+
+        ImageView _coverArt;
 
 		System.Collections.Stack _playedStack = new System.Collections.Stack();
 		public static PlayerActivity Instance{ get ; private set;}
@@ -38,7 +44,8 @@ namespace MoodStreamer
             _excitedness = Intent.GetFloatExtra("excitedness", 0);
             _positivity = Intent.GetFloatExtra("positivity", 0);
 
-            PlayTrack();
+            _coverArt = FindViewById<ImageView>(Resource.Id.artWorkImageView);
+
 
             this.Title = String.Format("({0} {1})", _excitedness, _positivity);
 			
@@ -46,6 +53,9 @@ namespace MoodStreamer
 			ActionBar.SetDisplayHomeAsUpEnabled(true);
 
 			SetupButtons ();
+
+            PlayTrack();
+
 		}
 
 		void SetupButtons ()
@@ -113,14 +123,45 @@ namespace MoodStreamer
 
             var track = _trackManager.GetTrackByExcitednessAndPositivity(_excitedness, _positivity);
 
-            string fp = "http://192.168.1.19:5050/" +track.FilePath.Replace(" ", "%20");
+            //string fp = "http://192.168.1.19:5050/" +track.FilePath.Replace(" ", "%20");
+            string fp = "http://fyp.matthewoneill.com/" +track.FilePath.Replace(" ", "%20");
+
+            new Thread(() => LoadImageIntoImageView(track.AlbumArt)).Start();
 
 			_player.SetAudioStreamType(Stream.Music);
 			_player.Reset();
 			_player.SetDataSource(fp);
 			_player.Prepare();
 			_player.Start();
+
+            this.Title = String.Format("{0} - {1}", track.Artist, track.Title);
 		}
+
+
+        private Bitmap GetImageBitmapFromUrl(string url)
+        {
+            if(! url.Contains("http://"))
+                url = "http://" +url;
+
+            Bitmap imageBitmap = null;
+
+            using (var webClient = new WebClient())
+            {
+                var imageBytes = webClient.DownloadData(url);
+                if (imageBytes != null && imageBytes.Length > 0)
+                    imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+            }
+
+            return imageBitmap;
+        }
+
+        void LoadImageIntoImageView(string url)
+        {
+            Bitmap bitmap = GetImageBitmapFromUrl(url);
+            RunOnUiThread(()=>
+                _coverArt.SetImageBitmap(bitmap));
+
+        }
 
 		public bool CanPause ()
 		{

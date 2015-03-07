@@ -8,11 +8,13 @@ namespace UploadApp.Uploader
     {
         private string _url;
         private RestClient _restClient;
+        private CookieContainer _cookieJar;
 
         public UploadClient()
         {
             _url = ConfigurationManager.AppSettings.Get("serviceUrl");
-            _restClient = new RestClient(_url);   
+            _cookieJar = new CookieContainer();
+            _restClient = new RestClient(_url){CookieContainer = _cookieJar};   
         }
 
         public bool Login(string username, string password)
@@ -38,6 +40,7 @@ namespace UploadApp.Uploader
             request.AddFile("file", filepath);
 
             _restClient.Execute(request);
+
             return true;
         }
     }

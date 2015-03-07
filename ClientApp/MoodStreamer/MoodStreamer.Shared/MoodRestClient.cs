@@ -31,8 +31,8 @@ namespace MoodStreamer.Shared
              _cookieContainer = new CookieContainer();
 			_restClient = new RestClient () 
 			{
-                BaseUrl = "http://192.168.1.19:5050/api",
-                //BaseUrl = "http://fyp.matthewoneill.com/api",        
+                //BaseUrl = "http://192.168.1.19:5050/api",
+                BaseUrl = "http://fyp.matthewoneill.com/api",        
                 CookieContainer = _cookieContainer
 			};
 		}

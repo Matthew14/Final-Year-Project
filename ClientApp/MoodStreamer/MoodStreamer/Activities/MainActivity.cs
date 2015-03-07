@@ -1,7 +1,6 @@
 ﻿using System;
 
 using Android.App;
-using Android.Media;
 using Android.Widget;
 using Android.Content;
 using Android.OS;
@@ -11,30 +10,22 @@ using MoodStreamer.Shared;
 
 
 namespace MoodStreamer
-{	
-
-	enum TrackType
-	{
-		Happy, Sad
-	}
-
-
-	[Activity (Label = "Mood Streamer", MainLauncher = false, Icon = "@drawable/icon", Theme = "@style/AppTheme")]
-	public class MainActivity : Activity
-	{
-
-		float _positivity = 50;
-		float _excitedness = 50;
+{   
+    [Activity (Label = "Mood Streamer", MainLauncher = false, Icon = "@drawable/icon", Theme = "@style/AppTheme")]
+    public class MainActivity : Activity
+    {
+        float _positivity = 50;
+        float _excitedness = 50;
 
         string _loggedInUser;
 
         Database _database;
         LoginManager _loginManager;
 
-		protected override void OnCreate (Bundle bundle)
-		{
-			base.OnCreate (bundle);
-			SetContentView (Resource.Layout.Main);
+        protected override void OnCreate (Bundle bundle)
+        {
+            base.OnCreate (bundle);
+            SetContentView (Resource.Layout.Main);
 
             _loginManager = new LoginManager();
             _database = new Database();
@@ -44,7 +35,7 @@ namespace MoodStreamer
                 GoToLogin();
 
             SetupEvents();
-		}
+        }
 
         void GoToLogin()
         {
@@ -59,82 +50,80 @@ namespace MoodStreamer
             Finish();
         }
 
-		void SetupEvents ()
-		{
-			FindViewById<Button> (Resource.Id.startPlaying).Touch += StartPlayingPressed;
-			FindViewById<ImageView> (Resource.Id.square).Touch += SquareTouched;
-		}
+        void SetupEvents ()
+        {
+            FindViewById<Button> (Resource.Id.startPlaying).Touch += StartPlayingPressed;
+            FindViewById<ImageView> (Resource.Id.square).Touch += SquareTouched;
+        }
 
-		private void StartMoodRadio()
-		{
-			var instance = PlayerActivity.Instance;
-			if(instance != null) 
-				instance.Finish();
+        private void StartMoodRadio()
+        {
+            var instance = PlayerActivity.Instance;
+            if(instance != null) 
+                instance.Finish();
 
-			var intent = new Intent (this, typeof(PlayerActivity));
+            var intent = new Intent (this, typeof(PlayerActivity));
 
-			intent.PutExtra ("excitedness", _excitedness/100);
+            intent.PutExtra ("excitedness", _excitedness/100);
             intent.PutExtra ("positivity", _positivity/100);
 
-			StartActivity (intent);
-		}
+            StartActivity (intent);
+        }
 
-		private void ShowTracksSummary()
-		{
+        private void ShowTracksSummary()
+        {
             //TODO
-			new PopupWindow(480,500);
-		}
+            new PopupWindow(480,500);
+        }
 
-		#region EventHandlers
+        #region EventHandlers
 
-		void StartPlayingPressed (object sender, View.TouchEventArgs e)
-		{
+        void StartPlayingPressed (object sender, View.TouchEventArgs e)
+        {
             StartMoodRadio();
-		}
+        }
 
-		private void SquareTouched (object sender, View.TouchEventArgs e)
-		{
-			var theEvent = e.Event;
-			var x = theEvent.GetX ();
-			var y = theEvent.GetY ();
+        private void SquareTouched (object sender, View.TouchEventArgs e)
+        {
+            var theEvent = e.Event;
+            var x = theEvent.GetX ();
+            var y = theEvent.GetY ();
 
-			_positivity = x;
-			_excitedness = y;
+            _positivity = x;
+            _excitedness = y;
+        }
 
-			Console.WriteLine ("({0}, {1})", x, y);
-		}
+        #endregion
 
-		#endregion
-
-		#region Overrides
-		public override bool OnOptionsItemSelected(IMenuItem item)
-		{
-			switch (item.ItemId) 
-			{
-			case Resource.Id.action_settings:
-				ShowTracksSummary ();
-					break;
-				case Resource.Id.action_viewstats:
-					break;
+        #region Overrides
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId) 
+            {
+                case Resource.Id.action_settings:
+                    ShowTracksSummary ();
+                    break;
+                case Resource.Id.action_viewstats:
+                    break;
                 case Resource.Id.action_logout_button:
                     GoToLogin();
                     break;
-				default:
-					break;
-			}
+                default:
+                    break;
+            }
 
-			return base.OnOptionsItemSelected (item);
-		}
+            return base.OnOptionsItemSelected (item);
+        }
 
-		public override bool OnCreateOptionsMenu (IMenu menu)
-		{
-			var inf = this.MenuInflater;
-			inf.Inflate (Resource.Menu.main_activity_actions, menu);
+        public override bool OnCreateOptionsMenu (IMenu menu)
+        {
+            var menuInflater = this.MenuInflater;
+            menuInflater.Inflate (Resource.Menu.main_activity_actions, menu);
 
-			return base.OnCreateOptionsMenu (menu);
-		}
+            return base.OnCreateOptionsMenu (menu);
+        }
 
-		#endregion
+        #endregion
 
-	}
+    }
 }

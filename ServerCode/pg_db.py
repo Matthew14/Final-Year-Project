@@ -122,7 +122,7 @@ class Postgres:
 
         tracks = []
         for r in results:
-            tracks.append(TrackDetails(r[1], r[2], '', "music/" + r[3].replace('\\', '/')))
+            tracks.append(TrackDetails(r[1], r[2], '', "music/" +   r[3].replace('\\', '/')))
 
         return tracks
 

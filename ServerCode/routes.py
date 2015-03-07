@@ -39,6 +39,11 @@ def index():
     return 'hello there, it works'
 
 
+@app.route('whoami')
+def who_am_i():
+    return None if 'username' not in session else session['username']
+
+
 @app.route('/images/<string:imagepath>')
 def get_image(imagepath):
     return send_from_directory(images_directory, imagepath)
