@@ -2,6 +2,7 @@ import psycopg2
 import psycopg2.extras
 import config
 from track_details import TrackDetails
+from user_details import UserDetails
 
 
 class Postgres:
@@ -46,6 +47,32 @@ class Postgres:
         conn.close()
 
 
+    def __get_track_info_for_user(self, username):
+        sql = "SELECT count(*) from user_has_track WHERE username=%s"
+        sql2 = "SELECT count(t.id) from tracks t JOIN user_has_track u on t.id=u.track_id WHERE u.username=%s AND t.positivity IS NOT NULL AND t.excitedness IS NOT NULL"
+
+        conn = self.connect()
+        cursor = conn.cursor()
+        cursor.execute(sql, (username, ))
+        track_count = cursor.fetchone()[0]
+
+        cursor.execute(sql2, (username, ))
+        tracks_analysed = cursor.fetchone()[0]
+
+        cursor.close()
+        conn.close()
+
+        return dict(track_count=track_count, tracks_analysed=tracks_analysed)
+
+
+    def get_user_stats(self, username):
+        info_dict = self.__get_track_info_for_user(username)
+
+        user_details = UserDetails(username, info_dict['track_count'], info_dict['tracks_analysed'])
+
+        return user_details
+
+
     def get_user_as_dict(self, username):
         conn = self.connect()
         cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
@@ -69,7 +96,7 @@ class Postgres:
         return user['password_hash'] == password
 
 
-##Track Stuff#############
+    ##Track Stuff#############
 
     def store_ranking(self, track, excitedness, positivity):
         sql = "INSERT INTO tracks(artist, title, file_path, positivity, excitedness, album_art_url) VALUES (%s, %s, %s, %s, %s, %s)"
@@ -122,7 +149,7 @@ class Postgres:
 
         tracks = []
         for r in results:
-            tracks.append(TrackDetails(r[1], r[2], '', "music/" +   r[3].replace('\\', '/')))
+            tracks.append(TrackDetails(r[1], r[2], '', "music/" + r[3].replace('\\', '/')))
 
         return tracks
 

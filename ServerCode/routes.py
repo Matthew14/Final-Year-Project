@@ -24,6 +24,11 @@ images_directory = prod_images_directory if isProd else 'images'
 temp_directory = prod_temp_directory if isProd else 'tmp'
 
 
+
+#################################
+#Helper functions
+
+
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -33,22 +38,14 @@ def login_required(f):
     return decorated_function
 
 
-@app.route('/')
-def index():
-    return 'hello there, it works'
-
-
-@app.route('/whoami')
-def who_am_i():
-    return make_response("not logged in", http_codes.UNAUTHORIZED) if 'username' not in session else session['username']
-
-
-@app.route('/images/<string:imagepath>')
-def get_image(imagepath):
-    return send_from_directory(images_directory, imagepath)
+def hash_password(password):
+    return hashlib.sha256(password).hexdigest()
 
 
 def save_track_in_right_place(track, tmp_file_path):
+    """ Works out where a track should be saved based on artist/album info and
+        saves it in that correct place """
+
     artist_dir = os.path.join(upload_directory, track.artist)
     album_dir = os.path.join(artist_dir, track.album)
 
@@ -62,29 +59,48 @@ def save_track_in_right_place(track, tmp_file_path):
     os.rename(tmp_file_path, final_path)
 
 
+##################################
+# Non Api routes:
+
+
+@app.route('/')
+def index():
+    return 'hello there, it works'
+
+
+@app.route('/images/<string:imagepath>')
+def get_image(imagepath):
+    return send_from_directory(images_directory, imagepath)
+
+
 @app.route('/upload', methods=['POST'])
 def upload():
 
     #TODO: this is temporary
     username='matt'
 
-    if request.method == 'POST':
-        f = request.files['file']
+    f = request.files['file']
 
-        temp_save_path = os.path.join(temp_directory, f.filename)
-        f.save(temp_save_path)
+    temp_save_path = os.path.join(temp_directory, f.filename)
+    f.save(temp_save_path)
 
-        track = track_details.load_from_file(temp_save_path)
+    track = track_details.load_from_file(temp_save_path)
 
-        save_track_in_right_place(track, temp_save_path)
+    save_track_in_right_place(track, temp_save_path)
 
-        p = Postgres()
-        rank_track(track)
-        p.associate_track_with_user(track, username)
+    p = Postgres()
+    rank_track(track)
+
+    p.associate_track_with_user(track, username)
 
 
-    return ''
+@app.route('/music/<string:artist>/<string:album>/<string:filepath>')
+def get_music_file(artist=None, album=None, filepath=None):
+    return send_from_directory(os.path.join(upload_directory, artist, album), filepath)
 
+
+##############################################
+# API Routes:
 
 @app.route('/api/track/<string:excitedness>/<string:positivity>')
 def track(excitedness=None, positivity=None):
@@ -96,26 +112,42 @@ def track(excitedness=None, positivity=None):
         excitedness = float(excitedness)
         positivity = float(positivity)
     except:
-        abort(500, 'Only numbers please, friend.')
+        abort(http_codes.INTERNAL_SERVER_ERROR, 'Only numbers please, friend.')
 
     p = Postgres()
     tracks = p.get_tracks_by_excitedness_and_positivity(username, excitedness, positivity)
 
     print tracks
 
-    return jsonify(tracks[0].__dict__)if len(tracks) > 0 else None
+    return jsonify(tracks[0].__dict__) if len(tracks) > 0 else None
 
 
-@app.route('/music/<string:artist>/<string:album>/<string:filepath>')
-def get_music_file(artist=None, album=None, filepath=None):
-    return send_from_directory(os.path.join(upload_directory, artist, album), filepath)
+@app.route('/api/statistics')
+def stats():
+
+    #TODO
+
+    username = None if 'username' not in session else session['username']
+    username = 'matt'
+
+    if username is None:
+        abort(http_codes.UNAUTHORIZED, "not logged in")
+
+    p = Postgres()
+
+    user_stats = p.get_user_stats(username)
+
+    if user_stats is None:
+        abort(http_codes.INTERNAL_SERVER_ERROR, "something went wrong")
 
 
-def hash_password(password):
-    return hashlib.sha256(password).hexdigest()
+    return jsonify(user_stats.__dict__)
 
 
-# API:
+@app.route('/api/whoami')
+def who_am_i():
+    return make_response("not logged in", http_codes.UNAUTHORIZED) if 'username' not in session else session['username']
+
 
 @app.route('/api/loggedin')
 def logged_in():

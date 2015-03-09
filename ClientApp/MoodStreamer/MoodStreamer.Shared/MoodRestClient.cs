@@ -72,6 +72,14 @@ namespace MoodStreamer.Shared
             return response.StatusCode == HttpStatusCode.OK;
         }
 
+        internal TrackStats GetStatisticsForLoggedInUser()
+        {
+            var request = new RestRequest(Method.GET) { Resource = "statistics" };
+            var response = _restClient.Execute<TrackStats>(request);
+
+            return response.Data;
+        }
+
         internal Track GetTrackByExcitednessAndPositivity(float ex, float pos)
         {
             var request = new RestRequest(Method.GET)

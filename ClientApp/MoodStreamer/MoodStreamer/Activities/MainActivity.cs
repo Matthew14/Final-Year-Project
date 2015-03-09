@@ -17,7 +17,7 @@ namespace MoodStreamer
         float _positivity = 50;
         float _excitedness = 50;
 
-        string _loggedInUser;
+        User _loggedInUser;
 
         Database _database;
         LoginManager _loginManager;
@@ -29,7 +29,7 @@ namespace MoodStreamer
 
             _loginManager = new LoginManager();
             _database = new Database();
-            _loggedInUser = Intent.GetStringExtra("username");
+            _loggedInUser = new User(Intent.GetStringExtra("username"));
 
             if (_loggedInUser == null)
                 GoToLogin();
@@ -44,7 +44,7 @@ namespace MoodStreamer
             var intent = new Intent(Application.Context, typeof(LoginActivity));
 
             if (_loggedInUser != null)
-                intent.PutExtra("lastUsername", _loggedInUser);
+                intent.PutExtra("lastUsername", _loggedInUser.username);
 
             StartActivity(intent);
             Finish();
@@ -72,8 +72,26 @@ namespace MoodStreamer
 
         private void ShowTracksSummary()
         {
-            //TODO
-            new PopupWindow(480,500);
+            var adBuilder = new AlertDialog.Builder(this);
+
+            var stats = _loggedInUser.GetStats();
+            var message = String.Format("Total Tracks: {0}\n\nTracks Analysed: {1}", stats.TrackCount, stats.TracksAnalysed);
+
+            adBuilder.SetTitle(_loggedInUser.username);
+            adBuilder.SetMessage(message);
+
+            AlertDialog dialog = null;
+
+
+            adBuilder.SetPositiveButton("OK", (s, e) =>{
+
+                dialog.Dismiss();
+                dialog.Dispose();
+            
+            });
+
+            dialog = adBuilder.Create();
+            dialog.Show();
         }
 
         #region EventHandlers
@@ -101,9 +119,9 @@ namespace MoodStreamer
             switch (item.ItemId) 
             {
                 case Resource.Id.action_settings:
-                    ShowTracksSummary ();
                     break;
                 case Resource.Id.action_viewstats:
+                    ShowTracksSummary ();
                     break;
                 case Resource.Id.action_logout_button:
                     GoToLogin();
