@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 using Android.App;
 using Android.Widget;
@@ -72,26 +73,27 @@ namespace MoodStreamer
 
         private void ShowTracksSummary()
         {
-            var adBuilder = new AlertDialog.Builder(this);
+            new Thread(() => 
+            {
+                var stats = _loggedInUser.GetStats();
+                var message = String.Format("Total Tracks: {0}\n\nTracks Analysed: {1}", stats.TrackCount, stats.TracksAnalysed);
+                
+                var adBuilder = new AlertDialog.Builder(this);
 
-            var stats = _loggedInUser.GetStats();
-            var message = String.Format("Total Tracks: {0}\n\nTracks Analysed: {1}", stats.TrackCount, stats.TracksAnalysed);
+                adBuilder.SetTitle(_loggedInUser.username);
+                adBuilder.SetMessage(message);
 
-            adBuilder.SetTitle(_loggedInUser.username);
-            adBuilder.SetMessage(message);
+                AlertDialog dialog = null;
 
-            AlertDialog dialog = null;
+                adBuilder.SetPositiveButton("OK", (s, e) => dialog.Dismiss());
+                
+                RunOnUiThread(() =>
+                {
+                    dialog = adBuilder.Create();
+                    dialog.Show();
+                });
 
-
-            adBuilder.SetPositiveButton("OK", (s, e) =>{
-
-                dialog.Dismiss();
-                dialog.Dispose();
-            
-            });
-
-            dialog = adBuilder.Create();
-            dialog.Show();
+            }).Start();
         }
 
         #region EventHandlers

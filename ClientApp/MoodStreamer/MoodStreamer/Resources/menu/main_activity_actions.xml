@@ -10,6 +10,7 @@
           android:showAsAction="never" />
      <item android:id="@+id/action_viewstats"
           android:title="View Song Info"
+          android:icon="@drawable/info"
           android:showAsAction="always" />
 
 </menu>
