@@ -18,7 +18,7 @@
 
         public User(string username)
         {
-            username = username;
+            this.username = username;
         }
 
         public TrackStats GetStats()
