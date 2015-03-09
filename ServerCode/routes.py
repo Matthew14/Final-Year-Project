@@ -29,7 +29,6 @@ def login_required(f):
     def decorated_function(*args, **kwargs):
         if "logged_in" not in session:
             return make_response('not logged in', http_codes.UNAUTHORIZED)
-            make_response('not logged in', http_codes.UNAUTHORIZED)
         return f(*args, **kwargs)
     return decorated_function
 
