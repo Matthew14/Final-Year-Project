@@ -26,9 +26,15 @@ namespace MoodStreamer
 			base.OnCreate (bundle);
 			SetContentView (Resource.Layout.Login);
 
+            #if DEBUG
+            ProceedToMainActivity("matt");
+            #endif
+
             
             _loginProgressDialog =  new ProgressDialog(this);
             _preferences = this.GetSharedPreferences(GetString(Resource.String.preferencesName), FileCreationMode.Private);
+
+
 
             CheckAlreadyLoggedIn();
 

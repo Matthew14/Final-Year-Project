@@ -1,26 +1,40 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-   
-   <CheckBoxPreference
-        android:key="scrobble"
-        android:id="@+id/scrobbleCheckBox"
-        android:title="Scrobble to Last.fm?"
-        android:summary="Enables scrobbling to last.fm."
-        android:defaultValue="false" />
-   <EditTextPreference 
-	android:id="@+id/lastfmUsernameEdit"
-   	android:key="lastfm_username"
-   	android:summary="Last.FM Username"
-   	 android:dependency="scrobble"
-   	android:title="Last.FM username"
-   />
 
-   <EditTextPreference
-        android:inputType="textPassword"
-        android:id="@+id/lastfmPasswordEdit"
-        android:hint="Last.FM Password" 
-   	 android:dependency="scrobble"
-        
-   		android:title="Last.FM password"
-	/>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+   <PreferenceCategory android:title="Last.FM">
+   		<CheckBoxPreference
+	        android:key="scrobble"
+	        android:id="@+id/scrobbleCheckBox"
+	        android:title="Scrobble to Last.fm"
+	        android:summary="Enables scrobbling to last.fm."
+	        android:defaultValue="false" />
+
+	   <EditTextPreference 
+			android:id="@+id/lastfmUsernameEdit"
+		   	android:key="lastfm_username"
+		   	android:summary="Your username for last.fm"
+		   	android:dependency="scrobble"
+		   	android:title="Username" />
+
+	   <EditTextPreference
+	        android:inputType="textPassword"
+	        android:id="@+id/lastfmPasswordEdit" 
+	   	 	android:dependency="scrobble"
+	   		android:title="Password" 
+		   	android:summary="Your password for last.fm" />         	
+
+   </PreferenceCategory>
+
+   <PreferenceCategory android:title="Caching">
+
+   		<CheckBoxPreference
+	        android:key="cache"
+	        android:id="@+id/cacheCheckbox"
+	        android:title="Enable Caching"
+	        android:summary="Store recent tracks locally to save data usage"
+	        android:defaultValue="true" />
+	    
+   </PreferenceCategory>
+
 </PreferenceScreen>

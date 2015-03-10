@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="MoodStreamer.MoodStreamer">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.matthewoneill.fyp">
 	<uses-sdk android:minSdkVersion="19" android:targetSdkVersion="21" />
-	<application android:label="MoodStreamer"></application>
+	<application android:label="MoodStreamer" android:icon="@drawable/icon"></application>
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 </manifest>
