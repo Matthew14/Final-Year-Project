@@ -70,10 +70,15 @@ namespace MoodStreamer
 
         private void ShowTracksSummary()
         {
+            var progressDialog = ProgressDialog.Show(this, "Getting Stats...", "Please Wait", false);
+            progressDialog.SetProgressStyle(ProgressDialogStyle.Spinner);
+            
             new Thread(() =>
             {
-                var stats = _loggedInUser.GetStats();
-                var message = String.Format("Total Tracks: {0}\n\nTracks Analysed: {1}", stats.TrackCount,
+                TrackStats stats = _loggedInUser.GetStats();
+
+                var message = String.Format("Total Tracks: {0}\n\nTracks Analysed: {1}", 
+                    stats.TrackCount,
                     stats.TracksAnalysed);
 
                 var adBuilder = new AlertDialog.Builder(this);
@@ -88,6 +93,7 @@ namespace MoodStreamer
 
                 RunOnUiThread(() =>
                 {
+                    progressDialog.Hide();
                     dialog = adBuilder.Create();
                     dialog.Show();
                 });

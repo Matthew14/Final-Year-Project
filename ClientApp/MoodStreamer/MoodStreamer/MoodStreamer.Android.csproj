@@ -75,6 +75,7 @@
     <AndroidResource Include="Resources\drawable-hdpi\testsquare.png" />
     <AndroidResource Include="Resources\drawable\info.png" />
     <AndroidResource Include="Resources\xml\Preference.axml" />
+    <AndroidResource Include="Resources\layout\RegisterLayout.axml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MoodStreamer.Shared\MoodStreamer.Shared.csproj">

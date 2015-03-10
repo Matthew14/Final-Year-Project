@@ -14,32 +14,28 @@ namespace MoodStreamer
     [Activity (Label = "Mood Streamer", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/AppTheme")]
     public class LoginActivity : Activity
 	{
-        string usernameKey = "username", passwordKey = "password";
-
+        private const string UsernameKey = "username";
+        private const string PasswordKey = "password";
 
         private LoginManager _loginManager;
         private ProgressDialog _loginProgressDialog;
-        ISharedPreferences _preferences;
+        private ISharedPreferences _preferences;
 
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
 			SetContentView (Resource.Layout.Login);
 
-            #if DEBUG
-            ProceedToMainActivity("matt");
-            #endif
-
+#if DEBUG
+		    ProceedToMainActivity("matt");
+#endif
             
             _loginProgressDialog =  new ProgressDialog(this);
-            _preferences = this.GetSharedPreferences(GetString(Resource.String.preferencesName), FileCreationMode.Private);
-
-
-
+            _preferences = GetSharedPreferences(GetString(Resource.String.preferencesName), FileCreationMode.Private);
+            
             CheckAlreadyLoggedIn();
 
 			FindViewById<Button> (Resource.Id.loginRegisterButton).Click += LoginButtonOnClick;
-
 		}
 
         private void CheckAlreadyLoggedIn()
@@ -100,12 +96,12 @@ namespace MoodStreamer
         {
             User user = null;
 
-            if (_preferences.Contains(usernameKey) && _preferences.Contains(passwordKey))
+            if (_preferences.Contains(UsernameKey) && _preferences.Contains(PasswordKey))
             {
                 user = new User()
                 {
-                    username = _preferences.GetString(usernameKey, null),
-                    password = _preferences.GetString(passwordKey, null)
+                    username = _preferences.GetString(UsernameKey, null),
+                    password = _preferences.GetString(PasswordKey, null)
                 };
             }
 
@@ -117,8 +113,8 @@ namespace MoodStreamer
         {
             var editor = _preferences.Edit();
 
-            editor.PutString(usernameKey, username);
-            editor.PutString(passwordKey, password);
+            editor.PutString(UsernameKey, username);
+            editor.PutString(PasswordKey, password);
 
             editor.Commit();
         }

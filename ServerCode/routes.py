@@ -1,9 +1,11 @@
 import socket
+import sys
 import random
 import hashlib
 import os
 import http_codes
 import track_details
+import subprocess
 
 from functools import wraps
 from app import app
@@ -220,8 +222,8 @@ def create_user():
 
     p = Postgres()
 
-    if p.user_exists(username):
-        return make_response('user {} already user already exists'.format(username), http_codes.BAD_REQUEST)
+    if p.user_exists(username)
+:        return make_response('user {} already user already exists'.format(username), http_codes.BAD_REQUEST)
 
     p.add_user(username, password_hash, first_name, surname, email)
 
@@ -231,4 +233,8 @@ def create_user():
 
 @app.route('/api/reanalyze')
 def reanalyze():
+
+    with open('err', 'w') as f:
+        p = subprocess.Popen([sys.executable, './reanalyze.py', 'matt'], stdout=subprocess.PIPE, stderr=f)
+
     abort(http_codes.NOT_IMPLEMENTED, "working on that")

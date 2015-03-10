@@ -1,7 +1,6 @@
 import psycopg2
 import psycopg2.extras
 import config
-from track_details import TrackDetails
 from user_details import UserDetails
 
 
@@ -19,6 +18,16 @@ class Postgres:
         conn_string = "dbname='{}' user='{}' host='{}' password='{}'".format(db, user, host, password)
         conn = psycopg2.connect(conn_string)
         return conn
+
+
+    def update_analysis_state(self, username, is_in_progress):
+        conn = self.connect()
+        cursor = conn.cursor()
+        sql = "UPDATE users set  analysis_in_progress = %s WHERE username = %s"
+        cursor.execute(sql, (str(is_in_progress).lower(), username))
+        conn.commit()
+        cursor.close()
+        conn.close()
 
 
     def user_exists(self, username):
@@ -50,6 +59,7 @@ class Postgres:
     def __get_track_info_for_user(self, username):
         sql = "SELECT count(*) from user_has_track WHERE username=%s"
         sql2 = "SELECT count(t.id) from tracks t JOIN user_has_track u on t.id=u.track_id WHERE u.username=%s AND t.positivity IS NOT NULL AND t.excitedness IS NOT NULL"
+        sql3 = "SELECT analysis_in_progress FROM users WHERE username = %s"
 
         conn = self.connect()
         cursor = conn.cursor()
@@ -59,16 +69,19 @@ class Postgres:
         cursor.execute(sql2, (username, ))
         tracks_analysed = cursor.fetchone()[0]
 
+        cursor.execute(sql3, (username, ))
+        is_in_progress = cursor.fetchone()[0] == 't'
+
         cursor.close()
         conn.close()
 
-        return dict(track_count=track_count, tracks_analysed=tracks_analysed)
+        return dict(track_count=track_count, tracks_analysed=tracks_analysed, analysis_in_progress=is_in_progress)
 
 
     def get_user_stats(self, username):
         info_dict = self.__get_track_info_for_user(username)
 
-        user_details = UserDetails(username, info_dict['track_count'], info_dict['tracks_analysed'])
+        user_details = UserDetails(username, info_dict['track_count'], info_dict['tracks_analysed'], analysis_in_progress=info_dict['analysis_in_progress'])
 
         return user_details
 
@@ -136,6 +149,8 @@ class Postgres:
 
 
     def get_tracks_by_excitedness_and_positivity(self, username, e, p, threashold=15):
+        from track_details import TrackDetails
+
         sql = "SELECT id, title, artist, file_path FROM tracks t JOIN user_has_track uht on uht.track_id = t.id WHERE uht.username = %s AND t.excitedness <= %s AND t.excitedness >= %s AND t.positivity <= %s AND t.positivity >= %s "
 
         conn = self.connect()
