@@ -14,17 +14,22 @@ from analysis.moodAssesment import rank_track
 from pg_db import Postgres
 
 
+
+
 #TODO filthy hack, plz change
-prod_upload_directory = '/home/fypuser/Final-Year-Project/ServerCode/uploads'
+prod_base_dir = '/home/fypuser/Final-Year-Project/ServerCode/'
+prod_upload_directory = prod_base_dir + 'uploads'
 dev_upload_directory = 'C:\\users\matthew\\desktop\\uploads'
-prod_images_directory = '/home/fypuser/Final-Year-Project/ServerCode/images'
-prod_temp_directory = '/home/fypuser/Final-Year-Project/ServerCode/tmp'
+prod_images_directory = prod_base_dir + 'images'
+prod_temp_directory = prod_base_dir + 'tmp'
+prod_out_directory = prod_base_dir + 'out'
 
 isProd = socket.gethostname() == 'FYP'
+
 upload_directory = prod_upload_directory if isProd else dev_upload_directory
 images_directory = prod_images_directory if isProd else 'images'
 temp_directory = prod_temp_directory if isProd else 'tmp'
-
+out_dir = prod_out_directory if isProd else 'out'
 
 
 #################################
@@ -234,7 +239,7 @@ def create_user():
 @app.route('/api/reanalyze')
 def reanalyze():
 
-    with open('err', 'w') as f:
+    with open(out_dir+'/err', 'a') as f:
         p = subprocess.Popen([sys.executable, './reanalyze.py', 'matt'], stdout=subprocess.PIPE, stderr=f)
 
     abort(http_codes.NOT_IMPLEMENTED, "working on that")
