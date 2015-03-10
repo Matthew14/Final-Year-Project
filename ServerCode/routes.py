@@ -227,3 +227,8 @@ def create_user():
 
 
     return username
+
+
+@app.route('/api/reanalyze')
+def reanalyze():
+    abort(http_codes.NOT_IMPLEMENTED, "working on that")

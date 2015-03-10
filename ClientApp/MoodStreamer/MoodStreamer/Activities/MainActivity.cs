@@ -1,35 +1,31 @@
 ﻿using System;
 using System.Threading;
-
 using Android.App;
-using Android.Widget;
 using Android.Content;
 using Android.OS;
 using Android.Views;
-
+using Android.Widget;
 using MoodStreamer.Shared;
 
-
 namespace MoodStreamer
-{   
-    [Activity (Label = "Mood Streamer", MainLauncher = false, Icon = "@drawable/icon", Theme = "@style/AppTheme")]
+{
+    [Activity(Label = "Mood Streamer", MainLauncher = false, Icon = "@drawable/icon", Theme = "@style/AppTheme")]
     public class MainActivity : Activity
     {
-        float _positivity = 50;
-        float _excitedness = 50;
+        private IMenuItem _backToPlayingItem;
+        private float _excitedness = 50;
+        private User _loggedInUser;
+        private LoginManager _loginManager;
+        private float _positivity = 50;
+        private ISharedPreferences _preferences;
 
-        IMenuItem _backToPlayingItem;
-        ISharedPreferences _preferences;
-        User _loggedInUser;
-        LoginManager _loginManager;
-
-        protected override void OnCreate (Bundle bundle)
+        protected override void OnCreate(Bundle bundle)
         {
-            base.OnCreate (bundle);
-            SetContentView (Resource.Layout.Main);
+            base.OnCreate(bundle);
+            SetContentView(Resource.Layout.Main);
 
             _loginManager = new LoginManager();
-            _preferences = this.GetSharedPreferences(GetString(Resource.String.preferencesName), FileCreationMode.Private);
+            _preferences = GetSharedPreferences(GetString(Resource.String.preferencesName), FileCreationMode.Private);
 
             _loggedInUser = new User(Intent.GetStringExtra("username"));
 
@@ -43,7 +39,7 @@ namespace MoodStreamer
         {
             _loginManager.Logout();
             ClearLastUserFromPrefs();
-            var intent = new Intent(Application.Context, typeof(LoginActivity));
+            var intent = new Intent(Application.Context, typeof (LoginActivity));
 
             if (_loggedInUser != null)
                 intent.PutExtra("lastUsername", _loggedInUser.username);
@@ -52,33 +48,34 @@ namespace MoodStreamer
             Finish();
         }
 
-        private void SetupEvents ()
+        private void SetupEvents()
         {
-            FindViewById<Button> (Resource.Id.startPlaying).Touch += StartPlayingPressed;
-            FindViewById<ImageView> (Resource.Id.square).Touch += SquareTouched;
+            FindViewById<Button>(Resource.Id.startPlaying).Touch += StartPlayingPressed;
+            FindViewById<ImageView>(Resource.Id.square).Touch += SquareTouched;
         }
 
         private void StartMoodRadio()
         {
             var instance = PlayerActivity.Instance;
-            if(instance != null) 
+            if (instance != null)
                 instance.Finish();
 
-            var intent = new Intent (this, typeof(PlayerActivity));
+            var intent = new Intent(this, typeof (PlayerActivity));
 
-            intent.PutExtra ("excitedness", _excitedness/100);
-            intent.PutExtra ("positivity", _positivity/100);
+            intent.PutExtra("excitedness", _excitedness/100);
+            intent.PutExtra("positivity", _positivity/100);
 
-            StartActivity (intent);
+            StartActivity(intent);
         }
 
         private void ShowTracksSummary()
         {
-            new Thread(() => 
+            new Thread(() =>
             {
                 var stats = _loggedInUser.GetStats();
-                var message = String.Format("Total Tracks: {0}\n\nTracks Analysed: {1}", stats.TrackCount, stats.TracksAnalysed);
-                
+                var message = String.Format("Total Tracks: {0}\n\nTracks Analysed: {1}", stats.TrackCount,
+                    stats.TracksAnalysed);
+
                 var adBuilder = new AlertDialog.Builder(this);
 
                 adBuilder.SetTitle(_loggedInUser.username);
@@ -86,18 +83,18 @@ namespace MoodStreamer
 
                 AlertDialog dialog = null;
 
+                adBuilder.SetNeutralButton("Reanalyze Files", (s, e) => _loggedInUser.Reanalyze());
                 adBuilder.SetPositiveButton("OK", (s, e) => dialog.Dismiss());
-                
+
                 RunOnUiThread(() =>
                 {
                     dialog = adBuilder.Create();
                     dialog.Show();
                 });
-
             }).Start();
         }
 
-        void ClearLastUserFromPrefs()
+        private void ClearLastUserFromPrefs()
         {
             var editor = _preferences.Edit();
 
@@ -107,23 +104,23 @@ namespace MoodStreamer
             editor.Commit();
         }
 
-        void GoBackToPlayingActivity()
+        private void GoBackToPlayingActivity()
         {
             throw new NotImplementedException();
         }
 
         #region EventHandlers
 
-        void StartPlayingPressed (object sender, View.TouchEventArgs e)
+        private void StartPlayingPressed(object sender, View.TouchEventArgs e)
         {
             StartMoodRadio();
         }
 
-        private void SquareTouched (object sender, View.TouchEventArgs e)
+        private void SquareTouched(object sender, View.TouchEventArgs e)
         {
             var theEvent = e.Event;
-            var x = theEvent.GetX ();
-            var y = theEvent.GetY ();
+            var x = theEvent.GetX();
+            var y = theEvent.GetY();
 
             _positivity = x;
             _excitedness = y;
@@ -132,16 +129,17 @@ namespace MoodStreamer
         #endregion
 
         #region Overrides
+
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
-            switch (item.ItemId) 
+            switch (item.ItemId)
             {
                 case Resource.Id.action_settings:
-                    var intent = new Intent (this, typeof(SettingsActivity));
-                    StartActivity (intent);
+                    var intent = new Intent(this, typeof (SettingsActivity));
+                    StartActivity(intent);
                     break;
                 case Resource.Id.action_viewstats:
-                    ShowTracksSummary ();
+                    ShowTracksSummary();
                     break;
                 case Resource.Id.action_logout_button:
                     GoToLogin();
@@ -153,22 +151,21 @@ namespace MoodStreamer
                     break;
             }
 
-            return base.OnOptionsItemSelected (item);
+            return base.OnOptionsItemSelected(item);
         }
 
-        public override bool OnCreateOptionsMenu (IMenu menu)
+        public override bool OnCreateOptionsMenu(IMenu menu)
         {
-            this.MenuInflater.Inflate (Resource.Menu.main_activity_actions, menu);
+            MenuInflater.Inflate(Resource.Menu.main_activity_actions, menu);
 
             _backToPlayingItem = menu.FindItem(Resource.Id.action_playing_button);
             _backToPlayingItem.SetEnabled(false);
             _backToPlayingItem.SetVisible(false);
 
 
-            return base.OnCreateOptionsMenu (menu);
+            return base.OnCreateOptionsMenu(menu);
         }
 
         #endregion
-
     }
 }

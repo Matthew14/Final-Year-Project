@@ -19,5 +19,10 @@
         {
             return MoodRestClient.Instance.GetStatisticsForLoggedInUser();
         }
+
+        public void Reanalyze()
+        {
+            MoodRestClient.Instance.ReanalyzeTracksForLoggedInUser();
+        }
     }
 }
