@@ -26,6 +26,7 @@ prod_out_directory = prod_base_dir + 'out'
 
 isProd = socket.gethostname() == 'FYP'
 
+base_dir = prod_base_dir if isProd else '.'
 upload_directory = prod_upload_directory if isProd else dev_upload_directory
 images_directory = prod_images_directory if isProd else 'images'
 temp_directory = prod_temp_directory if isProd else 'tmp'
@@ -239,9 +240,13 @@ def create_user():
 @app.route('/api/reanalyze')
 def reanalyze():
 
+    #TODO
     username = 'matt'
 
-    with open(out_dir+'/err', 'a') as f:
-        p = subprocess.Popen([sys.executable, './reanalyze.py', username], stdout=subprocess.PIPE, stderr=f)
+    error_file = os.path.join(out_dir, 'err')
+    script = os.path.join(base_dir, 'reanalyze.py')
+
+    with open(error_file, 'a') as f:
+        p = subprocess.Popen([sys.executable, script, username], stdout=subprocess.PIPE, stderr=f)
 
     abort(http_codes.NOT_IMPLEMENTED, "working on that")
