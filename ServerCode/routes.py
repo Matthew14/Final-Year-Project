@@ -227,8 +227,8 @@ def create_user():
 
     p = Postgres()
 
-    if p.user_exists(username)
-:        return make_response('user {} already user already exists'.format(username), http_codes.BAD_REQUEST)
+    if p.user_exists(username):
+        return make_response('user {} already user already exists'.format(username), http_codes.BAD_REQUEST)
 
     p.add_user(username, password_hash, first_name, surname, email)
 
@@ -239,7 +239,9 @@ def create_user():
 @app.route('/api/reanalyze')
 def reanalyze():
 
+    username = 'matt'
+
     with open(out_dir+'/err', 'a') as f:
-        p = subprocess.Popen([sys.executable, './reanalyze.py', 'matt'], stdout=subprocess.PIPE, stderr=f)
+        p = subprocess.Popen([sys.executable, './reanalyze.py', username], stdout=subprocess.PIPE, stderr=f)
 
     abort(http_codes.NOT_IMPLEMENTED, "working on that")
