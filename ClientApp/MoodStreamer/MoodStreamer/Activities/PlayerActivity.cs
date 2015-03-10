@@ -37,10 +37,9 @@ namespace MoodStreamer
 
 			Instance = this;
 
-			if (_player == null) {
+			if (_player == null) 
 				_player = new MediaPlayer ();
-			}
-
+			
             _excitedness = Intent.GetFloatExtra("excitedness", 0);
             _positivity = Intent.GetFloatExtra("positivity", 0);
 

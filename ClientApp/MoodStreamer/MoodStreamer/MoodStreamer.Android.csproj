@@ -52,7 +52,7 @@
     <Compile Include="Activities\LoginActivity.cs" />
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Activities\PlayerActivity.cs" />
-    <Compile Include="Utils.cs" />
+    <Compile Include="Activities\SettingsActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -73,6 +73,7 @@
     <AndroidResource Include="Resources\layout\Login.axml" />
     <AndroidResource Include="Resources\drawable-hdpi\testsquare.png" />
     <AndroidResource Include="Resources\drawable\info.png" />
+    <AndroidResource Include="Resources\xml\Preference.axml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MoodStreamer.Shared\MoodStreamer.Shared.csproj">
@@ -86,6 +87,7 @@
     <Folder Include="Resources\menu\" />
     <Folder Include="Activities\" />
     <Folder Include="Resources\drawable-hdpi\" />
+    <Folder Include="Resources\xml\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\MoodStreamer.db" />

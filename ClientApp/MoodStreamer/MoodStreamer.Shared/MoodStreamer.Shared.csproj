@@ -44,7 +44,6 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
     <Reference Include="Mono.Android" />
-    <Reference Include="Mono.Data.Sqlite" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Streamer.cs" />
@@ -54,15 +53,11 @@
     <Compile Include="Track.cs" />
     <Compile Include="LoginManager.cs" />
     <Compile Include="User.cs" />
-    <Compile Include="Database.cs" />
-    <Compile Include="SQLite.cs" />
-    <Compile Include="SQLiteAsync.cs" />
     <Compile Include="TrackManager.cs" />
     <Compile Include="TrackStats.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Values\Strings.xml" />

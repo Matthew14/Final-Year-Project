@@ -6,9 +6,6 @@ namespace MoodStreamer.Shared
 	{
 		MoodRestClient _client = MoodRestClient.Instance;
 
-        Database _database = new Database();
-
-
         public string Username { get; set;}
 		public LoginManager ()
 		{
@@ -28,30 +25,16 @@ namespace MoodStreamer.Shared
             return _client.Logout();
         }
 
+        /// <summary>
+        /// trys to login to the service with the given credentials
+        /// </summary>
+        /// <returns><c>true</c>, if login was performed, <c>false</c> otherwise.</returns>
+        /// <param name="username">Username.</param>
+        /// <param name="password">Password.</param>
 		public bool PerformLogin(string username, string password)
 		{
-
             return _client.Login(username, password);
 		}
-
-        /// <summary>
-        /// Loads the last login credentials.
-        /// </summary>
-        /// <returns>Last user logged in or null if no user (logged out)</returns>
-        public User LoadLastLoginCredentials()
-        {
-            return _database.GetLastUser();
-        }
-
-        public void ClearLastLoginCredentials()
-        {
-            _database.ClearLastUser();
-        }
-
-        public void SaveLastLogin(string username, string password)
-        {
-            _database.SaveLastUser(username, password);
-        }
 	}
 }
 

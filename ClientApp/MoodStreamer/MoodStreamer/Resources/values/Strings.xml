@@ -8,4 +8,5 @@
 	<string name="startPlayingText">Let\'s Go</string>
 	<string name="howareyoufeeling">How Are You Feeling?</string>
 	<string name="loginRegisterText">Login</string>
+	<string name="preferencesName">appPrefs</string>
 </resources>

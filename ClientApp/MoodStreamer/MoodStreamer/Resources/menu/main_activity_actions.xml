@@ -1,16 +1,21 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
-
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item 
-    	android:id="@+id/action_settings"
-        android:title="Settings"
-        android:showAsAction="never" />
-     <item android:id="@+id/action_logout_button"
-          android:title="Logout"
-          android:showAsAction="never" />
-     <item android:id="@+id/action_viewstats"
-          android:title="View Song Info"
-          android:icon="@drawable/info"
-          android:showAsAction="always" />
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+  <item 
+    android:id="@+id/action_settings"
+    android:showAsAction="never"
+    android:title="Settings"/>
+  <item 
+    android:id="@+id/action_logout_button"
+    android:showAsAction="never"
+    android:title="Logout"/>
+  <item 
+    android:icon="@drawable/icon"
+    android:id="@+id/action_playing_button"
+    android:showAsAction="always" 
+    android:title="Back to Playing"/>
+  <item 
+    android:icon="@drawable/info"
+    android:id="@+id/action_viewstats"
+    android:showAsAction="always" 
+    android:title="View Song Info"/>
 </menu>

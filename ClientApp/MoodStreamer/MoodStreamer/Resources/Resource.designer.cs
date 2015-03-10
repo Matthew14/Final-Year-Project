@@ -80,50 +80,62 @@ namespace MoodStreamer
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f07000d
-			public const int action_logout_button = 2131165197;
+			// aapt resource value: 0x7f080010
+			public const int action_logout_button = 2131230736;
 			
-			// aapt resource value: 0x7f07000c
-			public const int action_settings = 2131165196;
+			// aapt resource value: 0x7f080011
+			public const int action_playing_button = 2131230737;
 			
-			// aapt resource value: 0x7f07000e
-			public const int action_viewstats = 2131165198;
+			// aapt resource value: 0x7f08000f
+			public const int action_settings = 2131230735;
 			
-			// aapt resource value: 0x7f070008
-			public const int artWorkImageView = 2131165192;
+			// aapt resource value: 0x7f080012
+			public const int action_viewstats = 2131230738;
 			
-			// aapt resource value: 0x7f070009
-			public const int backButton = 2131165193;
+			// aapt resource value: 0x7f080008
+			public const int artWorkImageView = 2131230728;
 			
-			// aapt resource value: 0x7f070003
-			public const int loginRegisterButton = 2131165187;
+			// aapt resource value: 0x7f080009
+			public const int backButton = 2131230729;
 			
-			// aapt resource value: 0x7f070000
-			public const int logo = 2131165184;
+			// aapt resource value: 0x7f08000e
+			public const int lastfmPasswordEdit = 2131230734;
 			
-			// aapt resource value: 0x7f07000b
-			public const int nextButton = 2131165195;
+			// aapt resource value: 0x7f08000d
+			public const int lastfmUsernameEdit = 2131230733;
 			
-			// aapt resource value: 0x7f070002
-			public const int passwordBox = 2131165186;
+			// aapt resource value: 0x7f080003
+			public const int loginRegisterButton = 2131230723;
 			
-			// aapt resource value: 0x7f07000a
-			public const int playPauseButton = 2131165194;
+			// aapt resource value: 0x7f080000
+			public const int logo = 2131230720;
 			
-			// aapt resource value: 0x7f070006
-			public const int square = 2131165190;
+			// aapt resource value: 0x7f08000b
+			public const int nextButton = 2131230731;
 			
-			// aapt resource value: 0x7f070005
-			public const int startPlaying = 2131165189;
+			// aapt resource value: 0x7f080002
+			public const int passwordBox = 2131230722;
 			
-			// aapt resource value: 0x7f070004
-			public const int textView2 = 2131165188;
+			// aapt resource value: 0x7f08000a
+			public const int playPauseButton = 2131230730;
 			
-			// aapt resource value: 0x7f070007
-			public const int theView = 2131165191;
+			// aapt resource value: 0x7f08000c
+			public const int scrobbleCheckBox = 2131230732;
 			
-			// aapt resource value: 0x7f070001
-			public const int usernameBox = 2131165185;
+			// aapt resource value: 0x7f080006
+			public const int square = 2131230726;
+			
+			// aapt resource value: 0x7f080005
+			public const int startPlaying = 2131230725;
+			
+			// aapt resource value: 0x7f080004
+			public const int textView2 = 2131230724;
+			
+			// aapt resource value: 0x7f080007
+			public const int theView = 2131230727;
+			
+			// aapt resource value: 0x7f080001
+			public const int usernameBox = 2131230721;
 			
 			static Id()
 			{
@@ -160,8 +172,8 @@ namespace MoodStreamer
 		public partial class Menu
 		{
 			
-			// aapt resource value: 0x7f060000
-			public const int main_activity_actions = 2131099648;
+			// aapt resource value: 0x7f070000
+			public const int main_activity_actions = 2131165184;
 			
 			static Menu()
 			{
@@ -176,35 +188,38 @@ namespace MoodStreamer
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f040001
-			public const int ApplicationName = 2130968577;
+			// aapt resource value: 0x7f050001
+			public const int ApplicationName = 2131034113;
 			
-			// aapt resource value: 0x7f040000
-			public const int Hello = 2130968576;
+			// aapt resource value: 0x7f050000
+			public const int Hello = 2131034112;
 			
-			// aapt resource value: 0x7f040002
-			public const int app_name = 2130968578;
+			// aapt resource value: 0x7f050002
+			public const int app_name = 2131034114;
 			
-			// aapt resource value: 0x7f040006
-			public const int calmExcitedLabel = 2130968582;
+			// aapt resource value: 0x7f050006
+			public const int calmExcitedLabel = 2131034118;
 			
-			// aapt resource value: 0x7f040003
-			public const int happyButtonText = 2130968579;
+			// aapt resource value: 0x7f050003
+			public const int happyButtonText = 2131034115;
 			
-			// aapt resource value: 0x7f040008
-			public const int howareyoufeeling = 2130968584;
+			// aapt resource value: 0x7f050008
+			public const int howareyoufeeling = 2131034120;
 			
-			// aapt resource value: 0x7f040009
-			public const int loginRegisterText = 2130968585;
+			// aapt resource value: 0x7f050009
+			public const int loginRegisterText = 2131034121;
 			
-			// aapt resource value: 0x7f040005
-			public const int positivityLabel = 2130968581;
+			// aapt resource value: 0x7f050005
+			public const int positivityLabel = 2131034117;
 			
-			// aapt resource value: 0x7f040004
-			public const int sadButtonText = 2130968580;
+			// aapt resource value: 0x7f05000a
+			public const int preferencesName = 2131034122;
 			
-			// aapt resource value: 0x7f040007
-			public const int startPlayingText = 2130968583;
+			// aapt resource value: 0x7f050004
+			public const int sadButtonText = 2131034116;
+			
+			// aapt resource value: 0x7f050007
+			public const int startPlayingText = 2131034119;
 			
 			static String()
 			{
@@ -219,8 +234,8 @@ namespace MoodStreamer
 		public partial class Style
 		{
 			
-			// aapt resource value: 0x7f050000
-			public const int AppTheme = 2131034112;
+			// aapt resource value: 0x7f060000
+			public const int AppTheme = 2131099648;
 			
 			static Style()
 			{
@@ -228,6 +243,22 @@ namespace MoodStreamer
 			}
 			
 			private Style()
+			{
+			}
+		}
+		
+		public partial class Xml
+		{
+			
+			// aapt resource value: 0x7f040000
+			public const int Preference = 2130968576;
+			
+			static Xml()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Xml()
 			{
 			}
 		}

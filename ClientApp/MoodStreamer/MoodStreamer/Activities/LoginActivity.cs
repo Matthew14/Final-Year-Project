@@ -14,17 +14,22 @@ namespace MoodStreamer
     [Activity (Label = "Mood Streamer", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/AppTheme")]
     public class LoginActivity : Activity
 	{
+        string usernameKey = "username", passwordKey = "password";
+
+
         private LoginManager _loginManager;
         private ProgressDialog _loginProgressDialog;
+        ISharedPreferences _preferences;
 
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
 			SetContentView (Resource.Layout.Login);
 
+            
             _loginProgressDialog =  new ProgressDialog(this);
-            string db = Utils.LoadDatabaseIntoStorage(this);
-            Database.Path = db;
+            _preferences = this.GetSharedPreferences(GetString(Resource.String.preferencesName), FileCreationMode.Private);
+
             CheckAlreadyLoggedIn();
 
 			FindViewById<Button> (Resource.Id.loginRegisterButton).Click += LoginButtonOnClick;
@@ -35,7 +40,7 @@ namespace MoodStreamer
         {
             _loginManager = new LoginManager();      
 
-            var lastUser = _loginManager.LoadLastLoginCredentials();
+            var lastUser = GetLastUser();
 
             if (lastUser != null)
                 Login(lastUser);
@@ -70,7 +75,7 @@ namespace MoodStreamer
             {
                 if (_loginManager.PerformLogin(username, password))
                 {
-                    _loginManager.SaveLastLogin(username, password);
+                    SaveLoginDetails(username, password);
                     ProceedToMainActivity(username);
                 }
                 else
@@ -81,9 +86,36 @@ namespace MoodStreamer
                         Toast.MakeText(Application.Context, "Incorrect Username or Password", ToastLength.Long).Show();
                     });
                 }
+
             }){IsBackground = true, Name = "Login Thread"}.Start();
         }
-         
+
+        User GetLastUser()
+        {
+            User user = null;
+
+            if (_preferences.Contains(usernameKey) && _preferences.Contains(passwordKey))
+            {
+                user = new User()
+                {
+                    username = _preferences.GetString(usernameKey, null),
+                    password = _preferences.GetString(passwordKey, null)
+                };
+            }
+
+            return user;
+        }
+
+
+        void SaveLoginDetails(string username, string password)
+        {
+            var editor = _preferences.Edit();
+
+            editor.PutString(usernameKey, username);
+            editor.PutString(passwordKey, password);
+
+            editor.Commit();
+        }
 
 		void LoginButtonOnClick (object sender, EventArgs e)
 		{

@@ -18,9 +18,9 @@ namespace MoodStreamer
         float _positivity = 50;
         float _excitedness = 50;
 
+        IMenuItem _backToPlayingItem;
+        ISharedPreferences _preferences;
         User _loggedInUser;
-
-        Database _database;
         LoginManager _loginManager;
 
         protected override void OnCreate (Bundle bundle)
@@ -29,7 +29,8 @@ namespace MoodStreamer
             SetContentView (Resource.Layout.Main);
 
             _loginManager = new LoginManager();
-            _database = new Database();
+            _preferences = this.GetSharedPreferences(GetString(Resource.String.preferencesName), FileCreationMode.Private);
+
             _loggedInUser = new User(Intent.GetStringExtra("username"));
 
             if (_loggedInUser == null)
@@ -38,10 +39,10 @@ namespace MoodStreamer
             SetupEvents();
         }
 
-        void GoToLogin()
+        private void GoToLogin()
         {
             _loginManager.Logout();
-            _database.ClearLastUser();
+            ClearLastUserFromPrefs();
             var intent = new Intent(Application.Context, typeof(LoginActivity));
 
             if (_loggedInUser != null)
@@ -51,7 +52,7 @@ namespace MoodStreamer
             Finish();
         }
 
-        void SetupEvents ()
+        private void SetupEvents ()
         {
             FindViewById<Button> (Resource.Id.startPlaying).Touch += StartPlayingPressed;
             FindViewById<ImageView> (Resource.Id.square).Touch += SquareTouched;
@@ -96,6 +97,21 @@ namespace MoodStreamer
             }).Start();
         }
 
+        void ClearLastUserFromPrefs()
+        {
+            var editor = _preferences.Edit();
+
+            editor.Remove("username");
+            editor.Remove("password");
+
+            editor.Commit();
+        }
+
+        void GoBackToPlayingActivity()
+        {
+            throw new NotImplementedException();
+        }
+
         #region EventHandlers
 
         void StartPlayingPressed (object sender, View.TouchEventArgs e)
@@ -121,12 +137,17 @@ namespace MoodStreamer
             switch (item.ItemId) 
             {
                 case Resource.Id.action_settings:
+                    var intent = new Intent (this, typeof(SettingsActivity));
+                    StartActivity (intent);
                     break;
                 case Resource.Id.action_viewstats:
                     ShowTracksSummary ();
                     break;
                 case Resource.Id.action_logout_button:
                     GoToLogin();
+                    break;
+                case Resource.Id.action_playing_button:
+                    GoBackToPlayingActivity();
                     break;
                 default:
                     break;
@@ -137,8 +158,12 @@ namespace MoodStreamer
 
         public override bool OnCreateOptionsMenu (IMenu menu)
         {
-            var menuInflater = this.MenuInflater;
-            menuInflater.Inflate (Resource.Menu.main_activity_actions, menu);
+            this.MenuInflater.Inflate (Resource.Menu.main_activity_actions, menu);
+
+            _backToPlayingItem = menu.FindItem(Resource.Id.action_playing_button);
+            _backToPlayingItem.SetEnabled(false);
+            _backToPlayingItem.SetVisible(false);
+
 
             return base.OnCreateOptionsMenu (menu);
         }
