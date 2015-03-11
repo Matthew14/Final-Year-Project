@@ -8,13 +8,14 @@
     android:minHeight="25px">
     <LinearLayout
         android:orientation="vertical"
+        android:id="@+id/artworkLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <ImageView
             android:src="@android:drawable/ic_menu_gallery"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitXY"
+            android:scaleType="fitStart"
             android:gravity="center"
             android:id="@+id/artWorkImageView" />
     </LinearLayout>

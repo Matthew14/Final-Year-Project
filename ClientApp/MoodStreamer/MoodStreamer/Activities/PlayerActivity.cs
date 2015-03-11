@@ -50,7 +50,6 @@ namespace MoodStreamer.Activities
 
             _coverArt = FindViewById<ImageView>(Resource.Id.artWorkImageView);
 
-
             Title = String.Format("({0} {1})", _excitedness, _positivity);
 
             ActionBar.SetHomeButtonEnabled(true);
@@ -135,8 +134,9 @@ namespace MoodStreamer.Activities
             _player.Reset();
             _player.SetDataSource(fp);
             _player.PrepareAsync();
+
             //_player.Start();
-            RunOnUiThread(() => Title = String.Format("{0} - {1}", track.Artist, track.Title));
+            Title = String.Format("{0} - {1}", track.Artist, track.Title);
 
         }
 
