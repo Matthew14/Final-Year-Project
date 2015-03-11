@@ -70,7 +70,8 @@ class Postgres:
         tracks_analysed = cursor.fetchone()[0]
 
         cursor.execute(sql3, (username, ))
-        is_in_progress = cursor.fetchone()[0] == 't'
+
+        is_in_progress = cursor.fetchone()[0]
 
         cursor.close()
         conn.close()
@@ -151,7 +152,7 @@ class Postgres:
     def get_tracks_by_excitedness_and_positivity(self, username, e, p, threashold=15):
         from track_details import TrackDetails
 
-        sql = "SELECT id, title, artist, file_path FROM tracks t JOIN user_has_track uht on uht.track_id = t.id WHERE uht.username = %s AND t.excitedness <= %s AND t.excitedness >= %s AND t.positivity <= %s AND t.positivity >= %s "
+        sql = "SELECT id, title, artist, file_path, album_art_url FROM tracks t JOIN user_has_track uht on uht.track_id = t.id WHERE uht.username = %s AND t.excitedness <= %s AND t.excitedness >= %s AND t.positivity <= %s AND t.positivity >= %s "
 
         conn = self.connect()
         cursor = conn.cursor()
@@ -164,7 +165,9 @@ class Postgres:
 
         tracks = []
         for r in results:
-            tracks.append(TrackDetails(r[1], r[2], '', "music/" + r[3].replace('\\', '/')))
+            track = TrackDetails(r[1], r[2], '', "music/" + r[3].replace('\\', '/'))
+            track.set_album_art(r[4])
+            tracks.append(track)
 
         return tracks
 

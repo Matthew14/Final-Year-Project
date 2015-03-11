@@ -7,6 +7,8 @@
 	<string name="calmExcitedLabel">Excitedness</string>
 	<string name="startPlayingText">Let\'s Go</string>
 	<string name="howareyoufeeling">How Are You Feeling?</string>
-	<string name="loginRegisterText">Login</string>
-	<string name="preferencesName">appPrefs</string>
+	<string name="loginText">Login</string>
+  <string name="registerText">Sign Up</string>
+
+  <string name="preferencesName">appPrefs</string>
 </resources>

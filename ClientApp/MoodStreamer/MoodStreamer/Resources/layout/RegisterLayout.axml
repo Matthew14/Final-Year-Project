@@ -1,8 +1,38 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
+    android:layout_height="fill_parent">
+    <EditText
+        android:layout_margin="20dp"
+        android:id="@+id/usernameBoxRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Username" />
+    <EditText
+        android:layout_margin="20dp"
+        android:id="@+id/emailBoxRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email" />
+    <EditText
+        android:layout_margin="20dp"
+        android:id="@+id/passwordBoxRegister"
+        android:inputType="textPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Password" />
+    <EditText
+        android:layout_margin="20dp"
+        android:id="@+id/passwordAgainBox"
+        android:inputType="textPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Password Again" />
+    <Button
+        android:layout_margin="20dp"
+        android:text="@string/registerText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/registerButtonOnRegisterActivity" />
 </LinearLayout>
-

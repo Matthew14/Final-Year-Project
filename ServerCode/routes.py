@@ -9,7 +9,7 @@ import subprocess
 
 from functools import wraps
 from app import app
-from flask import request, send_file, abort, make_response, jsonify, session, send_from_directory
+from flask import request, send_file, abort, make_response, jsonify, session, send_from_directory, g
 from analysis.moodAssesment import rank_track
 from pg_db import Postgres
 
@@ -35,6 +35,17 @@ out_dir = prod_out_directory if isProd else 'out'
 
 #################################
 #Helper functions
+
+
+def get_database():
+    db = g.get('db', None)
+
+    if db is None:
+        print "here"
+        db = Postgres()
+        setattr(g, 'db', db)
+
+    return db
 
 
 def login_required(f):
@@ -96,7 +107,7 @@ def upload():
 
     save_track_in_right_place(track, temp_save_path)
 
-    p = Postgres()
+    p = get_database()
     rank_track(track)
 
     p.associate_track_with_user(track, username)
@@ -122,7 +133,7 @@ def track(excitedness=None, positivity=None):
     except:
         abort(http_codes.INTERNAL_SERVER_ERROR, 'Only numbers please, friend.')
 
-    p = Postgres()
+    p = get_database()
     tracks = p.get_tracks_by_excitedness_and_positivity(username, excitedness, positivity)
 
     print tracks
@@ -141,7 +152,7 @@ def stats():
     if username is None:
         abort(http_codes.UNAUTHORIZED, "not logged in")
 
-    p = Postgres()
+    p = get_database()
 
     user_stats = p.get_user_stats(username)
 
@@ -171,7 +182,7 @@ def login():
     if 'password' not in json:
         return make_response('no password specified', http_codes.BAD_REQUEST)
 
-    p = Postgres()
+    p = get_database()
 
     username = json['username']
     password_hash = hash_password(json['password'])
@@ -199,7 +210,7 @@ def logout():
 
 @app.route('/api/users/<string:username>')
 def get_user(username):
-    p = Postgres()
+    p = get_database()
     user = p.get_user_as_dict(username)
 
     if user is None:
@@ -226,7 +237,7 @@ def create_user():
     surname = json['surname'] if 'surname' in json else None
     email = json['email'] if 'email' in json else None
 
-    p = Postgres()
+    p = get_database()
 
     if p.user_exists(username):
         return make_response('user {} already user already exists'.format(username), http_codes.BAD_REQUEST)
@@ -237,8 +248,20 @@ def create_user():
     return username
 
 
+@app.route('/api/analysisInProgress')
+def analysis_in_progress():
+    username = None if 'username' not in session else session['username']
+
+    username = 'matt'
+
+    return ""
+
+
+
 @app.route('/api/reanalyze')
 def reanalyze():
+
+    username = None if 'username' not in session else session['username']
 
     #TODO
     username = 'matt'
@@ -250,3 +273,8 @@ def reanalyze():
         p = subprocess.Popen([sys.executable, script, username], stdout=subprocess.PIPE, stderr=f)
 
     abort(http_codes.NOT_IMPLEMENTED, "working on that")
+
+
+@app.route('/api/disagree/<string:trackname>/<string:thoughts>')
+def disagree(trackname, thoughts):
+    abort(http_codes.NOT_IMPLEMENTED, "Not done yet")

@@ -13,7 +13,7 @@ class TrackDetails:
         self.album_art = "fyp.matthewoneill.com/images/default.png"
 
 
-    def set_album_art(url):
+    def set_album_art(self, url):
         self.album_art = url
 
 

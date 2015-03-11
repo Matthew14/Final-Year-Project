@@ -7,6 +7,7 @@ using Android.App;
 using Android.OS;
 using Android.Widget;
 using Android.Content;
+using MoodStreamer.Activities;
 
 
 namespace MoodStreamer
@@ -27,7 +28,7 @@ namespace MoodStreamer
 			SetContentView (Resource.Layout.Login);
 
 #if DEBUG
-		    ProceedToMainActivity("matt");
+		    //ProceedToMainActivity("matt");
 #endif
             
             _loginProgressDialog =  new ProgressDialog(this);
@@ -35,7 +36,13 @@ namespace MoodStreamer
             
             CheckAlreadyLoggedIn();
 
-			FindViewById<Button> (Resource.Id.loginRegisterButton).Click += LoginButtonOnClick;
+			FindViewById<Button>(Resource.Id.loginButtonLoginActivity).Click += LoginButtonOnClick;
+		    FindViewById<Button>(Resource.Id.registerButtonLoginActivity).Click += (s, e) =>
+		    {
+                var intent = new Intent(Application.Context, typeof(RegisterActivity));
+                StartActivity(intent);
+		    };
+
 		}
 
         private void CheckAlreadyLoggedIn()
@@ -121,8 +128,8 @@ namespace MoodStreamer
 
 		void LoginButtonOnClick (object sender, EventArgs e)
 		{
-			string username = FindViewById<EditText> (Resource.Id.usernameBox).Text;
-			string password = FindViewById<EditText> (Resource.Id.passwordBox).Text;
+			string username = FindViewById<EditText> (Resource.Id.usernameBoxLogin).Text;
+			string password = FindViewById<EditText> (Resource.Id.passwordBoxLogin).Text;
 
             Login(username, password);
 		}

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Runtime.Remoting.Messaging;
 using System.Threading;
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
@@ -18,6 +20,8 @@ namespace MoodStreamer
         private LoginManager _loginManager;
         private float _positivity = 50;
         private ISharedPreferences _preferences;
+        private ImageView _image;
+
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -50,8 +54,9 @@ namespace MoodStreamer
 
         private void SetupEvents()
         {
-            FindViewById<Button>(Resource.Id.startPlaying).Touch += StartPlayingPressed;
-            FindViewById<ImageView>(Resource.Id.square).Touch += SquareTouched;
+            FindViewById<Button>(Resource.Id.startPlaying).Touch+= StartPlayingPressed;
+            _image = FindViewById<ImageView>(Resource.Id.square);
+            _image.Touch += SquareTouched;
         }
 
         private void StartMoodRadio()
@@ -130,6 +135,19 @@ namespace MoodStreamer
 
             _positivity = x;
             _excitedness = y;
+
+            const int div = 6;
+
+            int r = (int) Math.Round(_positivity/div);
+            int b = (int) Math.Round(_excitedness/div);
+
+            if (r < 0) r = 0;
+            if (r > 255) r = 255;
+            if (b < 0) b = 0;
+            if (b > 255) b = 255;
+
+            _image.SetBackgroundColor(new Color(r, 0, b));
+
         }
 
         #endregion
