@@ -138,9 +138,10 @@ def track(excitedness=None, positivity=None):
     p = get_database()
     tracks = p.get_tracks_by_excitedness_and_positivity(username, excitedness, positivity)
 
-    print tracks
+    if len(tracks) > 0:
+        return jsonify(random.choice(tracks).__dict__)
 
-    return jsonify(tracks[0].__dict__) if len(tracks) > 0 else None
+    return None
 
 
 @app.route('/api/statistics')
