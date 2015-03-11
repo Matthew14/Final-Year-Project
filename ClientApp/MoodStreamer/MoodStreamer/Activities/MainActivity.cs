@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.Remoting.Messaging;
 using System.Threading;
 using Android.App;
 using Android.Content;
@@ -9,7 +8,7 @@ using Android.Views;
 using Android.Widget;
 using MoodStreamer.Shared;
 
-namespace MoodStreamer
+namespace MoodStreamer.Activities
 {
     [Activity(Label = "Mood Streamer", MainLauncher = false, Icon = "@drawable/icon", Theme = "@style/AppTheme")]
     public class MainActivity : Activity
@@ -147,7 +146,6 @@ namespace MoodStreamer
             if (b > 255) b = 255;
 
             _image.SetBackgroundColor(new Color(r, 0, b));
-
         }
 
         #endregion

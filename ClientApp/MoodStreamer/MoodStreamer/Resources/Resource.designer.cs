@@ -104,8 +104,8 @@ namespace MoodStreamer
 			// aapt resource value: 0x7f080015
 			public const int cacheCheckbox = 2131230741;
 			
-			// aapt resource value: 0x7f08000e
-			public const int emailBoxRegister = 2131230734;
+			// aapt resource value: 0x7f08000d
+			public const int emailBoxRegister = 2131230733;
 			
 			// aapt resource value: 0x7f080014
 			public const int lastfmPasswordEdit = 2131230740;
@@ -158,8 +158,8 @@ namespace MoodStreamer
 			// aapt resource value: 0x7f080001
 			public const int usernameBoxLogin = 2131230721;
 			
-			// aapt resource value: 0x7f08000d
-			public const int usernameBoxRegister = 2131230733;
+			// aapt resource value: 0x7f08000e
+			public const int usernameBoxRegister = 2131230734;
 			
 			static Id()
 			{

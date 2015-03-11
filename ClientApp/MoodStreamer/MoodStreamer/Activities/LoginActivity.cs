@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Threading;
-
+using Android.App;
+using Android.Content;
+using Android.OS;
+using Android.Views;
+using Android.Views.InputMethods;
+using Android.Widget;
 using MoodStreamer.Shared;
 
-using Android.App;
-using Android.OS;
-using Android.Widget;
-using Android.Content;
-using MoodStreamer.Activities;
-
-
-namespace MoodStreamer
+namespace MoodStreamer.Activities
 {
     [Activity (Label = "Mood Streamer", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/AppTheme")]
     public class LoginActivity : Activity
 	{
         private const string UsernameKey = "username";
         private const string PasswordKey = "password";
+
+        private EditText _username, _password;
 
         private LoginManager _loginManager;
         private ProgressDialog _loginProgressDialog;
@@ -35,6 +35,10 @@ namespace MoodStreamer
             _preferences = GetSharedPreferences(GetString(Resource.String.preferencesName), FileCreationMode.Private);
             
             CheckAlreadyLoggedIn();
+
+            _username = FindViewById<EditText>(Resource.Id.usernameBoxLogin);
+		    _password = FindViewById<EditText>(Resource.Id.passwordBoxLogin);
+
 
 			FindViewById<Button>(Resource.Id.loginButtonLoginActivity).Click += LoginButtonOnClick;
 		    FindViewById<Button>(Resource.Id.registerButtonLoginActivity).Click += (s, e) =>
@@ -128,8 +132,8 @@ namespace MoodStreamer
 
 		void LoginButtonOnClick (object sender, EventArgs e)
 		{
-			string username = FindViewById<EditText> (Resource.Id.usernameBoxLogin).Text;
-			string password = FindViewById<EditText> (Resource.Id.passwordBoxLogin).Text;
+			string username = _username.Text;
+			string password = _password.Text;
 
             Login(username, password);
 		}

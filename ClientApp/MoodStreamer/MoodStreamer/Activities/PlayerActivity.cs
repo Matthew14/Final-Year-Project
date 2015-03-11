@@ -10,7 +10,7 @@ using Android.Views;
 using Android.Widget;
 using MoodStreamer.Shared;
 
-namespace MoodStreamer
+namespace MoodStreamer.Activities
 {
     [Activity(Label = "PlayerActivity", Theme = "@style/AppTheme")]
     public class PlayerActivity : Activity, MediaController.IMediaPlayerControl
@@ -19,6 +19,10 @@ namespace MoodStreamer
 
         private float _excitedness;
         private float _positivity;
+
+        private object _lockObject = new Object();
+
+        private Thread _playerThread;
 
         private TrackManager _trackManager;
 
@@ -36,7 +40,10 @@ namespace MoodStreamer
             Instance = this;
 
             if (_player == null)
+            {
                 _player = new MediaPlayer();
+                _player.Prepared += (s, e) => _player.Start();
+            }
 
             _excitedness = Intent.GetFloatExtra("excitedness", 0);
             _positivity = Intent.GetFloatExtra("positivity", 0);
@@ -114,6 +121,7 @@ namespace MoodStreamer
 
         private void PlayTrack()
         {
+
             if (_trackManager == null)
                 _trackManager = new TrackManager();
 
@@ -126,10 +134,10 @@ namespace MoodStreamer
             _player.SetAudioStreamType(Stream.Music);
             _player.Reset();
             _player.SetDataSource(fp);
-            _player.Prepare();
-            _player.Start();
+            _player.PrepareAsync();
+            //_player.Start();
+            RunOnUiThread(() => Title = String.Format("{0} - {1}", track.Artist, track.Title));
 
-            Title = String.Format("{0} - {1}", track.Artist, track.Title);
         }
 
 

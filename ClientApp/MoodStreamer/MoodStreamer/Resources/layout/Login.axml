@@ -11,12 +11,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <EditText
+        android:lines="1"
+        android:maxLines="1"
         android:layout_margin="20dp"
         android:id="@+id/usernameBoxLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Username" />
     <EditText
+        android:lines="1"
+        android:maxLines="1"
         android:layout_marginBottom="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"

@@ -30,7 +30,11 @@ class Track(object):
         self.mode = mode
         self.tempo = tempo
         self.danceability = danceability
-        self.lyrics_positivity = self.get_lyric_positivity()
+
+        try:
+            self.lyrics_positivity = self.get_lyric_positivity()
+        except:
+            self.lyrics_positivity = 0
 
 
     def get_lyric_positivity(self):
@@ -69,7 +73,11 @@ def get_echonest_track(artist, track):
     urlToGet = echonestURL.format(artist, track)
     jsonString = read_url(urlToGet)
     trackJson = json.loads(jsonString)
-    trackSummary = trackJson['response']['songs'][0]['audio_summary']
+
+    try:
+        trackSummary = trackJson['response']['songs'][0]['audio_summary']
+    except:
+        return None
 
     lyric_analyser = LyricAnalyser()
 

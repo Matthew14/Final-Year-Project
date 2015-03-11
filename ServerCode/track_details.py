@@ -1,4 +1,5 @@
 import os
+import last_fm
 from mutagen.id3 import ID3
 
 
@@ -34,5 +35,9 @@ def load_from_file(filepath):
     path_to_file = os.path.join(artist, album, filename)
 
     track = TrackDetails(title, artist, album, path_to_file)
+
+    art = last_fm.get_artwork(artist, album)
+    if art is not None:
+        track.set_album_art(art)
 
     return track

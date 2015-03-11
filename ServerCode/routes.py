@@ -41,7 +41,6 @@ def get_database():
     db = g.get('db', None)
 
     if db is None:
-        print "here"
         db = Postgres()
         setattr(g, 'db', db)
 
@@ -75,7 +74,8 @@ def save_track_in_right_place(track, tmp_file_path):
         os.mkdir(album_dir)
 
     final_path = os.path.join(upload_directory, track.filepath)
-    os.rename(tmp_file_path, final_path)
+    if not os.path.isfile(final_path):
+        os.rename(tmp_file_path, final_path)
 
 
 ##################################
@@ -111,6 +111,8 @@ def upload():
     rank_track(track)
 
     p.associate_track_with_user(track, username)
+
+    return "done"
 
 
 @app.route('/music/<string:artist>/<string:album>/<string:filepath>')

@@ -4,18 +4,27 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
     <EditText
+        android:lines="1"
+        android:maxLines="1"
+        android:nextFocusDown="@+id/emailBoxRegister"
         android:layout_margin="20dp"
         android:id="@+id/usernameBoxRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Username" />
     <EditText
+        android:lines="1"
+        android:maxLines="1"
+        android:nextFocusDown="@+id/passwordBoxRegister"
         android:layout_margin="20dp"
         android:id="@+id/emailBoxRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Email" />
     <EditText
+        android:lines="1"
+        android:maxLines="1"
+        android:nextFocusDown="@+id/passwordAgainBox"
         android:layout_margin="20dp"
         android:id="@+id/passwordBoxRegister"
         android:inputType="textPassword"
@@ -23,6 +32,9 @@
         android:layout_height="wrap_content"
         android:hint="Password" />
     <EditText
+        android:lines="1"
+        android:maxLines="1"
+        android:nextFocusDown="@+id/registerButtonOnRegisterActivity"
         android:layout_margin="20dp"
         android:id="@+id/passwordAgainBox"
         android:inputType="textPassword"
