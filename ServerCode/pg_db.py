@@ -133,6 +133,7 @@ class Postgres:
         result = cursor.fetchone()
         cursor.close()
         conn.close()
+
         return result
 
 
