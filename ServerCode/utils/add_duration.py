@@ -19,7 +19,7 @@ cursor.execute("SELECT file_path FROM tracks")
 
 for row in list(cursor.fetchall()):
     fp = row[0]
-    full_fp = os.path.join('C:\\users\\matthew\\desktop', 'uploads', fp)
+    full_fp = os.path.join('..', 'uploads', fp)
     track = track_details.load_from_file(full_fp)
 
     cursor.execute("update tracks set duration = %s where file_path = %s", (track.duration, fp))

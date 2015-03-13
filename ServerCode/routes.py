@@ -125,24 +125,27 @@ def get_music_file(artist=None, album=None, filepath=None):
 
 @app.route('/api/track/<string:excitedness>/<string:positivity>')
 def track(excitedness=None, positivity=None):
+    try:
 
     #TODO
-    username = 'matt'
+        username = 'matt'
 
-    try:
-        excitedness = float(excitedness)
-        positivity = float(positivity)
-    except:
-        abort(http_codes.INTERNAL_SERVER_ERROR, 'Only numbers please, friend.')
+        try:
+            excitedness = float(excitedness)
+            positivity = float(positivity)
+        except:
+            abort(http_codes.INTERNAL_SERVER_ERROR, 'Only numbers please, friend.')
 
-    p = get_database()
-    tracks = p.get_tracks_by_excitedness_and_positivity(username, excitedness, positivity)
+        p = get_database()
+        tracks = p.get_tracks_by_excitedness_and_positivity(username, excitedness, positivity)
 
-    if len(tracks) > 0:
-        return jsonify(random.choice(tracks).__dict__)
+        if len(tracks) > 0:
+            return jsonify(random.choice(tracks).__dict__)
 
-    return None
-
+        return None
+    except Exception as e:
+        print e.message
+        return None
 
 @app.route('/api/statistics')
 def stats():
