@@ -3,8 +3,6 @@ using System.Threading;
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Views;
-using Android.Views.InputMethods;
 using Android.Widget;
 using MoodStreamer.Shared;
 
@@ -28,7 +26,7 @@ namespace MoodStreamer.Activities
 			SetContentView (Resource.Layout.Login);
 
 #if DEBUG
-		    //ProceedToMainActivity("matt");
+		    ProceedToMainActivity("matt");
 #endif
             
             _loginProgressDialog =  new ProgressDialog(this);
@@ -38,8 +36,7 @@ namespace MoodStreamer.Activities
 
             _username = FindViewById<EditText>(Resource.Id.usernameBoxLogin);
 		    _password = FindViewById<EditText>(Resource.Id.passwordBoxLogin);
-
-
+                
 			FindViewById<Button>(Resource.Id.loginButtonLoginActivity).Click += LoginButtonOnClick;
 		    FindViewById<Button>(Resource.Id.registerButtonLoginActivity).Click += (s, e) =>
 		    {

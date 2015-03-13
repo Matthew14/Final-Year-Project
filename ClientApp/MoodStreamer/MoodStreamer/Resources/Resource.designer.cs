@@ -50,25 +50,34 @@ namespace MoodStreamer
 			public const int back = 2130837504;
 			
 			// aapt resource value: 0x7f020001
-			public const int Icon = 2130837505;
+			public const int dot = 2130837505;
 			
 			// aapt resource value: 0x7f020002
-			public const int info = 2130837506;
+			public const int Icon = 2130837506;
 			
 			// aapt resource value: 0x7f020003
-			public const int monoandroidsplash = 2130837507;
+			public const int info = 2130837507;
 			
 			// aapt resource value: 0x7f020004
-			public const int next = 2130837508;
+			public const int infowhite = 2130837508;
 			
 			// aapt resource value: 0x7f020005
-			public const int pause = 2130837509;
+			public const int monoandroidsplash = 2130837509;
 			
 			// aapt resource value: 0x7f020006
-			public const int play = 2130837510;
+			public const int next = 2130837510;
 			
 			// aapt resource value: 0x7f020007
-			public const int testsquare = 2130837511;
+			public const int pause = 2130837511;
+			
+			// aapt resource value: 0x7f020008
+			public const int play = 2130837512;
+			
+			// aapt resource value: 0x7f020009
+			public const int testsquare = 2130837513;
+			
+			// aapt resource value: 0x7f02000a
+			public const int vol = 2130837514;
 			
 			static Drawable()
 			{
@@ -83,17 +92,20 @@ namespace MoodStreamer
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f080018
-			public const int action_logout_button = 2131230744;
-			
 			// aapt resource value: 0x7f080019
-			public const int action_playing_button = 2131230745;
-			
-			// aapt resource value: 0x7f080017
-			public const int action_settings = 2131230743;
+			public const int action_logout_button = 2131230745;
 			
 			// aapt resource value: 0x7f08001a
-			public const int action_viewstats = 2131230746;
+			public const int action_playing_button = 2131230746;
+			
+			// aapt resource value: 0x7f080018
+			public const int action_settings = 2131230744;
+			
+			// aapt resource value: 0x7f08001b
+			public const int action_viewstats = 2131230747;
+			
+			// aapt resource value: 0x7f08001c
+			public const int action_vol = 2131230748;
 			
 			// aapt resource value: 0x7f08000a
 			public const int artWorkImageView = 2131230730;
@@ -101,20 +113,23 @@ namespace MoodStreamer
 			// aapt resource value: 0x7f080009
 			public const int artworkLayout = 2131230729;
 			
-			// aapt resource value: 0x7f08000b
-			public const int backButton = 2131230731;
+			// aapt resource value: 0x7f08000c
+			public const int backButton = 2131230732;
+			
+			// aapt resource value: 0x7f080017
+			public const int cacheCheckbox = 2131230743;
+			
+			// aapt resource value: 0x7f080007
+			public const int dot = 2131230727;
+			
+			// aapt resource value: 0x7f08000f
+			public const int emailBoxRegister = 2131230735;
 			
 			// aapt resource value: 0x7f080016
-			public const int cacheCheckbox = 2131230742;
-			
-			// aapt resource value: 0x7f08000e
-			public const int emailBoxRegister = 2131230734;
+			public const int lastfmPasswordEdit = 2131230742;
 			
 			// aapt resource value: 0x7f080015
-			public const int lastfmPasswordEdit = 2131230741;
-			
-			// aapt resource value: 0x7f080014
-			public const int lastfmUsernameEdit = 2131230740;
+			public const int lastfmUsernameEdit = 2131230741;
 			
 			// aapt resource value: 0x7f080003
 			public const int loginButtonLoginActivity = 2131230723;
@@ -122,38 +137,38 @@ namespace MoodStreamer
 			// aapt resource value: 0x7f080000
 			public const int logo = 2131230720;
 			
-			// aapt resource value: 0x7f08000d
-			public const int nextButton = 2131230733;
+			// aapt resource value: 0x7f08000e
+			public const int nextButton = 2131230734;
 			
-			// aapt resource value: 0x7f080011
-			public const int passwordAgainBox = 2131230737;
+			// aapt resource value: 0x7f080012
+			public const int passwordAgainBox = 2131230738;
 			
 			// aapt resource value: 0x7f080002
 			public const int passwordBoxLogin = 2131230722;
 			
-			// aapt resource value: 0x7f080010
-			public const int passwordBoxRegister = 2131230736;
+			// aapt resource value: 0x7f080011
+			public const int passwordBoxRegister = 2131230737;
 			
-			// aapt resource value: 0x7f08000c
-			public const int playPauseButton = 2131230732;
+			// aapt resource value: 0x7f08000d
+			public const int playPauseButton = 2131230733;
 			
 			// aapt resource value: 0x7f080008
 			public const int playerRelLayout = 2131230728;
 			
+			// aapt resource value: 0x7f08000b
+			public const int playerSeek = 2131230731;
+			
 			// aapt resource value: 0x7f080004
 			public const int registerButtonLoginActivity = 2131230724;
 			
-			// aapt resource value: 0x7f080012
-			public const int registerButtonOnRegisterActivity = 2131230738;
-			
 			// aapt resource value: 0x7f080013
-			public const int scrobbleCheckBox = 2131230739;
+			public const int registerButtonOnRegisterActivity = 2131230739;
 			
-			// aapt resource value: 0x7f080007
-			public const int square = 2131230727;
+			// aapt resource value: 0x7f080014
+			public const int scrobbleCheckBox = 2131230740;
 			
 			// aapt resource value: 0x7f080006
-			public const int startPlaying = 2131230726;
+			public const int square = 2131230726;
 			
 			// aapt resource value: 0x7f080005
 			public const int textView2 = 2131230725;
@@ -161,8 +176,8 @@ namespace MoodStreamer
 			// aapt resource value: 0x7f080001
 			public const int usernameBoxLogin = 2131230721;
 			
-			// aapt resource value: 0x7f08000f
-			public const int usernameBoxRegister = 2131230735;
+			// aapt resource value: 0x7f080010
+			public const int usernameBoxRegister = 2131230736;
 			
 			static Id()
 			{
@@ -204,6 +219,9 @@ namespace MoodStreamer
 			
 			// aapt resource value: 0x7f070000
 			public const int main_activity_actions = 2131165184;
+			
+			// aapt resource value: 0x7f070001
+			public const int player_activity_actions = 2131165185;
 			
 			static Menu()
 			{

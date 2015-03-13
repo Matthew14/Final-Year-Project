@@ -19,7 +19,7 @@ namespace MoodStreamer.Activities
         private LoginManager _loginManager;
         private float _positivity = 50;
         private ISharedPreferences _preferences;
-        private ImageView _image;
+        private ImageView _square, _dot;
 
 
         protected override void OnCreate(Bundle bundle)
@@ -53,9 +53,14 @@ namespace MoodStreamer.Activities
 
         private void SetupEvents()
         {
-            FindViewById<Button>(Resource.Id.startPlaying).Touch+= StartPlayingPressed;
-            _image = FindViewById<ImageView>(Resource.Id.square);
-            _image.Touch += SquareTouched;
+            //FindViewById<Button>(Resource.Id.startPlaying).Touch+= StartPlayingPressed;
+
+            _dot = FindViewById<ImageView>(Resource.Id.dot);
+            _square = FindViewById<ImageView>(Resource.Id.square);
+            _square.Touch += SquareTouched;
+
+            _dot.SetX(_square.Width/2);
+            _dot.SetY(_square.Height/2);
         }
 
         private void StartMoodRadio()
@@ -92,8 +97,12 @@ namespace MoodStreamer.Activities
 
                 AlertDialog dialog = null;
 
-                adBuilder.SetNeutralButton("Reanalyze Files", (s, e) => _loggedInUser.Reanalyze());
-                adBuilder.SetPositiveButton("OK", (s, e) => dialog.Dismiss());
+                adBuilder.SetNeutralButton("Reanalyze Files", (s, e) =>
+                {
+                    _loggedInUser.Reanalyze();
+                    Toast.MakeText(Application.Context, "Reanalysis Started", ToastLength.Long).Show();
+                });
+                adBuilder.SetPositiveButton("Dismiss", (s, e) => dialog.Dismiss());
 
                 RunOnUiThread(() =>
                 {
@@ -128,9 +137,18 @@ namespace MoodStreamer.Activities
 
         private void SquareTouched(object sender, View.TouchEventArgs e)
         {
+            
             var theEvent = e.Event;
+
             var x = theEvent.GetX();
             var y = theEvent.GetY();
+            
+            _dot.SetX(x);
+            _dot.SetY(y);
+
+            if (theEvent.Action == MotionEventActions.Up)
+                StartMoodRadio();
+
 
             _positivity = x;
             _excitedness = y;
@@ -145,7 +163,7 @@ namespace MoodStreamer.Activities
             if (b < 0) b = 0;
             if (b > 255) b = 255;
 
-            _image.SetBackgroundColor(new Color(r, 0, b));
+            _square.SetBackgroundColor(new Color(r, 0, b));
         }
 
         #endregion

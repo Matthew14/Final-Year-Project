@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MoodStreamer.Shared
+﻿namespace MoodStreamer.Shared
 {
 	/// <summary>
 	/// Represents a track as recieved from the server
@@ -14,6 +12,8 @@ namespace MoodStreamer.Shared
 		public string Artist { get; set; }
 
 		public string Title { get; set; }
+
+	    public int Duration { get; set; }
 
 		public Track ()
 		{

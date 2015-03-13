@@ -14,7 +14,7 @@
     android:showAsAction="always" 
     android:title="Back to Playing"/>
   <item 
-    android:icon="@drawable/info"
+    android:icon="@drawable/infowhite"
     android:id="@+id/action_viewstats"
     android:showAsAction="always" 
     android:title="View Song Info"/>

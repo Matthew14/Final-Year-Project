@@ -7,19 +7,30 @@
     android:id="@+id/playerRelLayout"
     android:minHeight="25px">
     <LinearLayout
-        android:orientation="vertical"
-        android:id="@+id/artworkLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <ImageView
-            android:src="@android:drawable/ic_menu_gallery"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitStart"
-            android:gravity="center"
-            android:id="@+id/artWorkImageView" />
+      android:orientation="vertical"
+      android:id="@+id/artworkLayout"
+      android:layout_alignParentTop="true"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+      <ImageView
+          android:layout_margin="30dp"
+          android:src="@android:drawable/ic_menu_gallery"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:scaleType="fitStart"
+          android:gravity="center"
+          android:id="@+id/artWorkImageView" />
+ 
     </LinearLayout>
-    <LinearLayout
+
+  <SeekBar
+       android:id="@+id/playerSeek"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:max="1000"
+       />
+
+  <LinearLayout
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
