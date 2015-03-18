@@ -9,7 +9,7 @@ import subprocess
 
 from functools import wraps
 from app import app
-from flask import request, send_file, abort, make_response, jsonify, session, send_from_directory, g
+from flask import request, send_file, abort, make_response, jsonify, session, send_from_directory, g, redirect
 from analysis.moodAssesment import rank_track
 from pg_db import Postgres
 
@@ -84,7 +84,7 @@ def save_track_in_right_place(track, tmp_file_path):
 
 @app.route('/')
 def index():
-    return 'hello there, it works'
+    return redirect('https://www.github.com/matthew14/Final-Year-Project')
 
 
 @app.route('/images/<string:imagepath>')
