@@ -147,6 +147,7 @@ def track(excitedness=None, positivity=None):
         print e.message
         return None
 
+
 @app.route('/api/statistics')
 def stats():
 
@@ -261,7 +262,6 @@ def analysis_in_progress():
     username = 'matt'
 
     return ""
-
 
 
 @app.route('/api/reanalyze')

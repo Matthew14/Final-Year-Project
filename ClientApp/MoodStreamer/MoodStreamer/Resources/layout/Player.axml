@@ -41,20 +41,20 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/backButton"
-            android:src="@drawable/back" />
+            android:src="@drawable/backwhite" />
         <ImageButton
             android:background="@null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/playPauseButton"
-            android:src="@drawable/pause" />
+            android:src="@drawable/pausewhite" />
         <ImageButton
             android:background="@null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/nextButton"
             android:layout_weight="1"
-            android:src="@drawable/next" />
+            android:src="@drawable/nextwhite" />
     </LinearLayout>
 </RelativeLayout>

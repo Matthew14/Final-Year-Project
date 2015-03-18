@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Net;
 using System.Threading;
-
 using Android.App;
-using Android.Content;
 using Android.Graphics;
 using Android.Media;
 using Android.OS;
@@ -17,7 +13,7 @@ using MoodStreamer.Shared;
 namespace MoodStreamer.Activities
 {
     [Activity(Label = "PlayerActivity", Theme = "@style/AppTheme")]
-    public class PlayerActivity : Activity, MediaController.IMediaPlayerControl
+    public class PlayerActivity : Activity
     {
         private static MediaPlayer _player;
 
@@ -59,19 +55,13 @@ namespace MoodStreamer.Activities
             _excitedness = Intent.GetFloatExtra("excitedness", 0);
             _positivity = Intent.GetFloatExtra("positivity", 0);
 
+            (_playerThread = new Thread(PlayerWorker) {IsBackground = true, Name = "Player Thread"}).Start();
             
-            (_playerThread = new Thread(PlayerWorker)
-            {
-                IsBackground = true,
-                Name = "Player Thread"
-            }).Start();
-            
-
             Title = String.Format("({0} {1})", _excitedness, _positivity);
 
             ActionBar.SetHomeButtonEnabled(true);
             ActionBar.SetDisplayHomeAsUpEnabled(true);
-
+            
             SetupUiElements();
 
             PlayTrack();
@@ -80,8 +70,7 @@ namespace MoodStreamer.Activities
         private void PlayerSeekBarOnProgressChanged(object sender, SeekBar.ProgressChangedEventArgs progressChangedEventArgs)
         {
             if(progressChangedEventArgs.FromUser)
-                _player.SeekTo(_playerSeekBar.Progress*1000);
-            
+                _player.SeekTo(_playerSeekBar.Progress*1000);   
         }
 
         private void PlayerWorker()
@@ -101,11 +90,8 @@ namespace MoodStreamer.Activities
                 }
 
                 Thread.Sleep(500);
-                
-                RunOnUiThread(() =>
-                {
-                    _playerSeekBar.Progress = _player.CurrentPosition/1000;
-                });
+
+                RunOnUiThread(() => _playerSeekBar.Progress = _player.CurrentPosition/1000 );
             }
         }
 
@@ -144,31 +130,25 @@ namespace MoodStreamer.Activities
             else
                 _player.Start();
 
-            var newPic = _player.IsPlaying ? Resource.Drawable.pause : Resource.Drawable.play;
+            var newPic = _player.IsPlaying ? Resource.Drawable.pausewhite : Resource.Drawable.playwhite;
             button.SetImageResource(newPic);
         }
-
         
-
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
             if (e.KeyCode == Keycode.Back)
-            {
                 OnBackPressed();
-            }
 
             return base.OnKeyDown(keyCode, e);
         }
 
         private void PlayTrack(Track track = null)
         {
-            
             while (track == null && (track = GetTrackOffQueue()) == null);
             
-
             var fp = String.Format("{0}/{1}", Constants.ServiceUrl, track.FilePath.Replace(" ", "%20"));
             
-            new Thread(() => LoadImageIntoImageView(track.AlbumArt)).Start();
+            new Thread(() => LoadImageIntoImageView(track.AlbumArt)){Name="Artwork Loader Thread"}.Start();
 
             _player.SetAudioStreamType(Stream.Music);
             _player.Reset();
@@ -178,12 +158,11 @@ namespace MoodStreamer.Activities
             _playerSeekBar.Max = track.Duration;
             
             Title = String.Format("{0} - {1}", track.Artist, track.Title);
-            var newPic = _player.IsPlaying ? Resource.Drawable.pause : Resource.Drawable.play;
 
+            var newPic = _player.IsPlaying ? Resource.Drawable.pausewhite : Resource.Drawable.playwhite;
             _playPauseButton.SetImageResource(newPic);
 
             _playedStack.Push(track);
-
         }
 
         private Track GetTrackOffQueue()
@@ -192,7 +171,6 @@ namespace MoodStreamer.Activities
             _playQueue.TryDequeue(out track);
             return track;
         }
-
 
         private Bitmap GetImageBitmapFromUrl(string url)
         {
@@ -214,8 +192,7 @@ namespace MoodStreamer.Activities
         private void LoadImageIntoImageView(string url)
         {
             var bitmap = GetImageBitmapFromUrl(url);
-            RunOnUiThread(() =>
-                _coverArt.SetImageBitmap(bitmap));
+            RunOnUiThread(() => _coverArt.SetImageBitmap(bitmap));
         }
 
         #region Overrides
@@ -235,69 +212,18 @@ namespace MoodStreamer.Activities
                     Finish();
                     return true;
                 case Resource.Id.action_vol:
-                    throw new NotImplementedException();
-                    break;
+                    var audio = (AudioManager) GetSystemService(AudioService); 
+                    audio.AdjustStreamVolume(Stream.Music, Adjust.Same, VolumeNotificationFlags.ShowUi);
+                    return true;
+                case Resource.Id.action_disagree:
+                    
+                    return true;
                 default:
                     return base.OnOptionsItemSelected(item);
             }
         }
 
         #endregion
-
-        public bool CanPause()
-        {
-            return true;
-        }
-
-        public bool CanSeekBackward()
-        {
-            return false;
-        }
-
-        public bool CanSeekForward()
-        {
-            return false;
-        }
-
-        public void Pause()
-        {
-            _player.Pause();
-        }
-
-        public void SeekTo(int pos)
-        {
-            _player.SeekTo(pos);
-        }
-
-        public void Start()
-        {
-            _player.Start();
-        }
-
-        public int AudioSessionId
-        {
-            get { return _player.AudioSessionId; }
-        }
-
-        public int BufferPercentage
-        {
-            get { return 10; }
-        }
-
-        public int CurrentPosition
-        {
-            get { return _player.CurrentPosition; }
-        }
-
-        public int Duration
-        {
-            get { return _player.GetTrackInfo().GetLength(0); }
-        }
-
-        public bool IsPlaying
-        {
-            get { return _player.IsPlaying; }
-        }
     }
 }
 

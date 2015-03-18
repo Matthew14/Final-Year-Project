@@ -59,8 +59,8 @@ namespace MoodStreamer.Activities
             _square = FindViewById<ImageView>(Resource.Id.square);
             _square.Touch += SquareTouched;
 
-            _dot.SetX(_square.Width/2);
-            _dot.SetY(_square.Height/2);
+            _dot.SetX(500);
+            _dot.SetY(500);
         }
 
         private void StartMoodRadio()
@@ -137,7 +137,6 @@ namespace MoodStreamer.Activities
 
         private void SquareTouched(object sender, View.TouchEventArgs e)
         {
-            
             var theEvent = e.Event;
 
             var x = theEvent.GetX();
@@ -148,7 +147,6 @@ namespace MoodStreamer.Activities
 
             if (theEvent.Action == MotionEventActions.Up)
                 StartMoodRadio();
-
 
             _positivity = x;
             _excitedness = y;
