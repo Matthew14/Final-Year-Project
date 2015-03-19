@@ -5,3 +5,4 @@ database_credentials.txt
 lastfm_credentials.txt
 *.mp3
 out/
+*.tmp
