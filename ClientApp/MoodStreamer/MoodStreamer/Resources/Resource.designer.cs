@@ -108,10 +108,13 @@ namespace MoodStreamer
 			public const int sadwhite = 2130837518;
 			
 			// aapt resource value: 0x7f02000f
-			public const int testsquare = 2130837519;
+			public const int semiquavers = 2130837519;
 			
 			// aapt resource value: 0x7f020010
-			public const int vol = 2130837520;
+			public const int testsquare = 2130837520;
+			
+			// aapt resource value: 0x7f020011
+			public const int vol = 2130837521;
 			
 			static Drawable()
 			{

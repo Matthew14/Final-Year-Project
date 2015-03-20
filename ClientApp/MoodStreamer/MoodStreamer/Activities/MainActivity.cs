@@ -20,7 +20,7 @@ namespace MoodStreamer.Activities
         private float _positivity = 50;
         private ISharedPreferences _preferences;
         private ImageView _square, _dot;
-
+        private bool _initialTouchDone = false;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -36,6 +36,20 @@ namespace MoodStreamer.Activities
                 GoToLogin();
 
             SetupEvents();
+
+            long downTime = SystemClock.UptimeMillis();
+            var r = _square.Width;
+            MotionEvent motionEvent = MotionEvent.Obtain(
+                downTime,
+                downTime+100,
+                MotionEventActions.Up, 
+                500,
+                500,
+                MetaKeyStates.ShiftMask
+            );
+
+            // Dispatch touch event to view
+            _square.DispatchTouchEvent(motionEvent);
         }
 
         private void GoToLogin()
@@ -61,6 +75,13 @@ namespace MoodStreamer.Activities
 
             _dot.SetX(500);
             _dot.SetY(500);
+
+            _dot.SetZ(1000);
+        }
+
+        private void ReturnToPlayer()
+        {
+            StartActivity(new Intent(this, typeof(PlayerActivity)));
         }
 
         private void StartMoodRadio()
@@ -123,11 +144,6 @@ namespace MoodStreamer.Activities
             editor.Commit();
         }
 
-        private void GoBackToPlayingActivity()
-        {
-            throw new NotImplementedException();
-        }
-
         #region EventHandlers
 
         private void StartPlayingPressed(object sender, View.TouchEventArgs e)
@@ -145,8 +161,10 @@ namespace MoodStreamer.Activities
             _dot.SetX(x);
             _dot.SetY(y);
 
-            if (theEvent.Action == MotionEventActions.Up)
+            if (theEvent.Action == MotionEventActions.Up &&  _initialTouchDone)
                 StartMoodRadio();
+
+            _initialTouchDone = true;
 
             _positivity = x;
             _excitedness = y;
@@ -183,7 +201,7 @@ namespace MoodStreamer.Activities
                     GoToLogin();
                     break;
                 case Resource.Id.action_playing_button:
-                    GoBackToPlayingActivity();
+                    ReturnToPlayer();
                     break;
                 default:
                     break;
@@ -197,10 +215,7 @@ namespace MoodStreamer.Activities
             MenuInflater.Inflate(Resource.Menu.main_activity_actions, menu);
 
             _backToPlayingItem = menu.FindItem(Resource.Id.action_playing_button);
-            _backToPlayingItem.SetEnabled(false);
-            _backToPlayingItem.SetVisible(false);
-
-
+            
             return base.OnCreateOptionsMenu(menu);
         }
 

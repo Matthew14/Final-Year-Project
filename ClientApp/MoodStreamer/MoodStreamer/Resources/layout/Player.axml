@@ -13,7 +13,10 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent">
       <ImageView
-          android:layout_margin="30dp"
+          android:layout_marginTop="30dp"
+          android:layout_marginLeft="30dp"
+          android:layout_marginRight="30dp"
+          
           android:src="@android:drawable/ic_menu_gallery"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
@@ -23,38 +26,52 @@
  
     </LinearLayout>
 
+
   <SeekBar
        android:id="@+id/playerSeek"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
+       
+       android:layout_marginTop="360dp"
        android:max="1000"
        />
 
   <LinearLayout
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="fill_parent"
+        
+        
+        android:layout_marginTop="405dp"
+        android:gravity="center"
+        android:layout_height="fill_parent">
         <ImageButton
             android:background="@null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginLeft="40dp"
+            android:layout_marginBottom="20dp"
             android:id="@+id/backButton"
             android:src="@drawable/backwhite" />
         <ImageButton
-            android:background="@null"
+          android:layout_marginBottom="20dp"  
+          android:background="@null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/playPauseButton"
             android:src="@drawable/pausewhite" />
-        <ImageButton
+    <ImageButton
+      android:layout_marginBottom="20dp"
             android:background="@null"
+      
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="40dp"
             android:id="@+id/nextButton"
             android:layout_weight="1"
             android:src="@drawable/nextwhite" />
     </LinearLayout>
+
 </RelativeLayout>

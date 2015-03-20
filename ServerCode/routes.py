@@ -62,7 +62,12 @@ def hash_password(password):
 
 def save_track_in_right_place(track, tmp_file_path):
     """ Works out where a track should be saved based on artist/album info and
-        saves it in that correct place """
+        saves it in that correct place
+
+        Arguments:
+        track -- the TrackDetails object to move
+        tmp_file_path -- temp directory to write to (differs between prod/dev)
+    """
 
     artist_dir = os.path.join(upload_directory, track.artist)
     album_dir = os.path.join(artist_dir, track.album)

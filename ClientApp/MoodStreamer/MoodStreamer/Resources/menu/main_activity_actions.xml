@@ -9,7 +9,7 @@
     android:showAsAction="never"
     android:title="Logout"/>
   <item 
-    android:icon="@drawable/icon"
+    android:icon="@drawable/semiquavers"
     android:id="@+id/action_playing_button"
     android:showAsAction="always" 
     android:title="Back to Playing"/>
