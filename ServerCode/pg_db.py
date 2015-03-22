@@ -113,11 +113,11 @@ class Postgres:
     ##Track Stuff#############
 
     def store_ranking(self, track, excitedness, positivity):
-        sql = "INSERT INTO tracks(artist, title, file_path, positivity, excitedness, album_art_url) VALUES (%s, %s, %s, %s, %s, %s)"
+        sql = "INSERT INTO tracks(artist, title, file_path, positivity, excitedness, album_art_url, duration) VALUES (%s, %s, %s, %s, %s, %s, %s)"
         conn = self.connect()
         cursor = conn.cursor()
 
-        cursor.execute(sql, (track.artist, track.title, track.filepath, positivity, excitedness, track.album_art))
+        cursor.execute(sql, (track.artist, track.title, track.filepath, positivity, excitedness, track.album_art, track.duration))
 
         conn.commit()
         cursor.close()
