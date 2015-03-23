@@ -17,14 +17,6 @@ namespace UploadApp.Uploader
             _restClient = new RestClient(_url){CookieContainer = _cookieJar};   
         }
 
-        public bool Login(string username, string password)
-        {
-            var request = new RestRequest(Method.POST) {Resource = "api/login"};
-            var response = _restClient.Execute(request);
-
-            return response.StatusCode == HttpStatusCode.OK;
-        }
-
         public UploadClient(string baseUrl)
         {
             _restClient = new RestClient(baseUrl);
@@ -40,8 +32,6 @@ namespace UploadApp.Uploader
             request.AddFile("file", filepath);
 
             _restClient.Execute(request);
-
-            
             return true;
         }
     }

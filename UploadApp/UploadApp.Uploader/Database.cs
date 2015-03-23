@@ -39,11 +39,11 @@ namespace UploadApp.Uploader
             return folders;
         }
 
-        public Dictionary<string, Track> LoadTracks()
+        public Dictionary<string, Track> LoadTracks(string username)
         {
             var tracks = new Dictionary<string, Track>();
 
-            const string sql = "SELECT * FROM tracks;";
+            string sql = string.Format("SELECT * FROM tracks where username=\"{0}\";", username);
             _conn.Open();
             var cmd = _conn.CreateCommand();
             cmd.CommandText = sql;
@@ -55,9 +55,7 @@ namespace UploadApp.Uploader
 
                 tracks.Add(hash, new Track
                 {
-                    Artist = reader["artist"] as string,
-                    Sha256Hash = hash,
-                    Title = reader["title"] as string
+                    Sha256Hash = hash
                 });
             }
             _conn.Close();
@@ -65,9 +63,9 @@ namespace UploadApp.Uploader
             return tracks;
         }
 
-        public void AddTrack(Track track)
+        public void AddTrack(Track track, string username)
         {
-            var sql = string.Format("insert into tracks values(\"{0}\", \"{1}\", \"{2}\")", track.Title, track.Artist, track.Sha256Hash);
+            var sql = string.Format("insert into tracks values(\"{0}\", \"{1}\")", username, track.Sha256Hash);
             DoNonQuery(sql);
         }
 

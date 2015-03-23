@@ -16,20 +16,29 @@ namespace UploadApp.Uploader
         public List<string> Folders { get; private set; }
         readonly Database _db = new Database();
 
+        private string _username = "";
+
         private readonly object _lock = new object();
 
         private Thread _watcherThread;
 
-        public FolderWatcher()
+        public FolderWatcher(string username)
         {
+
+            _username = username;
             log4net.Config.XmlConfigurator.Configure();
             Logger.DebugFormat("Url: {0}", ConfigurationManager.AppSettings.Get("serviceUrl"));
             
             Folders = new List<string>(LoadFoldersFromDb());
 
+            StartWatcherThread();
+        }
+
+        private void StartWatcherThread()
+        {
             _watcherThread = new Thread(WatchFolders)
             {
-                IsBackground   = true,
+                IsBackground = true,
                 Name = "Folder Watcher"
             };
 
@@ -65,13 +74,7 @@ namespace UploadApp.Uploader
                 }
             }
 
-            _watcherThread = new Thread(WatchFolders)
-            {
-                IsBackground = true,
-                Name = "Folder Watcher"
-            };
-
-            _watcherThread.Start();
+            StartWatcherThread();
             
         }
 
@@ -84,7 +87,7 @@ namespace UploadApp.Uploader
                 lock (_lock)
                 {
 
-                    Dictionary<string, Track> tracksUploaded = _db.LoadTracks();
+                    Dictionary<string, Track> tracksUploaded = _db.LoadTracks(_username);
 
                     foreach (var folder in Folders)
                     {
@@ -109,7 +112,7 @@ namespace UploadApp.Uploader
                                     Artist = "test",
                                     Sha256Hash = hash
                                 };
-                                _db.AddTrack(track);
+                                _db.AddTrack(track, _username);
                                 tracksUploaded[hash] = track;
                             }
                         }
@@ -130,6 +133,14 @@ namespace UploadApp.Uploader
                 string hashAsString = BitConverter.ToString(hashValue);
                 return hashAsString;
             }
+        }
+
+        public void UpdateUsername(string username)
+        {
+            if (_watcherThread != null && _watcherThread.IsAlive)
+                _watcherThread.Abort();
+            _username = username;
+            StartWatcherThread();
         }
     }
 }

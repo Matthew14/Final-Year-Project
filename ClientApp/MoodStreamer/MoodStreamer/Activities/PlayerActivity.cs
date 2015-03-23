@@ -26,7 +26,7 @@ namespace MoodStreamer.Activities
 
         private TrackManager _trackManager;
 
-        
+        private TextView _artistTextView, _trackTitleTextView;
         private IMenuItem _volMenuItem;
         private ImageView _coverArt;
         private SeekBar _playerSeekBar;
@@ -97,6 +97,9 @@ namespace MoodStreamer.Activities
 
         private void SetupUiElements()
         {
+            _artistTextView = FindViewById<TextView>(Resource.Id.artistTextView);
+            _trackTitleTextView = FindViewById<TextView>(Resource.Id.trackTitleTextView);
+
             _coverArt = FindViewById<ImageView>(Resource.Id.artWorkImageView);
             _playerSeekBar = FindViewById<SeekBar>(Resource.Id.playerSeek);
             _playerSeekBar.ProgressChanged += PlayerSeekBarOnProgressChanged;
@@ -158,6 +161,10 @@ namespace MoodStreamer.Activities
             _playerSeekBar.Max = track.Duration;
             
             Title = String.Format("{0} - {1}", track.Artist, track.Title);
+
+            _artistTextView.SetText(track.Artist, TextView.BufferType.Normal);
+            _trackTitleTextView.SetText(track.Title, TextView.BufferType.Normal);
+
 
             var newPic = _player.IsPlaying ? Resource.Drawable.pausewhite : Resource.Drawable.playwhite;
             _playPauseButton.SetImageResource(newPic);

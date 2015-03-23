@@ -32,46 +32,61 @@
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        
-       android:layout_marginTop="360dp"
+       android:layout_marginTop="345dp"
        android:max="1000"
        />
 
+ <TextView
+      android:id="@+id/artistTextView"
+      android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+      android:text="artist"
+      android:gravity="center"
+       android:layout_marginTop="365dp"      
+   />
+
+  <TextView
+      android:id="@+id/trackTitleTextView"
+      android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+      android:text="album"
+      android:gravity="center"
+       android:layout_marginTop="380dp"
+    />
+    
   <LinearLayout
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        
-        
         android:layout_marginTop="405dp"
         android:gravity="center"
         android:layout_height="fill_parent">
         <ImageButton
-            android:background="@null"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="40dp"
-            android:layout_marginBottom="20dp"
-            android:id="@+id/backButton"
-            android:src="@drawable/backwhite" />
+          android:background="@null"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:layout_marginLeft="40dp"
+          android:layout_marginBottom="20dp"
+          android:id="@+id/backButton"
+          android:src="@drawable/backwhite" />
         <ImageButton
           android:layout_marginBottom="20dp"  
           android:background="@null"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/playPauseButton"
-            android:src="@drawable/pausewhite" />
-    <ImageButton
-      android:layout_marginBottom="20dp"
-            android:background="@null"
-      
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="40dp"
-            android:id="@+id/nextButton"
-            android:layout_weight="1"
-            android:src="@drawable/nextwhite" />
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:id="@+id/playPauseButton"
+          android:src="@drawable/pausewhite" />
+      <ImageButton
+          android:layout_marginBottom="20dp"
+          android:background="@null"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginRight="40dp"
+          android:id="@+id/nextButton"
+          android:layout_weight="1"
+          android:src="@drawable/nextwhite" />
     </LinearLayout>
 
 </RelativeLayout>

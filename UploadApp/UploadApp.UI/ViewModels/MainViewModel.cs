@@ -14,9 +14,23 @@ namespace UploadApp.UI.ViewModels
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof (MainViewModel));
 
+        private static string _username;
+
+        public static string Username
+        {
+            get{return _username;}
+            set
+            {
+                _username = value;
+                if (_folderWatcher != null)
+                {
+                    _folderWatcher.UpdateUsername(_username);
+                }
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private FolderWatcher _folderWatcher;
+        private static FolderWatcher _folderWatcher;
 
         private string _selectedFolder;
 
@@ -36,7 +50,10 @@ namespace UploadApp.UI.ViewModels
 
         public MainViewModel()
         {
-            _folderWatcher = new FolderWatcher();
+            Username = LoadLastUsername();
+
+
+            _folderWatcher = new FolderWatcher(_username);
             Folders = new ObservableCollection<string>(_folderWatcher.Folders);
             Folders.CollectionChanged += Folders_CollectionChanged;
 
@@ -50,7 +67,11 @@ namespace UploadApp.UI.ViewModels
                     _folderWatcher.UpdateWatchedFolders(Folders.ToList());
                 }
             });
+        }
 
+        string LoadLastUsername()
+        {
+            return "matt";
         }
 
         void Folders_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
