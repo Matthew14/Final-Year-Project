@@ -2,6 +2,7 @@
 using System.Threading;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
 using Android.Views;
@@ -25,6 +26,7 @@ namespace MoodStreamer.Activities
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+            RequestedOrientation = ScreenOrientation.Portrait; 
             SetContentView(Resource.Layout.Main);
 
             _loginManager = new LoginManager();

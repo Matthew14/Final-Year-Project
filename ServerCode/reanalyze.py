@@ -2,10 +2,6 @@ import sys
 from pg_db import Postgres
 
 
-def get_all_tracks_for_user(username, db):
-    return []
-
-
 def exit_on_error(err):
     print err
     sys.exit(1)
@@ -23,7 +19,9 @@ if  __name__ == "__main__":
 
     db.update_analysis_state(username, True)
 
-    import time
-    time.sleep(10)
+    all_user_tracks = db.get_all_tracks_for_user(username)
+
+    for track in all_user_tracks:
+        pass
 
     db.update_analysis_state(username, False)

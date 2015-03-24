@@ -2,7 +2,9 @@
 using System.Threading;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
+using Android.Views;
 using Android.Widget;
 using MoodStreamer.Shared;
 
@@ -23,10 +25,12 @@ namespace MoodStreamer.Activities
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
+            ActionBar.Hide();
+            RequestedOrientation = ScreenOrientation.Portrait;
 			SetContentView (Resource.Layout.Login);
 
 #if DEBUG
-		    ProceedToMainActivity("matt");
+		    //ProceedToMainActivity("matt");
 #endif
             
             _loginProgressDialog =  new ProgressDialog(this);

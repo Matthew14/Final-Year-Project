@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Net;
 using System.Threading;
 using Android.App;
+using Android.Content.PM;
 using Android.Graphics;
 using Android.Media;
 using Android.OS;
@@ -42,6 +43,7 @@ namespace MoodStreamer.Activities
             base.OnCreate(bundle);
 
             SetContentView(Resource.Layout.Player);
+            RequestedOrientation = ScreenOrientation.Portrait;
 
             Instance = this;
 
@@ -216,6 +218,7 @@ namespace MoodStreamer.Activities
             switch (item.ItemId)
             {
                 case Android.Resource.Id.Home:
+                    //TODO
                     Finish();
                     return true;
                 case Resource.Id.action_vol:

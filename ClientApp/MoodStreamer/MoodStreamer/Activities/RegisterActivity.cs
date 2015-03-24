@@ -1,12 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using Android.App;
-using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
@@ -24,6 +20,7 @@ namespace MoodStreamer.Activities
             base.OnCreate(bundle);
 
             SetContentView(Resource.Layout.RegisterLayout);
+            RequestedOrientation = ScreenOrientation.Portrait;
 
             _username = FindViewById<EditText>(Resource.Id.usernameBoxRegister);
             _password = FindViewById<EditText>(Resource.Id.passwordBoxRegister);
@@ -33,13 +30,16 @@ namespace MoodStreamer.Activities
 
             _registerButton.Click += registerButton_Click;
 
+            ActionBar.SetHomeButtonEnabled(true);
+            ActionBar.SetDisplayHomeAsUpEnabled(true);
+
         }
 
         private void registerButton_Click(object sender, EventArgs e)
         {
             if (Validate())
             {
-                
+                ShowToast(string.Format("Successfully Registered. Welcome, {0}", _username.Text));   
             }
         }
 
@@ -51,6 +51,7 @@ namespace MoodStreamer.Activities
 
         private bool Validate()
         {
+            //This regex stolen from: http://blog.trojanhunter.com/2012/09/26/the-best-regex-to-validate-an-email-address/
             const string emailPattern = @"/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/";
 
             if (_username.Text.Trim() == string.Empty
@@ -74,7 +75,17 @@ namespace MoodStreamer.Activities
                 return false;
             }
 
+            return true;
+        }
 
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId)
+            {
+                case Android.Resource.Id.Home:
+                    Finish();
+                    break;
+            }
 
             return true;
         }

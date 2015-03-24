@@ -4,8 +4,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
     <ImageView
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="0dp"
         android:src="@drawable/Icon"
         android:id="@+id/logo"
         android:layout_width="match_parent"
@@ -13,7 +13,9 @@
     <EditText
         android:lines="1"
         android:maxLines="1"
-        android:layout_margin="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
         android:id="@+id/usernameBoxLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,7 +23,9 @@
     <EditText
         android:lines="1"
         android:maxLines="1"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp"
+        
+        android:layout_marginBottom="10dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:id="@+id/passwordBoxLogin"
@@ -33,10 +37,16 @@
         android:text="@string/loginText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
         android:id="@+id/loginButtonLoginActivity" />
     <Button
         android:text="@string/registerText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
         android:id="@+id/registerButtonLoginActivity" />
 </LinearLayout>

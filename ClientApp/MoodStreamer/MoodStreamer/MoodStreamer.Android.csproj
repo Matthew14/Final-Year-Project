@@ -125,9 +125,6 @@
     <AndroidResource Include="Resources\drawable\disagree.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\anim\transition_animation.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\semiquavers.png" />
   </ItemGroup>
 </Project>
