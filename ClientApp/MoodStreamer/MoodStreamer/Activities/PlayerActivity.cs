@@ -13,7 +13,12 @@ using MoodStreamer.Shared;
 
 namespace MoodStreamer.Activities
 {
-    [Activity(Label = "PlayerActivity", Theme = "@style/AppTheme")]
+    enum DisagreeType
+    {
+        MorePositive, LessPositive, MoreExcited, LessExcited
+    }
+
+    [Activity(Label = "Mood Streamer", Theme = "@style/AppTheme")]
     public class PlayerActivity : Activity
     {
         private static MediaPlayer _player;
@@ -28,7 +33,6 @@ namespace MoodStreamer.Activities
         private TrackManager _trackManager;
 
         private TextView _artistTextView, _trackTitleTextView;
-        private IMenuItem _volMenuItem;
         private ImageView _coverArt;
         private SeekBar _playerSeekBar;
         private ImageButton _playPauseButton, _backButton;
@@ -59,8 +63,6 @@ namespace MoodStreamer.Activities
 
             (_playerThread = new Thread(PlayerWorker) {IsBackground = true, Name = "Player Thread"}).Start();
             
-            Title = String.Format("({0} {1})", _excitedness, _positivity);
-
             ActionBar.SetHomeButtonEnabled(true);
             ActionBar.SetDisplayHomeAsUpEnabled(true);
             
@@ -162,14 +164,11 @@ namespace MoodStreamer.Activities
 
             _playerSeekBar.Max = track.Duration;
             
-            Title = String.Format("{0} - {1}", track.Artist, track.Title);
-
             _artistTextView.SetText(track.Artist, TextView.BufferType.Normal);
             _trackTitleTextView.SetText(track.Title, TextView.BufferType.Normal);
 
 
-            var newPic = _player.IsPlaying ? Resource.Drawable.pausewhite : Resource.Drawable.playwhite;
-            _playPauseButton.SetImageResource(newPic);
+            _playPauseButton.SetImageResource(Resource.Drawable.pausewhite);
 
             _playedStack.Push(track);
         }
@@ -194,7 +193,7 @@ namespace MoodStreamer.Activities
                 if (imageBytes != null && imageBytes.Length > 0)
                     imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
             }
-
+            
             return imageBitmap;
         }
 
@@ -226,13 +225,56 @@ namespace MoodStreamer.Activities
                     audio.AdjustStreamVolume(Stream.Music, Adjust.Same, VolumeNotificationFlags.ShowUi);
                     return true;
                 case Resource.Id.action_disagree:
-                    
+                    ShowDisagreePopUp();
+                    return true;
+                case Resource.Id.action_agree:
+                    UserAgree();
                     return true;
                 default:
                     return base.OnOptionsItemSelected(item);
             }
         }
 
+        private void ShowDisagreePopUp()
+        {
+            const int menuItemView = Resource.Id.action_disagree;
+
+            var layout = FindViewById<LinearLayout>(Resource.Id.disagree_popup);
+            var inflater = (LayoutInflater) GetSystemService(LayoutInflaterService);
+
+            var inflatedLayout = inflater.Inflate(Resource.Layout.disagree_popup_layout, layout);
+            var popup = new PopupWindow(this)
+            {
+                ContentView = inflatedLayout,
+                Width = 600,
+                Height = 800,
+                Focusable = true,
+                
+            };
+            popup.ShowAsDropDown(FindViewById(menuItemView));
+
+            Action<DisagreeType> theButtonHandler = (dt) =>
+            {
+                popup.Dismiss();
+                ActOnDisagree(dt);
+            };
+
+            inflatedLayout.FindViewById<Button>(Resource.Id.more_positive_button).Click += ((o ,e) => theButtonHandler(DisagreeType.MorePositive));
+            inflatedLayout.FindViewById<Button>(Resource.Id.less_positive_button).Click += ((o, e) => theButtonHandler(DisagreeType.LessPositive));
+            inflatedLayout.FindViewById<Button>(Resource.Id.more_excited_button).Click += ((o, e) => theButtonHandler(DisagreeType.MoreExcited));
+            inflatedLayout.FindViewById<Button>(Resource.Id.less_excited_button).Click += ((o, e) => theButtonHandler(DisagreeType.LessExcited));
+        }
+
+        void ActOnDisagree(DisagreeType dt)
+        {
+            string message = String.Format("Sending {0} feedback!", dt.ToString().SplitPascal());
+            Toast.MakeText(this, message, ToastLength.Short).Show();
+        }
+        
+        private void UserAgree()
+        {
+            Toast.MakeText(this, "Thanks for the feedback!", ToastLength.Short).Show();
+        }
         #endregion
     }
 }

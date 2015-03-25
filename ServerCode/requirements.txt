@@ -2,3 +2,4 @@ Flask
 mutagen
 psycopg2
 pylast
+BeautifulSoup4

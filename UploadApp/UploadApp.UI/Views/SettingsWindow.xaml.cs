@@ -27,7 +27,7 @@ namespace UploadApp.UI.Views
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            if(((Button)sender).Name == "cancel")
+            if (((Button) sender).Name == "cancel")
                 Close();
 
             string username = UsernameTextBox.Text.Trim();
@@ -46,7 +46,7 @@ namespace UploadApp.UI.Views
             }
             else
             {
-                MessageBox.Show("Incorrect Login");
+                MessageBox.Show("Incorrect Login", "Uh oh", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

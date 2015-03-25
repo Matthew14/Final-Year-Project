@@ -1,0 +1,9 @@
+Matthew O'Neill - C11354316
+Insructions for building and running FYP, MoodStreamer
+The project is split into three seperate software systems
+
+To run the web service (in development mode):
+=============================================
+    *install python 2.7.* and virtualenv (https://virtualenv.pypa.io/en/latest/)
+    *
+

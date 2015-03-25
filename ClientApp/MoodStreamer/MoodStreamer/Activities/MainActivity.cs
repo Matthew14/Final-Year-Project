@@ -39,19 +39,6 @@ namespace MoodStreamer.Activities
 
             SetupEvents();
 
-            long downTime = SystemClock.UptimeMillis();
-            var r = _square.Width;
-            MotionEvent motionEvent = MotionEvent.Obtain(
-                downTime,
-                downTime+100,
-                MotionEventActions.Up, 
-                500,
-                500,
-                MetaKeyStates.ShiftMask
-            );
-
-            // Dispatch touch event to view
-            _square.DispatchTouchEvent(motionEvent);
         }
 
         private void GoToLogin()
@@ -219,6 +206,12 @@ namespace MoodStreamer.Activities
             _backToPlayingItem = menu.FindItem(Resource.Id.action_playing_button);
             
             return base.OnCreateOptionsMenu(menu);
+        }
+
+        public override void OnWindowFocusChanged(bool isFocussed)
+        {
+            _dot.SetX(_square.Width/2);
+            _dot.SetY(_square.Height / 2);
         }
 
         #endregion
