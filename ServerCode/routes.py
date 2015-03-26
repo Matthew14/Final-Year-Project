@@ -282,7 +282,7 @@ def analysis_in_progress():
     if username is None:
         abort(http_codes.UNAUTHORIZED, "not logged in")
 
-    return ""
+    return jsonify(dict(in_progress=get_database().get_user_stats(username).analysis_in_progress))
 
 
 @app.route('/api/reanalyze')
@@ -297,6 +297,7 @@ def reanalyze():
         p = subprocess.Popen([sys.executable, script, username], stdout=subprocess.PIPE, stderr=f)
 
     return ""
+
 
 @app.route('/api/disagree/<string:artist>/<string:track>/<string:thoughts>')
 def disagree(artist, track, thoughts):
