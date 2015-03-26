@@ -22,10 +22,11 @@ namespace MoodStreamer.Activities
         private ISharedPreferences _preferences;
         private ImageView _square, _dot;
         private bool _initialTouchDone = false;
-
+        private int _noTracksForUser = 0;
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+
             RequestedOrientation = ScreenOrientation.Portrait; 
             SetContentView(Resource.Layout.Main);
 
@@ -37,8 +38,31 @@ namespace MoodStreamer.Activities
             if (_loggedInUser == null)
                 GoToLogin();
 
+
+            //Run a thread to get how many tracks a user has
+            //Can't start radio without at least 1
+            new Thread(() =>
+            {
+                TrackStats stats = _loggedInUser.GetStats();
+                _noTracksForUser = stats.TrackCount;
+            }).Start();
+
+
+            StartWatchingForReanalysis();
+
             SetupEvents();
 
+        }
+
+        private void StartWatchingForReanalysis()
+        {
+            new Thread(() =>
+            {
+                for (;;)
+                {
+
+                }
+            }){IsBackground = true, Name = "Reanalysis Watcher"}.Start();
         }
 
         private void GoToLogin()
@@ -75,6 +99,12 @@ namespace MoodStreamer.Activities
 
         private void StartMoodRadio()
         {
+            if (_noTracksForUser < 1)
+            {
+                Toast.MakeText(this, "You need to add music first\nPlease download the Upload utility", ToastLength.Long).Show();
+                return;
+            }
+
             var instance = PlayerActivity.Instance;
             if (instance != null)
                 instance.Finish();
@@ -135,11 +165,6 @@ namespace MoodStreamer.Activities
 
         #region EventHandlers
 
-        private void StartPlayingPressed(object sender, View.TouchEventArgs e)
-        {
-            StartMoodRadio();
-        }
-
         private void SquareTouched(object sender, View.TouchEventArgs e)
         {
             var theEvent = e.Event;
@@ -155,8 +180,8 @@ namespace MoodStreamer.Activities
 
             _initialTouchDone = true;
 
-            _positivity = x;
-            _excitedness = y;
+            _positivity = y;
+            _excitedness = x;
 
             const int div = 6;
 
@@ -210,8 +235,7 @@ namespace MoodStreamer.Activities
 
         public override void OnWindowFocusChanged(bool isFocussed)
         {
-            _dot.SetX(_square.Width/2);
-            _dot.SetY(_square.Height / 2);
+            
         }
 
         #endregion

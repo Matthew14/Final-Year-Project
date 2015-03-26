@@ -44,7 +44,7 @@ class Track(object):
     def get_positivity(self):
         score = 0
         score += self.mode  # 0=minor, 1=major
-        score += self.lyrics_positivity
+        score += self.lyrics_positivity / 10
         return score
 
 
@@ -104,6 +104,12 @@ def rank_track(track):
     p = Postgres()
     en_track = get_echonest_track(track.artist, track.title)
     p.store_ranking(track, en_track.get_excitedness(), en_track.get_positivity())
+
+
+def re_rank_track(track):
+    p = Postgres()
+    en_track = get_echonest_track(track.artist, track.title)
+    p.update_ranking(track, en_track.get_excitedness(), en_track.get_positivity())
 
 
 def readTracksFromFile(path):

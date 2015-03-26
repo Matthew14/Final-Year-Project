@@ -148,7 +148,7 @@ class Postgres:
 
     def get_all_tracks_for_user(self, username):
 
-        sql = "SELECT * FROM tracks t JOIN user_has_track u ON t.id = u.track_id WHERE u.username = %s"
+        sql = "SELECT id, title, artist, file_path, album_art_url, duration FROM tracks t JOIN user_has_track u ON t.id = u.track_id WHERE u.username = %s"
 
         conn = self.connect()
         cursor = conn.cursor()
@@ -168,6 +168,18 @@ class Postgres:
         cursor = conn.cursor()
 
         cursor.execute(sql, (track.artist, track.title, track.filepath, positivity, excitedness, track.album_art, track.duration))
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+
+    def update_ranking(self, track, excitedness, positivity):
+        sql = "UPDATE tracks set excitedness = %s, positivity= %s WHERE title = %s AND artist = %s"
+        conn = self.connect()
+        cursor = conn.cursor()
+
+        cursor.execute(sql, (excitedness, positivity, track.title, track.artist))
 
         conn.commit()
         cursor.close()
@@ -199,6 +211,23 @@ class Postgres:
         cursor.close()
         conn.close()
 
+
+    def disagree(self, track, artist, which):
+        '''
+        slightly alters the value given based on user feedback
+        param: which
+            can be 'mp', 'lp', 'me','le' for more/less positivity, more/less excitedness respectively
+        '''
+
+        col = 'excitedness' if 'e' in which else 'positivity'
+        sql = "UPDATE tracks SET {} = {} {} .05".format(col, col, '-' if 'l' in which else '+')
+
+        conn = self.connect()
+        cursor = conn.cursor()
+        cursor.execute(sql)
+        conn.commit()
+        cursor.close()
+        conn.close()
 
 if __name__ == '__main__':
     p = Postgres()

@@ -1,6 +1,6 @@
 import sys
 from pg_db import Postgres
-
+from analysis.moodAssesment import re_rank_track
 
 def exit_on_error(err):
     print err
@@ -22,6 +22,9 @@ if  __name__ == "__main__":
     all_user_tracks = db.get_all_tracks_for_user(username)
 
     for track in all_user_tracks:
-        pass
+        try:
+            re_rank_track(track)
+        except:
+            print "couldn't reanalyse {}".format(track.title)
 
     db.update_analysis_state(username, False)

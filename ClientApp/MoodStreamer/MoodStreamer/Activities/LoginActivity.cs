@@ -30,7 +30,7 @@ namespace MoodStreamer.Activities
 			SetContentView (Resource.Layout.Login);
 
 #if DEBUG
-		    ProceedToMainActivity("matt");
+		    //ProceedToMainActivity("matt");
 #endif
             
             _loginProgressDialog =  new ProgressDialog(this);

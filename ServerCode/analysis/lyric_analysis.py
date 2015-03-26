@@ -1,5 +1,6 @@
 import time
 import os
+import scrape_lyrics
 
 from xml.dom import minidom
 from utils import read_url
@@ -27,6 +28,10 @@ class LyricAnalyser:
         lyrics = res.getElementsByTagName("Lyric")[0].childNodes[0].data
 
         return str(lyrics)
+
+
+    def __get_lyrics_by_scraping(sef, artist, track):
+        return scrape_lyrics.get_lyrics_from_az(track, artist)
 
 
     def __load_words_from_file(self, fp):
@@ -61,7 +66,7 @@ class LyricAnalyser:
 
 
     def get_lyric_positivity(self, artist, track):
-        lyrics = self.__get_lyrics(artist, track)
+        lyrics = self.__get_lyrics_by_scraping(artist, track)
         return self.__words_positivity(lyrics)
 
 

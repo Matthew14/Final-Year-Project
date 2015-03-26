@@ -14,9 +14,6 @@ from analysis.moodAssesment import rank_track
 from pg_db import Postgres
 
 
-
-
-#TODO filthy hack, plz change
 prod_base_dir = '/home/fypuser/Final-Year-Project/ServerCode/'
 prod_upload_directory = prod_base_dir + 'uploads'
 dev_upload_directory = 'C:\\users\matthew\\desktop\\uploads'
@@ -100,8 +97,10 @@ def get_image(imagepath):
 @app.route('/upload', methods=['POST'])
 def upload():
 
-    #TODO: this is temporary
-    username='matt'
+    username = None if 'username' not in session else session['username']
+
+    if username is None:
+        abort(http_codes.UNAUTHORIZED, "not logged in")
 
     f = request.files['file']
 
@@ -130,10 +129,13 @@ def get_music_file(artist=None, album=None, filepath=None):
 
 @app.route('/api/track/<string:excitedness>/<string:positivity>')
 def track(excitedness=None, positivity=None):
-    try:
 
-    #TODO
-        username = 'matt'
+    username = None if 'username' not in session else session['username']
+
+    if username is None:
+        abort(http_codes.UNAUTHORIZED, "not logged in")
+
+    try:
 
         try:
             excitedness = float(excitedness)
@@ -156,10 +158,12 @@ def track(excitedness=None, positivity=None):
 @app.route('/api/statistics')
 def stats():
 
-    #TODO
+    '''get statistics about the logged in user
+        including number of tracks in the system and whether reanalysis is
+        taking save_track_in_right_place
+    '''
 
     username = None if 'username' not in session else session['username']
-    username = 'matt'
 
     if username is None:
         abort(http_codes.UNAUTHORIZED, "not logged in")
@@ -177,16 +181,20 @@ def stats():
 
 @app.route('/api/whoami')
 def who_am_i():
+    '''return which user the client is currently logged in as'''
     return make_response("not logged in", http_codes.UNAUTHORIZED) if 'username' not in session else session['username']
 
 
 @app.route('/api/loggedin')
 def logged_in():
+    '''route to check if a client is logged in'''
     return jsonify(logged_in=str('logged_in' in session and session['logged_in']))
 
 
 @app.route('/api/login', methods=['POST'])
 def login():
+    '''authenticate user and set session vars'''
+
     json = request.get_json()
     if 'username' not in json:
         return make_response('no username specified', http_codes.BAD_REQUEST)
@@ -215,6 +223,8 @@ def login():
 
 @app.route('/api/logout')
 def logout():
+    ''' clear session info - 'log out'
+    '''
     session['logged_in'] = False
     session['username'] = None
     session.clear()
@@ -222,6 +232,10 @@ def logout():
 
 @app.route('/api/users/<string:username>')
 def get_user(username):
+    '''
+    A route to retrieve information about a user
+
+    '''
     p = get_database()
     user = p.get_user_as_dict(username)
 
@@ -237,6 +251,7 @@ def get_user(username):
 def create_user():
     json = request.get_json()
 
+    print json
     if 'username' not in json:
         return make_response('no username specified', http_codes.BAD_REQUEST)
 
@@ -264,7 +279,8 @@ def create_user():
 def analysis_in_progress():
     username = None if 'username' not in session else session['username']
 
-    username = 'matt'
+    if username is None:
+        abort(http_codes.UNAUTHORIZED, "not logged in")
 
     return ""
 
@@ -274,18 +290,21 @@ def reanalyze():
 
     username = None if 'username' not in session else session['username']
 
-    #TODO
-    username = 'matt'
-
     error_file = os.path.join(out_dir, 'err')
     script = os.path.join(base_dir, 'reanalyze.py')
-
+    print error_file
     with open(error_file, 'a') as f:
         p = subprocess.Popen([sys.executable, script, username], stdout=subprocess.PIPE, stderr=f)
 
-    abort(http_codes.NOT_IMPLEMENTED, "working on that")
+    return ""
 
+@app.route('/api/disagree/<string:artist>/<string:track>/<string:thoughts>')
+def disagree(artist, track, thoughts):
 
-@app.route('/api/disagree/<string:trackname>/<string:thoughts>')
-def disagree(trackname, thoughts):
-    abort(http_codes.NOT_IMPLEMENTED, "Not done yet")
+    if thoughts not in ['mp', 'lp', 'me', 'le']:
+        abort(http_codes.NOT_FOUND, "code is wrong")
+
+    p = get_database()
+    p.disagree(artist, track, thoughts)
+
+    return thoughts

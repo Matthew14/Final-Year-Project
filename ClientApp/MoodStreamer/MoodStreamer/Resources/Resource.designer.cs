@@ -116,26 +116,26 @@ namespace MoodStreamer
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f080023
-			public const int action_agree = 2131230755;
-			
-			// aapt resource value: 0x7f080024
-			public const int action_disagree = 2131230756;
-			
 			// aapt resource value: 0x7f080020
-			public const int action_logout_button = 2131230752;
+			public const int action_agree = 2131230752;
 			
 			// aapt resource value: 0x7f080021
-			public const int action_playing_button = 2131230753;
+			public const int action_disagree = 2131230753;
+			
+			// aapt resource value: 0x7f08001d
+			public const int action_logout_button = 2131230749;
+			
+			// aapt resource value: 0x7f08001e
+			public const int action_playing_button = 2131230750;
+			
+			// aapt resource value: 0x7f08001c
+			public const int action_settings = 2131230748;
 			
 			// aapt resource value: 0x7f08001f
-			public const int action_settings = 2131230751;
+			public const int action_viewstats = 2131230751;
 			
 			// aapt resource value: 0x7f080022
-			public const int action_viewstats = 2131230754;
-			
-			// aapt resource value: 0x7f080025
-			public const int action_vol = 2131230757;
+			public const int action_vol = 2131230754;
 			
 			// aapt resource value: 0x7f08000f
 			public const int artWorkImageView = 2131230735;
@@ -149,8 +149,8 @@ namespace MoodStreamer
 			// aapt resource value: 0x7f080013
 			public const int backButton = 2131230739;
 			
-			// aapt resource value: 0x7f08001e
-			public const int cacheCheckbox = 2131230750;
+			// aapt resource value: 0x7f08001b
+			public const int cacheCheckbox = 2131230747;
 			
 			// aapt resource value: 0x7f080000
 			public const int disagree_popup = 2131230720;
@@ -160,12 +160,6 @@ namespace MoodStreamer
 			
 			// aapt resource value: 0x7f080016
 			public const int emailBoxRegister = 2131230742;
-			
-			// aapt resource value: 0x7f08001d
-			public const int lastfmPasswordEdit = 2131230749;
-			
-			// aapt resource value: 0x7f08001c
-			public const int lastfmUsernameEdit = 2131230748;
 			
 			// aapt resource value: 0x7f080004
 			public const int less_excited_button = 2131230724;
@@ -211,9 +205,6 @@ namespace MoodStreamer
 			
 			// aapt resource value: 0x7f08001a
 			public const int registerButtonOnRegisterActivity = 2131230746;
-			
-			// aapt resource value: 0x7f08001b
-			public const int scrobbleCheckBox = 2131230747;
 			
 			// aapt resource value: 0x7f08000b
 			public const int square = 2131230731;

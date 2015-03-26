@@ -1,6 +1,8 @@
 using System;
+using System.Net.Mail;
 using System.Text.RegularExpressions;
 using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Views;
@@ -37,9 +39,26 @@ namespace MoodStreamer.Activities
 
         private void registerButton_Click(object sender, EventArgs e)
         {
+            _username.Text = "matt" + new Random().Next();
+            _password.Text = "mattPass";
+            _passwordAgain.Text = "mattPass";
+            _email.Text = "m@outlook.com";
             if (Validate())
             {
-                ShowToast(string.Format("Successfully Registered. Welcome, {0}", _username.Text));   
+                var lm = new Shared.LoginManager();
+                if (lm.RegisterNewUser(_username.Text, _password.Text, _email.Text))
+                {
+                    ShowToast(string.Format("Successfully Registered. Welcome, {0}", _username.Text));
+                    lm.PerformLogin(_username.Text, _password.Text);
+                    var intent = new Intent(Application.Context, typeof(MainActivity));
+                    intent.PutExtra("username", _username.Text);
+                    StartActivity(intent);
+                    Finish();
+                }
+                else
+                {
+                    ShowToast("Error Creating User");
+                }
             }
         }
 
@@ -63,7 +82,7 @@ namespace MoodStreamer.Activities
                 return false;
             }
 
-            if (!Regex.IsMatch(_email.Text, emailPattern))
+            if (!IsValid(_email.Text))
             {
                 ShowToast("Invalid Email");
                 return false;
@@ -77,6 +96,25 @@ namespace MoodStreamer.Activities
 
             return true;
         }
+
+
+        /// <summary>
+        /// Adapted from http://stackoverflow.com/questions/5342375/c-sharp-regex-email-validation
+        /// </summary>
+        private bool IsValid(string emailaddress)
+        {
+            try
+            {
+                new MailAddress(emailaddress);
+
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+        }
+
 
         public override bool OnOptionsItemSelected(IMenuItem item)
         {

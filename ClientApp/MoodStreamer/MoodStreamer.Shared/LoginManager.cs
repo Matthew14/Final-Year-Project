@@ -35,6 +35,11 @@ namespace MoodStreamer.Shared
 		{
             return _client.Login(username, password);
 		}
+
+	    public bool RegisterNewUser(string username, string password, string email)
+	    {
+	        return _client.CreateUser(username, email, password);
+	    }
 	}
 }
 

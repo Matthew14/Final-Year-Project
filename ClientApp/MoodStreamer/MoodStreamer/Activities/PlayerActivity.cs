@@ -13,11 +13,7 @@ using MoodStreamer.Shared;
 
 namespace MoodStreamer.Activities
 {
-    enum DisagreeType
-    {
-        MorePositive, LessPositive, MoreExcited, LessExcited
-    }
-
+    
     [Activity(Label = "Mood Streamer", Theme = "@style/AppTheme")]
     public class PlayerActivity : Activity
     {
@@ -36,6 +32,8 @@ namespace MoodStreamer.Activities
         private ImageView _coverArt;
         private SeekBar _playerSeekBar;
         private ImageButton _playPauseButton, _backButton;
+
+        private Track _currentTrack;
 
         private readonly ConcurrentStack<Track> _playedStack = new ConcurrentStack<Track>();
         private readonly ConcurrentQueue<Track> _playQueue = new ConcurrentQueue<Track>();
@@ -151,10 +149,15 @@ namespace MoodStreamer.Activities
 
         private void PlayTrack(Track track = null)
         {
+            //Wait for the queue thread to put a track on the queue if not already
             while (track == null && (track = GetTrackOffQueue()) == null);
             
+            _currentTrack = track;
+            
+            //Escape Spaces in the url for HTTP
             var fp = String.Format("{0}/{1}", Constants.ServiceUrl, track.FilePath.Replace(" ", "%20"));
             
+            //Do this on new thread so music can play while waiting
             new Thread(() => LoadImageIntoImageView(track.AlbumArt)){Name="Artwork Loader Thread"}.Start();
 
             _player.SetAudioStreamType(Stream.Music);
@@ -247,7 +250,7 @@ namespace MoodStreamer.Activities
             {
                 ContentView = inflatedLayout,
                 Width = 600,
-                Height = 800,
+                Height = 850,
                 Focusable = true,
                 
             };
@@ -267,6 +270,8 @@ namespace MoodStreamer.Activities
 
         void ActOnDisagree(DisagreeType dt)
         {
+            _trackManager.Disagree(dt, _currentTrack);
+            
             string message = String.Format("Sending {0} feedback!", dt.ToString().SplitPascal());
             Toast.MakeText(this, message, ToastLength.Short).Show();
         }
@@ -275,6 +280,7 @@ namespace MoodStreamer.Activities
         {
             Toast.MakeText(this, "Thanks for the feedback!", ToastLength.Short).Show();
         }
+
         #endregion
     }
 }

@@ -2,7 +2,7 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-   <PreferenceCategory android:title="Last.FM">
+   <!--<PreferenceCategory android:title="Last.FM">
    		<CheckBoxPreference
 	        android:key="scrobble"
 	        android:id="@+id/scrobbleCheckBox"
@@ -24,7 +24,7 @@
 	   		android:title="Password" 
 		   	android:summary="Your password for last.fm" />         	
 
-   </PreferenceCategory>
+   </PreferenceCategory>-->
 
    <PreferenceCategory android:title="Caching">
 
