@@ -102,7 +102,8 @@ namespace MoodStreamer.Activities
 
         private void ReturnToPlayer()
         {
-            StartActivity(new Intent(this, typeof(PlayerActivity)));
+            if (_noTracksForUser > 0)
+                StartActivity(new Intent(this, typeof (PlayerActivity)));
         }
 
         private void StartMoodRadio()
@@ -245,7 +246,7 @@ namespace MoodStreamer.Activities
 
         public override void OnWindowFocusChanged(bool isFocussed)
         {
-            
+           
         }
 
         #endregion

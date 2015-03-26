@@ -28,7 +28,6 @@ namespace MoodStreamer.Activities
         const int ShakeDetectionTimeLapse = 250;
         const double ShakeThreshold = 1000;
 
-
         private static MediaPlayer _player;
 
         private float _excitedness;

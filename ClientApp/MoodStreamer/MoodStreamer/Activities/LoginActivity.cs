@@ -4,7 +4,6 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Android.Views;
 using Android.Widget;
 using MoodStreamer.Shared;
 
@@ -29,10 +28,6 @@ namespace MoodStreamer.Activities
             RequestedOrientation = ScreenOrientation.Portrait;
 			SetContentView (Resource.Layout.Login);
 
-#if DEBUG
-		    //ProceedToMainActivity("matt");
-#endif
-            
             _loginProgressDialog =  new ProgressDialog(this);
             _preferences = GetSharedPreferences(GetString(Resource.String.preferencesName), FileCreationMode.Private);
             

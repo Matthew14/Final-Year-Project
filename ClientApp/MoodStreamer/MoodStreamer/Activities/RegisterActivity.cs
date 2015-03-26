@@ -1,12 +1,12 @@
 using System;
 using System.Net.Mail;
-using System.Text.RegularExpressions;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
+using MoodStreamer.Shared;
 
 namespace MoodStreamer.Activities
 {
@@ -39,13 +39,9 @@ namespace MoodStreamer.Activities
 
         private void registerButton_Click(object sender, EventArgs e)
         {
-            _username.Text = "matt" + new Random().Next();
-            _password.Text = "mattPass";
-            _passwordAgain.Text = "mattPass";
-            _email.Text = "m@outlook.com";
             if (Validate())
             {
-                var lm = new Shared.LoginManager();
+                var lm = new LoginManager();
                 if (lm.RegisterNewUser(_username.Text, _password.Text, _email.Text))
                 {
                     ShowToast(string.Format("Successfully Registered. Welcome, {0}", _username.Text));
@@ -70,9 +66,6 @@ namespace MoodStreamer.Activities
 
         private bool Validate()
         {
-            //This regex stolen from: http://blog.trojanhunter.com/2012/09/26/the-best-regex-to-validate-an-email-address/
-            const string emailPattern = @"/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/";
-
             if (_username.Text.Trim() == string.Empty
                 || _password.Text.Trim() == string.Empty
                 || _passwordAgain.Text.Trim() == string.Empty
@@ -100,6 +93,7 @@ namespace MoodStreamer.Activities
 
         /// <summary>
         /// Adapted from http://stackoverflow.com/questions/5342375/c-sharp-regex-email-validation
+        /// MailAddress class constructor will throw exception if invalid address given
         /// </summary>
         private bool IsValid(string emailaddress)
         {

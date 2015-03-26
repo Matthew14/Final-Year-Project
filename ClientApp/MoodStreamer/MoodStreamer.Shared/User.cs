@@ -1,5 +1,9 @@
 ﻿namespace MoodStreamer.Shared
 {
+    /// <summary>
+    /// Encapsulates a user as recieved from / expected by the
+    /// web service
+    /// </summary>
     public class User
     {
         public string username { get; set; }
