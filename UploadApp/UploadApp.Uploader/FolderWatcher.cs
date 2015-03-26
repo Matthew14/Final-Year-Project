@@ -105,15 +105,18 @@ namespace UploadApp.Uploader
                             Track track;
                             if (!tracksUploaded.TryGetValue(hash, out track))
                             {
-                                client.UploadFile(f);
-                                track = new Track
+                                if (client.UploadFile(f))
                                 {
-                                    Title = "test",
-                                    Artist = "test",
-                                    Sha256Hash = hash
-                                };
-                                _db.AddTrack(track, _username);
-                                tracksUploaded[hash] = track;
+
+                                    track = new Track
+                                    {
+                                        Title = "test",
+                                        Artist = "test",
+                                        Sha256Hash = hash
+                                    };
+                                    _db.AddTrack(track, _username);
+                                    tracksUploaded[hash] = track;
+                                }
                             }
                         }
                     }

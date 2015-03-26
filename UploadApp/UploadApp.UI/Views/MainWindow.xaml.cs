@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Windows;
 using System.Windows.Forms;
 using log4net;
@@ -39,6 +40,11 @@ namespace UploadApp.UI.Views
 
             _viewModel = new MainViewModel();
             DataContext = _viewModel;
+
+            
+            var username = UploadClientSettings.Default.Username;
+            var password = UploadClientSettings.Default.Password;
+            Uploader.LoginClient.GetInstance(ConfigurationManager.AppSettings.Get("serviceUrl")).Login(username, password);
         }
 
         private void SetupTrayIcon()

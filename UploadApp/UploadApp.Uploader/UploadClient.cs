@@ -13,7 +13,7 @@ namespace UploadApp.Uploader
         public UploadClient()
         {
             _url = ConfigurationManager.AppSettings.Get("serviceUrl");
-            _cookieJar = new CookieContainer();
+            _cookieJar = LoginClient.GetInstance(_url).CookieJar;
             _restClient = new RestClient(_url){CookieContainer = _cookieJar};   
         }
 
@@ -31,8 +31,8 @@ namespace UploadApp.Uploader
 
             request.AddFile("file", filepath);
 
-            _restClient.Execute(request);
-            return true;
+            var response = _restClient.Execute(request);
+            return response.StatusCode == HttpStatusCode.OK;
         }
     }
 }

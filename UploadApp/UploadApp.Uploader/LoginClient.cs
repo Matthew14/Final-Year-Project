@@ -17,6 +17,7 @@ namespace UploadApp.Uploader
         private static LoginClient _instance;
         private readonly RestClient _restClient;
         private readonly CookieContainer _cookieJar;
+        public CookieContainer CookieJar { get { return _cookieJar; } }
 
         public static LoginClient GetInstance(string url)
         {
