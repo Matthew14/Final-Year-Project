@@ -25,5 +25,10 @@
         {
             MoodRestClient.Instance.ReanalyzeTracksForLoggedInUser();
         }
+
+        public bool IsReanalysing()
+        {
+            return MoodRestClient.Instance.IsReanalysing();
+        }
     }
 }

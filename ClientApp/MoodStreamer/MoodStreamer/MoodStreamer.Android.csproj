@@ -133,4 +133,7 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\agree.png" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\infoblue.png" />
+  </ItemGroup>
 </Project>

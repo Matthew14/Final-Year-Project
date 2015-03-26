@@ -23,6 +23,9 @@ namespace MoodStreamer.Activities
         private ImageView _square, _dot;
         private bool _initialTouchDone = false;
         private int _noTracksForUser = 0;
+        private IMenu _menu;
+        private IMenuItem _statsItem;
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -43,24 +46,29 @@ namespace MoodStreamer.Activities
             //Can't start radio without at least 1
             new Thread(() =>
             {
-                TrackStats stats = _loggedInUser.GetStats();
+                var stats = _loggedInUser.GetStats();
                 _noTracksForUser = stats.TrackCount;
             }).Start();
 
-
             StartWatchingForReanalysis();
-
             SetupEvents();
-
         }
 
+        /// <summary>
+        /// Starts a thread which periodically polls the web service to see if a reanalysis
+        /// is taking place. If it is, then it sets the icon to be blue.
+        /// </summary>
         private void StartWatchingForReanalysis()
         {
             new Thread(() =>
             {
                 for (;;)
                 {
-
+                    if (_loggedInUser.IsReanalysing())
+                        RunOnUiThread(() => _statsItem.SetIcon(Resource.Drawable.infoblue));
+                    else
+                        RunOnUiThread(() => _statsItem.SetIcon(Resource.Drawable.infowhite));
+                    Thread.Sleep(1000);
                 }
             }){IsBackground = true, Name = "Reanalysis Watcher"}.Start();
         }
@@ -140,6 +148,7 @@ namespace MoodStreamer.Activities
                 adBuilder.SetNeutralButton("Reanalyze Files", (s, e) =>
                 {
                     _loggedInUser.Reanalyze();
+                    _menu.FindItem(Resource.Id.action_viewstats).SetIcon(Resource.Drawable.infoblue);
                     Toast.MakeText(Application.Context, "Reanalysis Started", ToastLength.Long).Show();
                 });
                 adBuilder.SetPositiveButton("Dismiss", (s, e) => dialog.Dismiss());
@@ -226,10 +235,11 @@ namespace MoodStreamer.Activities
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
+            _menu = menu;
             MenuInflater.Inflate(Resource.Menu.main_activity_actions, menu);
 
             _backToPlayingItem = menu.FindItem(Resource.Id.action_playing_button);
-            
+            _statsItem = menu.FindItem(Resource.Id.action_viewstats);
             return base.OnCreateOptionsMenu(menu);
         }
 
@@ -239,5 +249,7 @@ namespace MoodStreamer.Activities
         }
 
         #endregion
+
+        
     }
 }

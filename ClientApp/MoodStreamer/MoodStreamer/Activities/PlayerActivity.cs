@@ -5,6 +5,7 @@ using System.Threading;
 using Android.App;
 using Android.Content.PM;
 using Android.Graphics;
+using Android.Hardware;
 using Android.Media;
 using Android.OS;
 using Android.Views;
@@ -15,8 +16,19 @@ namespace MoodStreamer.Activities
 {
     
     [Activity(Label = "Mood Streamer", Theme = "@style/AppTheme")]
-    public class PlayerActivity : Activity
+    public class PlayerActivity : Activity, ISensorEventListener
     {
+        //accelerometer stuff
+        bool _hasUpdated;
+        DateTime _lastAccelerometerUpdate, _lastShakeSkip = DateTime.Now;
+        float _lastX;
+        float _lastY;
+        float _lastZ;
+
+        const int ShakeDetectionTimeLapse = 250;
+        const double ShakeThreshold = 1000;
+
+
         private static MediaPlayer _player;
 
         private float _excitedness;
@@ -66,7 +78,21 @@ namespace MoodStreamer.Activities
             
             SetupUiElements();
 
+            StartCacheThread();
+
+
             PlayTrack();
+        }
+
+        private void StartCacheThread()
+        {
+            new Thread(() =>
+            {
+                for (;;)
+                {
+                    
+                }
+            }).Start();
         }
 
         private void PlayerSeekBarOnProgressChanged(object sender, SeekBar.ProgressChangedEventArgs progressChangedEventArgs)
@@ -94,6 +120,10 @@ namespace MoodStreamer.Activities
                 Thread.Sleep(500);
 
                 RunOnUiThread(() => _playerSeekBar.Progress = _player.CurrentPosition/1000 );
+                
+                var sensorManager = (SensorManager)GetSystemService(SensorService);
+                var accelerometer = sensorManager.GetDefaultSensor(SensorType.Accelerometer);
+                sensorManager.RegisterListener(this, accelerometer, SensorDelay.Game);
             }
         }
 
@@ -256,7 +286,7 @@ namespace MoodStreamer.Activities
             };
             popup.ShowAsDropDown(FindViewById(menuItemView));
 
-            Action<DisagreeType> theButtonHandler = (dt) =>
+            Action<DisagreeType> theButtonHandler = dt =>
             {
                 popup.Dismiss();
                 ActOnDisagree(dt);
@@ -281,6 +311,52 @@ namespace MoodStreamer.Activities
             Toast.MakeText(this, "Thanks for the feedback!", ToastLength.Short).Show();
         }
 
+        //SensorListener
+
+        public void OnAccuracyChanged(Sensor sensor, SensorStatus accuracy){}
+        
+        /// <summary>
+        /// The following shake detection method inspired by this stack overflow answer:
+        /// http://stackoverflow.com/questions/23120186/can-xamarin-handle-shake-accelerometer-on-android
+        /// </summary>
+        /// <param name="e"></param>
+        public void OnSensorChanged(SensorEvent e)
+        {
+            if (e.Sensor.Type != SensorType.Accelerometer) 
+                return;
+
+            float x = e.Values[0], y = e.Values[1], z = e.Values[2];
+            var curTime = DateTime.Now;
+          
+            if (!_hasUpdated)
+            {
+                _hasUpdated = true;
+                _lastAccelerometerUpdate = curTime;
+                
+            }
+            else
+            {
+                if (!((curTime - _lastAccelerometerUpdate).TotalMilliseconds > ShakeDetectionTimeLapse)) 
+                    return;
+                    
+                var diffTime = (float)(curTime - _lastAccelerometerUpdate).TotalMilliseconds;
+                _lastAccelerometerUpdate = curTime;
+                var total = x + y + z - _lastX - _lastY - _lastZ;
+                var speed = Math.Abs(total) / diffTime * 10000;
+
+                if (speed > ShakeThreshold && (DateTime.Now - _lastShakeSkip) > new TimeSpan(0, 0, 0, 5))
+                {
+                    //user has got their shake on...
+                    var v = (Vibrator) GetSystemService(VibratorService);
+                    v.Vibrate(300);
+                    NextPressed(null, null);
+                    _lastShakeSkip = DateTime.Now;
+                }
+            }
+            _lastX = x;
+            _lastY = y;
+            _lastZ = z;
+        }
         #endregion
     }
 }

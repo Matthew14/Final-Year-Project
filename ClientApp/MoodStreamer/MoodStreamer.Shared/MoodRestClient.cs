@@ -132,5 +132,14 @@ namespace MoodStreamer.Shared
             return response.StatusCode == HttpStatusCode.OK; 
             
         }
+
+        public bool IsReanalysing()
+        {
+            var request = new RestRequest(Method.GET) { Resource = "analysisInProgress" };
+            var response = _restClient.Execute(request);
+
+
+            return response.StatusCode == HttpStatusCode.OK && response.Content.ToLower().Contains("true");
+        }
     }
 }
