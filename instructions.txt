@@ -1,9 +1,39 @@
 Matthew O'Neill - C11354316
 Insructions for building and running FYP, MoodStreamer
+
+
 The project is split into three seperate software systems
 
-To run the web service (in development mode):
+1 - To run the web service (in development mode):
 =============================================
-    *install python 2.7.* and virtualenv (https://virtualenv.pypa.io/en/latest/)
-    *
+    install postgreSQL
+    install python 2.7.* and virtualenv (https://virtualenv.pypa.io/en/latest/)
+    create virtualenv in ServerCode and activate it:
+        virtualenv evn
+        source env/bin/activate (linux/mac)
+        env\Scripts\activate.bat (windows)
+    create fyp database in postgresql
+    run all sql scripts in ServerCode/creates with postgres
+    python app.py
 
+
+2 - To build + run the mobile app
+=======================
+    install java, xamarin platform
+    open in either visual studio or xamarin studio
+    install nuget packages if propted
+    press build
+    either deploy to device or debug depending on preference
+
+
+3 - To build + run the upload utility
+===================================
+    open solution in visual studio
+    install nuget packages if propted
+    press build
+    run in release mode
+
+    alternatively build .sln with msbuild
+
+    or:
+    open UploadApp\UploadApp.UI\bin\Release\UploadApp.UI.exe
